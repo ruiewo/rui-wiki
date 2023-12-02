@@ -1,0 +1,78 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body,
+header,
+main,
+footer,
+h1,
+h2,
+h3,
+h4,
+ul,
+ol,
+dl,
+li,
+dt,
+dd,
+p,
+div,
+span,
+img,
+a,
+button,
+table,
+tr,
+th,
+td,
+form,
+input,
+label {
+    border: 0;
+    font-weight: normal;
+    font-size: 1rem;
+    vertical-align: baseline;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+.hidden {
+    display: none !important;
+}
+.clickable {
+    cursor: pointer;
+}
+.clickable:active:not([disabled]) {
+    transform: scale(0.95);
+}
+
+// /* デフォルトスタイル */
+// input[type='text'],
+// input[type='password'],
+// input[type='email'] {
+//     outline: none;
+//     background-color: #fff3;
+//     // background-color: #fff5;
+//     border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
+// }
+
+// input[type='text']:focus,
+// input[type='password']:focus,
+// input[type='email']:focus {
+//     background-color: #fff6;
+//     // background-color: #eee;
+//     border-bottom: 0.3rem solid rgba(200, 0, 0, 0.3);
+// }
