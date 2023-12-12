@@ -1,3 +1,4 @@
+import { MainPage } from "../pages/main";
 import "./dialog.scss";
 
 const root = document.getElementById("app")!;
@@ -23,6 +24,10 @@ export function createLoginDom() {
     // if (!succeed) {
     //   console.log("login failed.");
     // }
+
+    if (password) {
+      MainPage.load("");
+    }
   };
 
   // todo remove
