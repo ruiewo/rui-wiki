@@ -1,75 +1,66 @@
-type CryptoState = {
-  salt: Uint8Array;
-  iv: Uint8Array;
-};
-
-declare global {
-  interface Window {
-    ruiwiki: {
-      cryptoState?: CryptoState;
-    };
-  }
-}
+import { assertExist } from "./util";
 
 type Crypto = {
   encrypt: (text: string) => Promise<string>;
   decrypt: (text: string) => Promise<string>;
 };
 
-let crypto: Crypto | null = null;
+let crypto: Crypto = {
+  encrypt: async (text: string) => text,
+  decrypt: async (text: string) => text,
+};
 
-function update(key?: CryptoKey, salt?: Uint8Array, iv?: Uint8Array) {
-  if (!key || !salt || !iv) {
-    window.ruiwiki.cryptoState = undefined;
+export class CryptoService {
+  static salt?: string;
+  static iv?: string;
 
-    crypto = {
-      encrypt: async (text: string) => text,
-      decrypt: async (text: string) => text,
-    };
-    return;
+  static async initialize(salt?: string, iv?: string) {
+    CryptoService.salt = salt;
+    CryptoService.iv = iv;
   }
 
-  window.ruiwiki.cryptoState = { salt, iv };
+  static async checkPassword(password: string, encrypted: string) {
+    assertExist(CryptoService.salt);
+    assertExist(CryptoService.iv);
 
-  crypto = {
-    encrypt: (text: string) => encrypt(text, key, iv),
-    decrypt: (text: string) => decrypt(text, key, iv),
-  };
-}
+    const encoder = new TextEncoder();
+    const salt = encoder.encode(CryptoService.salt);
+    const iv = encoder.encode(CryptoService.iv);
 
-export const Crypto = {
-  isEncrypted: () => !!window.ruiwiki.cryptoState,
-  initialize: async (password?: string) => {
-    if (!window.ruiwiki.cryptoState) {
-      update();
-      return;
-    }
-
-    if (!password) throw new Error("No password");
-    const { salt, iv } = window.ruiwiki.cryptoState;
     const { key } = await generateKey(password, salt);
+    const decrypted = await decrypt(encrypted, key, iv);
 
-    update(key, salt, iv);
-  },
-  changePassword: async (password: string) => {
-    if (!password) {
-      update();
-      return;
+    const succeed = decrypted === CryptoService.salt + CryptoService.iv;
+    if (succeed) {
+      crypto = {
+        encrypt: (text: string) => encrypt(text, key, iv),
+        decrypt: (text: string) => decrypt(text, key, iv),
+      };
     }
 
+    return succeed;
+  }
+
+  static async updatePassword(password: string) {
     const { key, salt } = await generateKey(password);
     const iv = window.crypto.getRandomValues(new Uint8Array(12));
-    update(key, salt, iv);
-  },
-  encrypt: (text: string) => {
-    if (crypto == null) throw new Error("not initialized");
+    crypto = {
+      encrypt: (text: string) => encrypt(text, key, iv),
+      decrypt: (text: string) => decrypt(text, key, iv),
+    };
+
+    const decoder = new TextDecoder();
+    CryptoService.salt = decoder.decode(salt);
+    CryptoService.iv = decoder.decode(iv);
+  }
+
+  static encrypt(text: string) {
     return crypto.encrypt(text);
-  },
-  decrypt: (text: string) => {
-    if (crypto == null) throw new Error("not initialized");
+  }
+  static decrypt(text: string) {
     return crypto.decrypt(text);
-  },
-};
+  }
+}
 
 async function encrypt(text: string, key: CryptoKey, iv: Uint8Array) {
   const encoded = new TextEncoder().encode(text);
