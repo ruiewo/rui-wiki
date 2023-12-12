@@ -1,37 +1,32 @@
-const root = document.getElementById('root')!;
+import "./dialog.scss";
 
-function createLoginDom() {
+const root = document.getElementById("app")!;
+
+export function createLoginDom() {
   const html =
-    `<div class="loginDialog">` +
+    `<div class="dialogContainer">` +
+    `<div class="dialog">` +
     `<div class="appIcon"></div>` +
-    `<div class="input"><input type="text" id="nameInput" placeholder="User Name"></div>` +
-    `<div class="input"><input type="password" id="passwordInput" placeholder="Password"></div>` +
-    `<div class="buttons"><button type=""button id="loginButton" class="shrinkButton">Log in</button></div>` +
-    `<div class="link"><span id="registerLink">create new account?</span></div>` +
+    `<div class="input"><input type="password" id="password" placeholder="Password"></div>` +
+    `<button type=""button id="loginButton" class="shrinkButton">Log in</button>` +
+    `</div>` +
     `</div>`;
 
   root.innerHTML = html;
 
-  const loginButton = document.getElementById('loginButton')!;
+  const loginButton = document.getElementById("loginButton")!;
   loginButton.onclick = () => {
-    const name = (document.getElementById('nameInput') as HTMLInputElement)
+    const password = (document.getElementById("password") as HTMLInputElement)
       .value;
-    const password = (
-      document.getElementById('passwordInput') as HTMLInputElement
-    ).value;
 
-    const succeed = authApi.login(name, password);
-    if (!succeed) {
-      console.log('login failed.');
-    }
-  };
-
-  document.getElementById('registerLink')!.onclick = () => {
-    createRegisterDom();
+    // const succeed = authApi.login(name, password);
+    // if (!succeed) {
+    //   console.log("login failed.");
+    // }
   };
 
   // todo remove
-  (document.getElementById('nameInput') as HTMLInputElement).value = 'Owner';
-  (document.getElementById('passwordInput') as HTMLInputElement).value =
-    'b2OWNNU|ED9F';
+  // (document.getElementById("nameInput") as HTMLInputElement).value = "Owner";
+  // (document.getElementById("passwordInput") as HTMLInputElement).value =
+  //   "b2OWNNU|ED9F";
 }
