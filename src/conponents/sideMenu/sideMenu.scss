@@ -1,0 +1,16 @@
+.sideMenu {
+  width: 15rem;
+  //   background-color: #fff;
+}
+
+.controls {
+  button {
+    height: 2rem;
+    width: 2rem;
+
+    svg {
+      width: inherit;
+      height: inherit;
+    }
+  }
+}
