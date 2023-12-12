@@ -1,3 +1,9 @@
 .layout {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.main {
+  width: 40rem;
+  height: 100vh;
 }

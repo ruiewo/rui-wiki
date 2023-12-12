@@ -1,14 +1,19 @@
 import { createSideMenu } from "../components/sideMenu/sideMenu";
 
+import "./main.scss";
+
 export const MainPage = {
   load: (contents: Contents) => {
     const app = document.getElementById("app")!;
 
     const layout = createLayout();
+
+    const main = createMain();
+    layout.appendChild(main);
+    main.textContent = "aaaa";
+
     const sidebar = createSideMenu(contents.setting, contents.articles);
-    // const contentsDom = createContents();
     layout.appendChild(sidebar);
-    // layout.appendChild(contentsDom);
 
     app.appendChild(layout);
   },
@@ -26,4 +31,10 @@ function createLayout() {
   const layout = document.createElement("div");
   layout.classList.add("layout");
   return layout;
+}
+
+function createMain() {
+  const main = document.createElement("main");
+  main.classList.add("main");
+  return main;
 }

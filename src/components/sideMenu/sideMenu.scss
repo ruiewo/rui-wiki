@@ -1,9 +1,15 @@
 .sideMenu {
   width: 15rem;
+  height: 100vh;
   //   background-color: #fff;
 }
 
 .controls {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1rem;
   button {
     height: 2rem;
     width: 2rem;
@@ -13,4 +19,11 @@
       height: inherit;
     }
   }
+}
+
+.title {
+  font-size: 2rem;
+}
+.subTitle {
+  color: var(--gray-700);
 }
