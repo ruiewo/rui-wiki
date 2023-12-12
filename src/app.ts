@@ -1,4 +1,4 @@
-import { showLoginDialog } from "./conponents/dialog";
+import { showLoginDialog } from "./components/dialog";
 import { CryptoService } from "./lib/crypto";
 import { MainPage } from "./pages/main";
 

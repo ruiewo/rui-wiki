@@ -1,4 +1,4 @@
-import { createSideMenu } from "../conponents/sideMenu/sideMenu";
+import { createSideMenu } from "../components/sideMenu/sideMenu";
 
 export const MainPage = {
   load: (contents: Contents) => {
