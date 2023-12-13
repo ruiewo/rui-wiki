@@ -7,6 +7,6 @@ export const createArticle = (article: Article) => {
 export type Article = {
   title: string;
   content: string;
-  tag: string;
+  tag?: string;
   createdAt: string;
 };

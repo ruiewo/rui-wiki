@@ -1,4 +1,4 @@
-import { CryptoService } from "../lib/crypto";
+import { CryptoService } from "../../lib/crypto";
 import "./dialog.scss";
 
 export async function showLoginDialog(fragment: string) {

@@ -1,10 +1,14 @@
+import { Article } from "../components/article/article";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
+import { createSvgSymbols } from "../lib/svg";
 
 import "./main.scss";
 
 export const MainPage = {
   load: (contents: Contents) => {
     const app = document.getElementById("app")!;
+
+    createSvgSymbols();
 
     const layout = createLayout();
 
@@ -19,12 +23,12 @@ export const MainPage = {
   },
 };
 
-type Contents = {
+export type Contents = {
   setting: {
     title: string;
     subTitle: string;
   };
-  articles: string[];
+  articles: Article[];
 };
 
 function createLayout() {

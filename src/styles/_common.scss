@@ -1,214 +1,108 @@
-@import '_reset';
+@use "_reset";
 
 :root {
-    --theme-color: #db4d6f;
-    --theme-color2: #d8465d; // for management page
-    --theme-color3: #d43e4b; // for admin page
-    --dark-theme-color: rgb(83, 27, 35);
-    --lightDark-theme-color: rgb(168, 54, 71);
-    --background-color: #222;
-    --active-background-color: #3c3c3c;
-    --foreground-color: #ccc;
+  --theme-color: #db4d6f;
+  --dark-theme-color: rgb(83, 27, 35);
+  --lightDark-theme-color: rgb(168, 54, 71);
+  --background-color: #222;
+  --active-background-color: #3c3c3c;
+  --foreground-color: #ccc;
 
-    --odd-color: #282828;
-    --even-color: #353535;
+  --odd-color: #282828;
+  --even-color: #353535;
+
+  // color palette
+  --primary-900: #f38112;
+  --primary-800: #f6aa23;
+  --primary-700: #f8c22c; //
+  --primary-600: #fada35;
+  --primary-500: #f6e836;
+  --primary-400: #f9ed56;
+  --primary-300: #fbf176;
+  --primary-200: #fcf69d;
+  --primary-100: #fefac4;
+
+  --secondary-900: #b73d19;
+  --secondary-800: #d14820;
+  --secondary-700: #df4f23;
+  --secondary-600: #ed5628;
+  --secondary-500: #f85c2c; //
+  --secondary-400: #f9734a;
+  --secondary-300: #f98c6a;
+  --secondary-200: #faac94;
+  --secondary-100: #fcccbe;
+
+  --tertiary-900: #888e00;
+  --tertiary-800: #9fb500;
+  --tertiary-700: #aecd14;
+  --tertiary-600: #bde523;
+  --tertiary-500: #c8f82c; //
+  --tertiary-400: #cef851;
+  --tertiary-300: #d8fb74;
+  --tertiary-200: #e3fc9e;
+  --tertiary-100: #effdc5;
+
+  --gray-100: #f1f1f2;
+  --gray-200: #e6e7e9;
+  --gray-300: #d2d4d7;
+  --gray-400: #a9adb2;
+  --gray-500: #797f88;
+  --gray-600: #4d5560;
+  --gray-700: #2e3744;
+  --gray-800: #19202b;
+  --gray-900: #141a23;
 }
 
 html {
-    font-size: clamp(4px, 1vw, 12.8px);
-    // font-size: clamp(6.4px, 1vw, 12.8px);
-    // width: clamp(640px, 100vw, 1280px);
+  font-size: 16px;
 }
-html,
 body {
-    margin: 0;
-    border: 0;
-    padding: 0;
-    background-color: gray;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/images/liberworks.svg'), url('/images/wave.svg'), linear-gradient(gray, rgb(80, 80, 80));
-    background-repeat: no-repeat, repeat, repeat;
-    background-position: right 2rem top 2rem, center, center;
-    overflow: hidden;
+  background-color: gray;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/images/app.svg"), url("/images/wave.svg"),
+    linear-gradient(gray, rgb(80, 80, 80));
+  background-repeat: no-repeat, repeat, repeat;
+  background-position: right 2rem top 2rem, center, center;
+  overflow: hidden;
 
-    &.darkMode {
-        background-image: url('/images/liberworks.svg'), url('/images/waveDark.svg'), linear-gradient(#1e1e1e, #424242);
-    }
+  &.darkMode {
+    background-image: url("/images/app.svg"), url("/images/waveDark.svg"),
+      linear-gradient(#1e1e1e, #424242);
+  }
 }
 
-.appIcon {
-    // todo for-ttw
-    -webkit-app-region: drag;
+#app {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
 }
 
-.header {
-    margin: auto;
-    width: 100rem;
-    height: 6rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background: #222;
-    padding: 0 2rem;
-
-    > div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .middleArea {
-        height: 6rem;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-    .buttons {
-        height: inherit;
-    }
-
-    .leftButtons,
-    .middleButtons,
-    .rightButtons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        width: 30%;
-    }
-
-    .appIcon {
-        display: inline-block;
-        width: 4rem;
-        height: 4rem;
-        background-image: url('/images/appIcon1.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-
-        border-radius: 50%;
-        &::after {
-            transform: scaleX(1.5) scaleY(1.5);
-
-            border-color: var(--theme-color);
-        }
-    }
-
-    .exitButton {
-        width: 4rem;
-        height: 4rem;
-        background-image: url('/images/exit.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-color: var(--active-background-color);
-    }
+// 要検討
+.hidden {
+  display: none !important;
+}
+.clickable {
+  cursor: pointer;
+}
+.clickable:active:not([disabled]) {
+  transform: scale(0.95);
 }
 
-.management .appIcon {
-    background-image: url('/images/appIcon2.svg');
-}
-.admin .appIcon {
-    background-image: url('/images/appIcon3.svg');
-}
-
-.main {
-    width: 100rem;
-    height: calc(100vh - 6rem);
-    margin: auto;
-    // background-color: #222;
-    text-align: center;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-        width: 0px;
-        height: 8px;
-    }
-
-    &.full {
-        height: 100vh;
-    }
-
-    background: linear-gradient(#222222ee, #22222244), url('/images/noise.svg');
-    background-repeat: repeat, no-repeat;
-    background-size: cover;
-}
-
-// .comboBox {
-//     position: relative;
-//     // border-bottom: 2px solid var(--foreground-color);
-
-//     &::before {
-//         position: absolute;
-//         content: '▼';
-//         color: var(--foreground-color);
-//         right: 10px;
-//         // line-height: var(--twSelectHeight);
-//         line-height: inherit;
-//     }
-
-//     &.active::before {
-//         transform: rotateX(180deg);
-//     }
+// /* デフォルトスタイル */
+// input[type='text'],
+// input[type='password'],
+// input[type='email'] {
+//     outline: none;
+//     background-color: #fff3;
+//     // background-color: #fff5;
+//     border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
 // }
 
-.comboBox {
-    display: inline-block;
-    position: relative;
-    width: 200px;
-    height: var(--twSelectHeight);
-    line-height: var(--twSelectHeight);
-
-    font-size: var(--twSelectFontSize);
-    background-color: transparent;
-    cursor: pointer;
-
-    &::before {
-        position: absolute;
-        content: '▼';
-        color: var(--foreground-color);
-        right: 10px;
-        // line-height: var(--twSelectHeight);
-        line-height: inherit;
-    }
-
-    &.active::before {
-        transform: rotateX(180deg);
-    }
-
-    .comboBoxSelect {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        line-height: inherit;
-        outline: none;
-        padding: 0.1rem 0.5rem;
-        color: var(--foreground-color);
-        background-color: var(--twSelectBackground);
-        text-align: left;
-        user-select: none;
-
-        &:focus {
-            background-color: var(--active-background-color);
-            border-bottom-color: var(--theme-color);
-        }
-        &:read-only {
-            cursor: pointer;
-        }
-        &::placeholder {
-            color: dimgray;
-        }
-    }
-}
-
-date-picker {
-    --theme: var(--theme-color);
-    --foreground: var(--foreground-color);
-    --background: var(--active-background-color);
-    --foreground-outOfMonth: #808080;
-    --background-outOfMonth: #222;
-    --border-color: var(--background-color);
-}
+// input[type='text']:focus,
+// input[type='password']:focus,
+// input[type='email']:focus {
+//     background-color: #fff6;
+//     // background-color: #eee;
+//     border-bottom: 0.3rem solid rgba(200, 0, 0, 0.3);
+// }
