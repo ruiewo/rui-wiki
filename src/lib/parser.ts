@@ -10,6 +10,32 @@ renderer.link = (href, title, text) => {
   );
 };
 
+const codeRenderer = renderer.code;
+renderer.code = (code, info, escaped) => {
+  if (info === "kv") {
+    const lines = code.split("\n");
+
+    // 奇数行目をキー、偶数行目を値として解釈
+    let result = "";
+    for (let i = 0; i < lines.length; i += 2) {
+      const key = lines[i];
+      const value = lines[i + 1];
+      result += `<span class="key">${key}</span><span class="value">${
+        value ?? ""
+      }</span><br/>`;
+    }
+
+    return result;
+  }
+
+  return codeRenderer.call(renderer, code, info, escaped);
+};
+
+marked.use({
+  breaks: false,
+  gfm: true,
+});
+
 export async function parse(text: string) {
   return await marked(text, { renderer });
 }

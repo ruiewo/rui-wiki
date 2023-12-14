@@ -73,6 +73,16 @@ async function createViewer(section: HTMLElement, article: Article) {
   clearChildren(section);
 
   section.appendChild(viewer);
+
+  section.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("value")) return;
+
+    const value = target.textContent;
+    if (!value) return;
+
+    navigator.clipboard.writeText(value);
+  });
 }
 
 async function createEditor(section: HTMLElement, article: Article) {

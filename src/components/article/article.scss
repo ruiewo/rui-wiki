@@ -56,6 +56,26 @@
   .content {
     min-height: 5rem;
   }
+
+  .key {
+    display: inline-block;
+    min-width: 5rem;
+
+    &:after {
+      content: ":";
+      margin-left: 0.5rem;
+    }
+  }
+
+  .value {
+    display: inline-block;
+    min-width: 10rem;
+    cursor: copy;
+
+    &:hover {
+      background-color: var(--gray-300);
+    }
+  }
 }
 
 @keyframes fadeOut {

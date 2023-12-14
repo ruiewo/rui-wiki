@@ -62,7 +62,23 @@ const defaultContents: Contents = {
     },
     {
       title: "article3",
-      content: "content",
+      content: `content
+
+\`\`\`kv
+key
+value
+key2
+value2
+key3
+\`\`\`
+
+\`\`\`kv2
+key
+value
+key2
+value2
+\`\`\`
+`,
       tag: "area2",
       createdAt: "2020-03-03",
     },
