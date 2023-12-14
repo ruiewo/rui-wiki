@@ -1,10 +1,16 @@
 import { showLoginDialog } from "./components/dialog/dialog";
+import { contentsHandler } from "./lib/contentsHandler";
 import { CryptoService } from "./lib/crypto";
+import { settingHandler } from "./lib/setting";
+import { dataHandler } from "./lib/store";
+import { getFaviconSvg } from "./lib/svg";
 import { Contents, MainPage } from "./pages/main";
 import "./styles/_common.scss";
 
 async function initialize() {
-  const data = load();
+  setFavicon();
+
+  const data = dataHandler.data;
   CryptoService.initialize(data.salt, data.iv);
   let contents = data.contents;
   if (data.salt && data.iv && data.fragment) {
@@ -12,22 +18,31 @@ async function initialize() {
     contents = await CryptoService.decrypt(contents);
   }
 
-  MainPage.load(contents ? JSON.parse(contents) : defaultSetting);
+  MainPage.load(contents ? JSON.parse(contents) : defaultContents);
 }
 
-type Data = {
-  salt?: string;
-  iv?: string;
-  fragment?: string;
-  contents: string;
-};
+function setFavicon() {
+  const str = getFaviconSvg("app");
+  const dataUrl = "data:image/svg+xml;base64," + btoa(str);
 
-function load() {
-  const dataStr = document.getElementById("data")!.textContent!;
-  return JSON.parse(dataStr) as Data;
+  document.querySelector('link[rel="icon"]')?.setAttribute("href", dataUrl);
+  document
+    .querySelector('link[rel="apple-touch-icon"]')
+    ?.setAttribute("href", dataUrl);
 }
 
-const defaultSetting: Contents = {
+export async function exportData() {
+  const data = dataHandler.data;
+  data.contents = await CryptoService.encrypt(
+    JSON.stringify({
+      setting: settingHandler.setting,
+      articles: contentsHandler.articles,
+    } satisfies Contents)
+  );
+  return JSON.stringify(data);
+}
+
+const defaultContents: Contents = {
   setting: {
     title: "RuiWiki",
     subTitle: "Your Personal Knowledge Base",

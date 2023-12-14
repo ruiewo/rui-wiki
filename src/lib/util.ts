@@ -3,3 +3,9 @@ export function assertExist<T>(params: T): asserts params is NonNullable<T> {
     throw new Error("Assertion failed. params is null or undefined");
   }
 }
+
+export function clearChildren(element: HTMLElement) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}

@@ -1,4 +1,7 @@
-import { contentsHandler } from "../../lib/contentsHandler";
+import { contentsEvent, contentsHandler } from "../../lib/contentsHandler";
+import { getSvg } from "../../lib/svg";
+import { clearChildren } from "../../lib/util";
+import { exportData } from "../../main";
 import { Article } from "../article/article";
 import "./sideMenu.scss";
 
@@ -14,6 +17,23 @@ export function createSideMenu(setting: any, articles: Article[]) {
 
   const searchBox = createSearchBox(articles);
   sideMenu.appendChild(searchBox);
+
+  contentsHandler.eventHandler.addEventListener(contentsEvent.delete, (e) => {
+    const title = e.detail;
+
+    const item = sideMenu.querySelector<HTMLElement>(
+      `.item[data-title="${title}"]`
+    );
+
+    if (!item) return;
+
+    const itemListWrapper = item.closest<HTMLElement>(".itemListWrapper");
+    item.remove();
+
+    if (!itemListWrapper?.querySelector(".item")) {
+      itemListWrapper?.remove();
+    }
+  });
 
   return sideMenu;
 }
@@ -41,18 +61,51 @@ function createControls() {
 
   (
     [
-      ["editSvg", () => {}],
-      ["addSvg", () => {}],
-      ["closeSvg", () => {}],
-      ["deleteSvg", () => {}],
-      ["downloadSvg", () => {}],
-      ["saveSvg", () => {}],
-      ["save2Svg", () => {}],
-      ["settingSvg", () => {}],
+      ["edit", () => {}],
+      ["add", () => {}],
+      ["close", () => {}],
+      ["delete", () => {}],
+      [
+        "download",
+        async () => {
+          const html = document.querySelector<HTMLElement>("html")!;
+          const myHtml = html.cloneNode(true) as HTMLElement;
+          const body = myHtml.querySelector<HTMLElement>("body")!;
+
+          for (const node of body.childNodes) {
+            if (!(node instanceof HTMLElement)) {
+              node.remove();
+              continue;
+            }
+
+            if (node.id === "app") {
+              clearChildren(node);
+              continue;
+            }
+
+            if (node.id === "data") {
+              node.textContent = await exportData();
+              continue;
+            }
+
+            node.remove();
+          }
+
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(
+            new Blob([myHtml.outerHTML], { type: "text/html" })
+          );
+          a.download = "index.html";
+          a.click();
+        },
+      ],
+      ["save", () => {}],
+      ["save2", () => {}],
+      ["setting", () => {}],
     ] as const
   ).forEach(([svg, onClick]) => {
     const button = document.createElement("button");
-    button.innerHTML = `<svg><use href="#${svg}" fill="#4B4B4B"></svg>`;
+    button.innerHTML = getSvg(svg);
     button.onclick = onClick;
 
     controls.appendChild(button);

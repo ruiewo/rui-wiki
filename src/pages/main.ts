@@ -1,17 +1,18 @@
 import { Article } from "../components/article/article";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
 import { contentsHandler } from "../lib/contentsHandler";
+import { Setting, settingHandler } from "../lib/setting";
 import { createSvgSymbols } from "../lib/svg";
 
 import "./main.scss";
 
 export const MainPage = {
   load: (contents: Contents) => {
-    const app = document.getElementById("app")!;
-
+    settingHandler.initialize(contents.setting);
     contentsHandler.initialize(contents.articles);
-
     createSvgSymbols();
+
+    const app = document.getElementById("app")!;
 
     const layout = createLayout();
 
@@ -26,10 +27,7 @@ export const MainPage = {
 };
 
 export type Contents = {
-  setting: {
-    title: string;
-    subTitle: string;
-  };
+  setting: Setting;
   articles: Article[];
 };
 

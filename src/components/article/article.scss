@@ -7,51 +7,55 @@
     pointer-events: none;
     animation-name: shrink;
 
-    .articleWrapper {
+    .viewer,
+    .editor {
       animation-name: fadeOut;
     }
   }
 }
 
-.articleWrapper {
+.viewer {
   padding: 1rem 2rem;
   background-color: var(--gray-200);
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
 
   animation-duration: 0.5s;
   animation-fill-mode: forwards;
-}
 
-.articleHeader {
-}
-.articleTitle {
-  font-size: 2rem;
-  color: var(--gray-800);
-}
-.articleCreatedAt {
-  font-size: 0.8rem;
-  color: var(--gray-700);
-}
+  .header {
+    //
+  }
 
-.articleControls {
-  float: right;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  .title {
+    font-size: 2rem;
+    color: var(--gray-800);
+  }
 
-  button {
-    height: 2rem;
-    width: 2rem;
+  .createdAt {
+    font-size: 0.8rem;
+    color: var(--gray-700);
+  }
 
-    svg {
-      width: inherit;
-      height: inherit;
+  .controls {
+    float: right;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    button {
+      height: 2rem;
+      width: 2rem;
+
+      svg {
+        width: inherit;
+        height: inherit;
+      }
     }
   }
-}
 
-.articleContent {
-  min-height: 5rem;
+  .content {
+    min-height: 5rem;
+  }
 }
 
 @keyframes fadeOut {
@@ -77,5 +81,50 @@
   to {
     height: 0;
     margin: 0;
+  }
+}
+
+.editor {
+  padding: 1rem 2rem;
+  background-color: var(--gray-200);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+
+  .header {
+    //
+  }
+
+  .editorTitle {
+  }
+
+  .title {
+    font-size: 2rem;
+    color: var(--gray-800);
+    width: 100%;
+  }
+
+  .controls {
+    float: right;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    button {
+      height: 2rem;
+      width: 2rem;
+
+      svg {
+        width: inherit;
+        height: inherit;
+      }
+    }
+  }
+
+  .content {
+    min-height: 5rem;
+    width: 100%;
+    height: 100%;
   }
 }

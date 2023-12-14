@@ -60,15 +60,14 @@ body {
   background-color: gray;
   width: 100vw;
   height: 100vh;
-  background-image: url("/images/app.svg"), url("/images/wave.svg"),
+  background-image: url("/images/app.svg"),
     linear-gradient(gray, rgb(80, 80, 80));
-  background-repeat: no-repeat, repeat, repeat;
-  background-position: right 2rem top 2rem, center, center;
+  background-repeat: no-repeat, repeat;
+  background-position: right 2rem bottom 2rem, center, center;
   overflow: hidden;
 
   &.darkMode {
-    background-image: url("/images/app.svg"), url("/images/waveDark.svg"),
-      linear-gradient(#1e1e1e, #424242);
+    background-image: url("/images/app.svg"), linear-gradient(#1e1e1e, #424242);
   }
 }
 
