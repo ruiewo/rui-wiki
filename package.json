@@ -13,5 +13,8 @@
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "vite-plugin-singlefile": "^0.13.5"
+  },
+  "dependencies": {
+    "marked": "^11.1.0"
   }
 }

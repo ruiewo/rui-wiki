@@ -30,7 +30,7 @@ function load() {
 const defaultSetting: Contents = {
   setting: {
     title: "RuiWiki",
-    subTitle: "subTitle",
+    subTitle: "Your Personal Knowledge Base",
   },
   articles: [
     {
@@ -41,12 +41,30 @@ const defaultSetting: Contents = {
     },
     {
       title: "article2",
-      content: "content",
+      content: "# header1\n## header2\n### header3\n content",
       tag: "area1",
       createdAt: "2022-02-02",
     },
     {
       title: "article3",
+      content: "content",
+      tag: "area2",
+      createdAt: "2020-03-03",
+    },
+    {
+      title: "article4",
+      content: "content",
+      tag: "area2",
+      createdAt: "2020-03-03",
+    },
+    {
+      title: "article5",
+      content: "content",
+      tag: "area2",
+      createdAt: "2020-03-03",
+    },
+    {
+      title: "article6",
       content: "content",
       tag: "area2",
       createdAt: "2020-03-03",

@@ -1,6 +1,9 @@
 .sideMenu {
   width: 15rem;
   height: 100vh;
+  overflow-x: visible;
+  overflow-y: auto;
+  padding-top: 3rem;
 }
 
 .controls {
@@ -8,6 +11,7 @@
   flex-direction: row;
   gap: 1rem;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 1rem;
   button {
     height: 2rem;
@@ -24,5 +28,27 @@
   font-size: 2rem;
 }
 .subTitle {
+  font-size: 0.8rem;
   color: var(--gray-700);
+}
+
+.sideMenu {
+  .itemListWrapper {
+  }
+  .itemListHeader {
+    color: var(--gray-700);
+  }
+  .itemList {
+  }
+  .item {
+    display: block;
+    color: var(--gray-600);
+    padding-left: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--gray-800);
+      text-decoration: underline;
+    }
+  }
 }

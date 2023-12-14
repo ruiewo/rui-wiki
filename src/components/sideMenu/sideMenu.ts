@@ -1,3 +1,4 @@
+import { contentsHandler } from "../../lib/contentsHandler";
 import { Article } from "../article/article";
 import "./sideMenu.scss";
 
@@ -10,6 +11,9 @@ export function createSideMenu(setting: any, articles: Article[]) {
 
   const controls = createControls();
   sideMenu.appendChild(controls);
+
+  const searchBox = createSearchBox(articles);
+  sideMenu.appendChild(searchBox);
 
   return sideMenu;
 }
@@ -47,16 +51,74 @@ function createControls() {
       ["settingSvg", () => {}],
     ] as const
   ).forEach(([svg, onClick]) => {
-    const button = createIconButton(svg, onClick);
+    const button = document.createElement("button");
+    button.innerHTML = `<svg><use href="#${svg}" fill="#4B4B4B"></svg>`;
+    button.onclick = onClick;
+
     controls.appendChild(button);
   });
 
   return controls;
 }
 
-function createIconButton(svg: string, onClick: () => void) {
-  const button = document.createElement("button");
-  button.innerHTML = `<svg><use href="#${svg}" fill="#4B4B4B"></svg>`;
-  button.onclick = onClick;
-  return button;
+function createSearchBox(articles: Article[]) {
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("wrapper");
+
+  const searchBox = document.createElement("div");
+  searchBox.classList.add("searchBox");
+
+  const input = document.createElement("input");
+  input.placeholder = "Search";
+  searchBox.appendChild(input);
+
+  const tabs = document.createElement("details");
+  tabs.classList.add("tabs");
+
+  const list = document.createElement("div");
+  list.classList.add("list");
+  list.onclick = async (e) => {
+    const item = (e.target as HTMLElement).closest<HTMLElement>(".item");
+    if (!item) return;
+
+    await contentsHandler.showArticle(item.dataset.title!);
+  };
+
+  const map = new Map<string, Article[]>();
+  articles.forEach((article) => {
+    const month = article.createdAt.slice(0, -3);
+    const articles = map.get(month) || [];
+    articles.push(article);
+    map.set(month, articles);
+  });
+
+  map.forEach((articles, month) => {
+    const itemListWrapper = document.createElement("div");
+    itemListWrapper.classList.add("itemListWrapper");
+
+    const itemListHeader = document.createElement("div");
+    itemListHeader.classList.add("itemListHeader");
+    itemListHeader.textContent = month;
+
+    const itemList = document.createElement("div");
+    itemList.classList.add("itemList");
+
+    articles.forEach((article) => {
+      const item = document.createElement("a");
+      item.classList.add("item");
+      item.textContent = article.title;
+      item.dataset.title = article.title;
+      itemList.appendChild(item);
+    });
+
+    itemListWrapper.appendChild(itemListHeader);
+    itemListWrapper.appendChild(itemList);
+    list.appendChild(itemListWrapper);
+  });
+
+  wrapper.appendChild(searchBox);
+  wrapper.appendChild(tabs);
+  wrapper.appendChild(list);
+
+  return wrapper;
 }

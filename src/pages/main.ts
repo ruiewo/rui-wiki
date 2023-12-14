@@ -1,5 +1,6 @@
 import { Article } from "../components/article/article";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
+import { contentsHandler } from "../lib/contentsHandler";
 import { createSvgSymbols } from "../lib/svg";
 
 import "./main.scss";
@@ -8,13 +9,14 @@ export const MainPage = {
   load: (contents: Contents) => {
     const app = document.getElementById("app")!;
 
+    contentsHandler.initialize(contents.articles);
+
     createSvgSymbols();
 
     const layout = createLayout();
 
     const main = createMain();
     layout.appendChild(main);
-    main.textContent = "aaaa";
 
     const sidebar = createSideMenu(contents.setting, contents.articles);
     layout.appendChild(sidebar);
