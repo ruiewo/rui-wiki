@@ -1,8 +1,8 @@
-import { marked } from "marked";
 import "./article.scss";
 import "../../styles/github.scss";
 import { contentsHandler } from "../../lib/contentsHandler";
 import { clearChildren } from "../../lib/util";
+import { parse } from "../../lib/parser";
 
 export type Article = {
   title: string;
@@ -61,7 +61,7 @@ async function createViewer(section: HTMLElement, article: Article) {
   content.classList.add("content");
   content.classList.add("markdown-body");
   content.dataset.theme = "light";
-  content.innerHTML = await marked(article.content);
+  content.innerHTML = await parse(article.content);
 
   header.appendChild(controls);
   header.appendChild(title);

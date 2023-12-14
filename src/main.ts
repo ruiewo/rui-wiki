@@ -50,7 +50,7 @@ const defaultContents: Contents = {
   articles: [
     {
       title: "article1",
-      content: "content",
+      content: "content https://tiddlywiki.com/static/Releases.html",
       tag: "area1",
       createdAt: "2020-01-01",
     },
