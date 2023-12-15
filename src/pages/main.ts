@@ -1,15 +1,15 @@
 import { Article } from "../components/article/article";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
-import { contentsHandler } from "../lib/contentsHandler";
+import { articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
 import { createSvgSymbols } from "../lib/svg";
 
 import "./main.scss";
 
 export const MainPage = {
-  load: (contents: Contents) => {
-    settingHandler.initialize(contents.setting);
-    contentsHandler.initialize(contents.articles);
+  load: (appData: AppData) => {
+    settingHandler.initialize(appData.setting);
+    articleHandler.initialize(appData.articles);
     createSvgSymbols();
 
     const app = document.getElementById("app")!;
@@ -19,14 +19,14 @@ export const MainPage = {
     const main = createMain();
     layout.appendChild(main);
 
-    const sidebar = createSideMenu(contents.setting, contents.articles);
+    const sidebar = createSideMenu(appData.setting, appData.articles);
     layout.appendChild(sidebar);
 
     app.appendChild(layout);
   },
 };
 
-export type Contents = {
+export type AppData = {
   setting: Setting;
   articles: Article[];
 };

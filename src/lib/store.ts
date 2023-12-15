@@ -7,7 +7,7 @@ class DataHandler {
   }
 
   getData() {
-    return this._data.contents;
+    return this._data.appData;
   }
 
   get data() {
@@ -19,7 +19,7 @@ type Data = {
   salt?: string;
   iv?: string;
   fragment?: string;
-  contents: string;
+  appData: string;
 };
 
 export const dataHandler = new DataHandler();

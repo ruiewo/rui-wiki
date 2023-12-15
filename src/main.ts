@@ -1,10 +1,10 @@
 import { showLoginDialog } from "./components/dialog/dialog";
-import { contentsHandler } from "./lib/contentsHandler";
+import { articleHandler } from "./lib/articleHandler";
 import { CryptoService } from "./lib/crypto";
 import { settingHandler } from "./lib/setting";
 import { dataHandler } from "./lib/store";
 import { getFaviconSvg } from "./lib/svg";
-import { Contents, MainPage } from "./pages/main";
+import { AppData, MainPage } from "./pages/main";
 import "./styles/_common.scss";
 
 async function initialize() {
@@ -12,13 +12,13 @@ async function initialize() {
 
   const data = dataHandler.data;
   CryptoService.initialize(data.salt, data.iv);
-  let contents = data.contents;
+  let appData = data.appData;
   if (data.salt && data.iv && data.fragment) {
     await showLoginDialog(data.fragment);
-    contents = await CryptoService.decrypt(contents);
+    appData = await CryptoService.decrypt(appData);
   }
 
-  MainPage.load(contents ? JSON.parse(contents) : defaultContents);
+  MainPage.load(appData ? JSON.parse(appData) : defaultAppData);
 }
 
 function setFavicon() {
@@ -33,16 +33,16 @@ function setFavicon() {
 
 export async function exportData() {
   const data = dataHandler.data;
-  data.contents = await CryptoService.encrypt(
+  data.appData = await CryptoService.encrypt(
     JSON.stringify({
       setting: settingHandler.setting,
-      articles: contentsHandler.articles,
-    } satisfies Contents)
+      articles: articleHandler.articles,
+    } satisfies AppData)
   );
   return JSON.stringify(data);
 }
 
-const defaultContents: Contents = {
+const defaultAppData: AppData = {
   setting: {
     title: "RuiWiki",
     subTitle: "Your Personal Knowledge Base",
@@ -51,14 +51,16 @@ const defaultContents: Contents = {
     {
       title: "article1",
       content: "content https://tiddlywiki.com/static/Releases.html",
-      tag: "area1",
-      createdAt: "2020-01-01",
+      tags: "area1",
+      created: "2020-01-01",
+      modified: "2020-01-01",
     },
     {
       title: "article2",
       content: "# header1\n## header2\n### header3\n content",
-      tag: "area1",
-      createdAt: "2022-02-02",
+      tags: "area1",
+      created: "2022-02-02",
+      modified: "2022-02-02",
     },
     {
       title: "article3",
@@ -79,26 +81,30 @@ key2
 value2
 \`\`\`
 `,
-      tag: "area2",
-      createdAt: "2020-03-03",
+      tags: "area2",
+      created: "2020-03-03",
+      modified: "2020-03-03",
     },
     {
       title: "article4",
       content: "content",
-      tag: "area2",
-      createdAt: "2020-03-03",
+      tags: "area2",
+      created: "2020-03-03",
+      modified: "2020-03-03",
     },
     {
       title: "article5",
       content: "content",
-      tag: "area2",
-      createdAt: "2020-03-03",
+      tags: "area2",
+      created: "2020-03-03",
+      modified: "2020-03-03",
     },
     {
       title: "article6",
       content: "content",
-      tag: "area2",
-      createdAt: "2020-03-03",
+      tags: "area2",
+      created: "2020-03-03",
+      modified: "2020-03-03",
     },
   ],
 };

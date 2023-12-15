@@ -2,14 +2,14 @@ import { Article, createArticle } from "../components/article/article";
 
 declare global {
   interface HTMLElementEventMap {
-    contentsDelete: CustomEvent<string>;
+    articleDelete: CustomEvent<string>;
   }
 }
 
 let articles: Article[];
 let eventHandler = document.createElement("div");
 
-export const contentsHandler = {
+export const articleHandler = {
   initialize,
   showArticle,
   deleteArticle,
@@ -20,10 +20,10 @@ export const contentsHandler = {
   eventHandler,
 };
 
-export const contentsEvent = {
-  add: "contentsAdd",
-  delete: "contentsDelete",
-  update: "contentsUpdate",
+export const articleEvent = {
+  add: "articleAdd",
+  delete: "articleDelete",
+  update: "articleUpdate",
 } as const;
 
 function initialize(_articles: Article[]) {
@@ -50,7 +50,7 @@ async function showArticle(title: string) {
 function deleteArticle(title: string) {
   articles = articles.filter((article) => article.title !== title);
   eventHandler.dispatchEvent(
-    new CustomEvent(contentsEvent.delete, { detail: title })
+    new CustomEvent(articleEvent.delete, { detail: title })
   );
 }
 
@@ -65,12 +65,12 @@ function updateArticle(title: string, article: Article) {
   if (!target) {
     articles.push(article);
     eventHandler.dispatchEvent(
-      new CustomEvent(contentsEvent.add, { detail: article.title })
+      new CustomEvent(articleEvent.add, { detail: article.title })
     );
   } else {
     Object.assign(target, article);
     eventHandler.dispatchEvent(
-      new CustomEvent(contentsEvent.update, { detail: article.title })
+      new CustomEvent(articleEvent.update, { detail: article.title })
     );
   }
 }

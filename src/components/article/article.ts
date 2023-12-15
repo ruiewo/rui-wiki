@@ -1,14 +1,16 @@
 import "./article.scss";
 import "../../styles/github.scss";
-import { contentsHandler } from "../../lib/contentsHandler";
+import { articleHandler } from "../../lib/articleHandler";
 import { clearChildren } from "../../lib/util";
 import { parse } from "../../lib/parser";
+import { getSvg } from "../../lib/svg";
 
 export type Article = {
   title: string;
   content: string;
-  tag?: string;
-  createdAt: string;
+  tags?: string;
+  created: string;
+  modified: string;
 };
 
 export const createArticle = async (article: Article) => {
@@ -32,9 +34,9 @@ async function createViewer(section: HTMLElement, article: Article) {
   title.classList.add("title");
   title.textContent = article.title;
 
-  const createdAt = document.createElement("div");
-  createdAt.classList.add("createdAt");
-  createdAt.textContent = article.createdAt;
+  const modified = document.createElement("div");
+  modified.classList.add("modified");
+  modified.textContent = article.modified;
 
   const controls = document.createElement("div");
   controls.classList.add("controls");
@@ -42,16 +44,16 @@ async function createViewer(section: HTMLElement, article: Article) {
   (
     [
       [
-        "editSvg",
+        "edit",
         () => {
           createEditor(section, article);
         },
       ],
-      ["closeSvg", removeSection],
+      ["close", removeSection],
     ] as const
   ).forEach(([svg, onClick]) => {
     const button = document.createElement("button");
-    button.innerHTML = `<svg><use href="#${svg}" fill="#4B4B4B"></svg>`;
+    button.innerHTML = getSvg(svg);
     button.onclick = onClick;
 
     controls.appendChild(button);
@@ -65,7 +67,7 @@ async function createViewer(section: HTMLElement, article: Article) {
 
   header.appendChild(controls);
   header.appendChild(title);
-  header.appendChild(createdAt);
+  header.appendChild(modified);
 
   viewer.appendChild(header);
   viewer.appendChild(content);
@@ -102,20 +104,20 @@ async function createEditor(section: HTMLElement, article: Article) {
   (
     [
       [
-        "deleteSvg",
+        "delete",
         (e: MouseEvent) => {
-          contentsHandler.deleteArticle(article.title);
+          articleHandler.deleteArticle(article.title);
           removeSection(e);
         },
       ],
       [
-        "closeSvg",
+        "close",
         () => {
           createViewer(section, article);
         },
       ],
       [
-        "saveSvg",
+        "save",
         () => {
           const newTitle = title.value.trim();
           const newContent = content.value.trim();
@@ -124,17 +126,17 @@ async function createEditor(section: HTMLElement, article: Article) {
             ...article,
             title: newTitle,
             content: newContent,
-            createdAt: getDateString(),
+            modified: getDateString(),
           };
 
-          contentsHandler.updateArticle(article.title, newArticle);
+          articleHandler.updateArticle(article.title, newArticle);
           createViewer(section, newArticle);
         },
       ],
     ] as const
   ).forEach(([svg, onClick]) => {
     const button = document.createElement("button");
-    button.innerHTML = `<svg><use href="#${svg}" fill="#4B4B4B"></svg>`;
+    button.innerHTML = getSvg(svg);
     button.onclick = onClick;
 
     controls.appendChild(button);

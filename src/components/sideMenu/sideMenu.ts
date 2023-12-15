@@ -1,7 +1,6 @@
-import { contentsEvent, contentsHandler } from "../../lib/contentsHandler";
+import { appService } from "../../lib/appService";
+import { articleEvent, articleHandler } from "../../lib/articleHandler";
 import { getSvg } from "../../lib/svg";
-import { clearChildren } from "../../lib/util";
-import { exportData } from "../../main";
 import { Article } from "../article/article";
 import "./sideMenu.scss";
 
@@ -18,7 +17,7 @@ export function createSideMenu(setting: any, articles: Article[]) {
   const searchBox = createSearchBox(articles);
   sideMenu.appendChild(searchBox);
 
-  contentsHandler.eventHandler.addEventListener(contentsEvent.delete, (e) => {
+  articleHandler.eventHandler.addEventListener(articleEvent.delete, (e) => {
     const title = e.detail;
 
     const item = sideMenu.querySelector<HTMLElement>(
@@ -65,40 +64,7 @@ function createControls() {
       ["add", () => {}],
       ["close", () => {}],
       ["delete", () => {}],
-      [
-        "download",
-        async () => {
-          const html = document.querySelector<HTMLElement>("html")!;
-          const myHtml = html.cloneNode(true) as HTMLElement;
-          const body = myHtml.querySelector<HTMLElement>("body")!;
-
-          for (const node of body.childNodes) {
-            if (!(node instanceof HTMLElement)) {
-              node.remove();
-              continue;
-            }
-
-            if (node.id === "app") {
-              clearChildren(node);
-              continue;
-            }
-
-            if (node.id === "data") {
-              node.textContent = await exportData();
-              continue;
-            }
-
-            node.remove();
-          }
-
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(
-            new Blob([myHtml.outerHTML], { type: "text/html" })
-          );
-          a.download = "index.html";
-          a.click();
-        },
-      ],
+      ["download", appService.download],
       ["save", () => {}],
       ["save2", () => {}],
       ["setting", () => {}],
@@ -134,12 +100,12 @@ function createSearchBox(articles: Article[]) {
     const item = (e.target as HTMLElement).closest<HTMLElement>(".item");
     if (!item) return;
 
-    await contentsHandler.showArticle(item.dataset.title!);
+    await articleHandler.showArticle(item.dataset.title!);
   };
 
   const map = new Map<string, Article[]>();
   articles.forEach((article) => {
-    const month = article.createdAt.slice(0, -3);
+    const month = article.created.slice(0, -3);
     const articles = map.get(month) || [];
     articles.push(article);
     map.set(month, articles);
