@@ -42,15 +42,26 @@
   --tertiary-200: #e3fc9e;
   --tertiary-100: #effdc5;
 
-  --gray-100: #f1f1f2;
-  --gray-200: #e6e7e9;
-  --gray-300: #d2d4d7;
-  --gray-400: #a9adb2;
-  --gray-500: #797f88;
-  --gray-600: #4d5560;
-  --gray-700: #2e3744;
-  --gray-800: #19202b;
-  --gray-900: #141a23;
+  // --gray-100: #f1f1f2;
+  // --gray-200: #e6e7e9;
+  // --gray-300: #d2d4d7;
+  // --gray-400: #a9adb2;
+  // --gray-500: #797f88;
+  // --gray-600: #4d5560;
+  // --gray-700: #2e3744;
+  // --gray-800: #19202b;
+  // --gray-900: #141a23;
+
+  --gray-50: #f7f7f7;
+  --gray-100: #ebedee;
+  --gray-200: #e7e7e7;
+  --gray-300: #d5d5d5;
+  --gray-400: #9696a2;
+  --gray-500: #81808d;
+  --gray-600: #4d4c54;
+  --gray-700: #313135;
+  --gray-800: #1b1a1f;
+  --gray-900: #131215;
 }
 
 html {
@@ -63,8 +74,13 @@ body {
   background-image: url("/images/app.svg"),
     linear-gradient(gray, rgb(80, 80, 80));
   background-repeat: no-repeat, repeat;
-  background-position: right 2rem bottom 2rem, center, center;
+  background-position: right 2rem bottom 2rem, center;
   overflow: hidden;
+
+  background-image: linear-gradient(gray, rgba(68, 68, 68, 0.8)),
+    url("/images/app.svg");
+  background-repeat: repeat, no-repeat;
+  background-position: center, right 2rem bottom 2rem;
 
   &.darkMode {
     background-image: url("/images/app.svg"), linear-gradient(#1e1e1e, #424242);

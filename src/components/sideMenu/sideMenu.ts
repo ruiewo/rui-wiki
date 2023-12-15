@@ -2,6 +2,7 @@ import { appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
 import { getSvg } from "../../lib/svg";
 import { Article } from "../article/article";
+import { flashMessage } from "../flashMessage";
 import { showArticle } from "../main";
 import "./sideMenu.scss";
 
@@ -80,7 +81,15 @@ function createControls() {
     [
       ["add", articleHandler.add],
       ["download", appService.download],
-      ["save2", () => {}],
+      [
+        "save2",
+        () => {
+          const types = ["error", "info", "success"] as const;
+          const type = types[Math.floor(Math.random() * types.length)];
+
+          flashMessage(type, "year!!!!!");
+        },
+      ],
       ["setting", () => {}],
     ] as const
   ).forEach(([svg, onClick]) => {

@@ -1,0 +1,43 @@
+#flashMessageContainer {
+  position: fixed;
+  top: 0;
+  //   width: 100%;
+  // 中央寄せで表示する
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+
+  .flash-message {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    color: white;
+    display: inline-block;
+    min-width: 20rem;
+    width: auto;
+    text-align: center;
+
+    font-size: 1.2em;
+    line-height: 3rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+    &.error {
+      background-color: var(--secondary-500);
+    }
+
+    &.success {
+      background: linear-gradient(to right, limegreen, green);
+    }
+
+    &.error {
+      background: linear-gradient(to right, crimson, darkred);
+    }
+
+    &.info {
+      background: linear-gradient(to right, dodgerblue, darkblue);
+    }
+  }
+}

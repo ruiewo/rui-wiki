@@ -3,7 +3,7 @@ import { getDateString } from "./util";
 
 declare global {
   interface HTMLElementEventMap {
-    articleAdd: CustomEvent<Article>;
+    articleAdd: CustomEvent<string>;
   }
 
   interface HTMLElementEventMap {
@@ -54,7 +54,7 @@ function add() {
 
   articles.push(article);
   eventHandler.dispatchEvent(
-    new CustomEvent(articleEvent.add, { detail: article })
+    new CustomEvent(articleEvent.add, { detail: article.title })
   );
 }
 

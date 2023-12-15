@@ -6,17 +6,15 @@ export function createMain() {
   main.classList.add("main");
 
   articleHandler.eventHandler.addEventListener(articleEvent.add, async (e) => {
-    const article = e.detail;
-    main.appendChild(await createArticle(article, true));
+    const title = e.detail;
+    await showArticle(title, true);
   });
 
   return main;
 }
 
-export async function showArticle(title: string) {
-  const article = articleHandler.articles.find(
-    (article) => article.title === title
-  );
+export async function showArticle(title: string, isEdit: boolean = false) {
+  const article = articleHandler.articles.find((x) => x.title === title);
   if (!article) return;
 
   const target = document.querySelector<HTMLElement>(
@@ -29,5 +27,5 @@ export async function showArticle(title: string) {
   }
 
   const main = document.querySelector(".main")!;
-  main.appendChild(await createArticle(article));
+  main.prepend(await createArticle(article, isEdit));
 }
