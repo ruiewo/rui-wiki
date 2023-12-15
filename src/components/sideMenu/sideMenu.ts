@@ -1,6 +1,6 @@
 import { appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
-import { getSvg } from "../../lib/svg";
+import { createIconButton } from "../../lib/util";
 import { Article } from "../article/article";
 import { flashMessage } from "../flashMessage";
 import { showArticle } from "../main";
@@ -37,7 +37,10 @@ export function createSideMenu(setting: any, articles: Article[]) {
   });
 
   articleHandler.eventHandler.addEventListener(articleEvent.add, (e) => {
-    const article = e.detail;
+    const title = e.detail;
+    const article = articleHandler.articles.find((x) => x.title === title);
+    if (!article) return;
+
     const month = article.modified.slice(0, -3);
 
     const wrapper = sideMenu.querySelector<HTMLElement>(
@@ -92,13 +95,9 @@ function createControls() {
       ],
       ["setting", () => {}],
     ] as const
-  ).forEach(([svg, onClick]) => {
-    const button = document.createElement("button");
-    button.innerHTML = getSvg(svg);
-    button.onclick = onClick;
-
-    controls.appendChild(button);
-  });
+  ).forEach(([svg, onClick]) =>
+    controls.appendChild(createIconButton(svg, onClick))
+  );
 
   return controls;
 }

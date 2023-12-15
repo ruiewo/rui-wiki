@@ -17,15 +17,14 @@ export async function showArticle(title: string, isEdit: boolean = false) {
   const article = articleHandler.articles.find((x) => x.title === title);
   if (!article) return;
 
-  const target = document.querySelector<HTMLElement>(
+  let target = document.querySelector<HTMLElement>(
     `.article[data-title="${article.title}"]`
   );
 
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" });
-    return;
+  if (!target) {
+    target = await createArticle(article, isEdit);
+    document.querySelector(".main")?.prepend(target);
   }
 
-  const main = document.querySelector(".main")!;
-  main.prepend(await createArticle(article, isEdit));
+  target.scrollIntoView({ behavior: "smooth" });
 }

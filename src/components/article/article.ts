@@ -1,9 +1,8 @@
 import "./article.scss";
 import "../../styles/github.scss";
 import { articleHandler } from "../../lib/articleHandler";
-import { clearChildren, getDateString } from "../../lib/util";
+import { clearChildren, createIconButton, getDateString } from "../../lib/util";
 import { parse } from "../../lib/parser";
-import { getSvg } from "../../lib/svg";
 
 export type Article = {
   title: string;
@@ -58,13 +57,9 @@ async function createViewer(section: HTMLElement, article: Article) {
       ],
       ["close", removeSection],
     ] as const
-  ).forEach(([svg, onClick]) => {
-    const button = document.createElement("button");
-    button.innerHTML = getSvg(svg);
-    button.onclick = onClick;
-
-    controls.appendChild(button);
-  });
+  ).forEach(([svg, onClick]) =>
+    controls.appendChild(createIconButton(svg, onClick))
+  );
 
   const content = document.createElement("div");
   content.classList.add("content");
@@ -141,13 +136,9 @@ function createEditor(section: HTMLElement, article: Article) {
         },
       ],
     ] as const
-  ).forEach(([svg, onClick]) => {
-    const button = document.createElement("button");
-    button.innerHTML = getSvg(svg);
-    button.onclick = onClick;
-
-    controls.appendChild(button);
-  });
+  ).forEach(([svg, onClick]) =>
+    controls.appendChild(createIconButton(svg, onClick))
+  );
 
   const title = document.createElement("input");
   title.classList.add("title");
