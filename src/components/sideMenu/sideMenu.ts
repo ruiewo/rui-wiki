@@ -2,6 +2,7 @@ import { appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
 import { getSvg } from "../../lib/svg";
 import { Article } from "../article/article";
+import { showArticle } from "../main";
 import "./sideMenu.scss";
 
 export function createSideMenu(setting: any, articles: Article[]) {
@@ -17,7 +18,7 @@ export function createSideMenu(setting: any, articles: Article[]) {
   const searchBox = createSearchBox(articles);
   sideMenu.appendChild(searchBox);
 
-  articleHandler.eventHandler.addEventListener(articleEvent.delete, (e) => {
+  articleHandler.eventHandler.addEventListener(articleEvent.remove, (e) => {
     const title = e.detail;
 
     const item = sideMenu.querySelector<HTMLElement>(
@@ -31,6 +32,23 @@ export function createSideMenu(setting: any, articles: Article[]) {
 
     if (!itemListWrapper?.querySelector(".item")) {
       itemListWrapper?.remove();
+    }
+  });
+
+  articleHandler.eventHandler.addEventListener(articleEvent.add, (e) => {
+    const article = e.detail;
+    const month = article.modified.slice(0, -3);
+
+    const wrapper = sideMenu.querySelector<HTMLElement>(
+      `.itemListWrapper[data-month="${month}"]`
+    );
+
+    if (wrapper) {
+      const itemList = wrapper.querySelector<HTMLElement>(".itemList");
+      itemList?.prepend(createItem(article));
+    } else {
+      const list = sideMenu.querySelector<HTMLElement>(".list");
+      list?.prepend(createItemListWrapper([article], month));
     }
   });
 
@@ -60,12 +78,8 @@ function createControls() {
 
   (
     [
-      ["edit", () => {}],
-      ["add", () => {}],
-      ["close", () => {}],
-      ["delete", () => {}],
+      ["add", articleHandler.add],
       ["download", appService.download],
-      ["save", () => {}],
       ["save2", () => {}],
       ["setting", () => {}],
     ] as const
@@ -100,38 +114,19 @@ function createSearchBox(articles: Article[]) {
     const item = (e.target as HTMLElement).closest<HTMLElement>(".item");
     if (!item) return;
 
-    await articleHandler.showArticle(item.dataset.title!);
+    showArticle(item.dataset.title!);
   };
 
   const map = new Map<string, Article[]>();
   articles.forEach((article) => {
-    const month = article.created.slice(0, -3);
+    const month = article.modified.slice(0, -3);
     const articles = map.get(month) || [];
     articles.push(article);
     map.set(month, articles);
   });
 
   map.forEach((articles, month) => {
-    const itemListWrapper = document.createElement("div");
-    itemListWrapper.classList.add("itemListWrapper");
-
-    const itemListHeader = document.createElement("div");
-    itemListHeader.classList.add("itemListHeader");
-    itemListHeader.textContent = month;
-
-    const itemList = document.createElement("div");
-    itemList.classList.add("itemList");
-
-    articles.forEach((article) => {
-      const item = document.createElement("a");
-      item.classList.add("item");
-      item.textContent = article.title;
-      item.dataset.title = article.title;
-      itemList.appendChild(item);
-    });
-
-    itemListWrapper.appendChild(itemListHeader);
-    itemListWrapper.appendChild(itemList);
+    const itemListWrapper = createItemListWrapper(articles, month);
     list.appendChild(itemListWrapper);
   });
 
@@ -140,4 +135,35 @@ function createSearchBox(articles: Article[]) {
   wrapper.appendChild(list);
 
   return wrapper;
+}
+
+function createItemListWrapper(articles: Article[], month: string) {
+  const itemListWrapper = document.createElement("div");
+  itemListWrapper.classList.add("itemListWrapper");
+  itemListWrapper.dataset.month = month;
+
+  const itemListHeader = document.createElement("div");
+  itemListHeader.classList.add("itemListHeader");
+  itemListHeader.textContent = month;
+
+  const itemList = document.createElement("div");
+  itemList.classList.add("itemList");
+
+  articles.forEach((article) => {
+    itemList.appendChild(createItem(article));
+  });
+
+  itemListWrapper.appendChild(itemListHeader);
+  itemListWrapper.appendChild(itemList);
+
+  return itemListWrapper;
+}
+
+function createItem(article: Article) {
+  const item = document.createElement("a");
+  item.classList.add("item");
+  item.textContent = article.title;
+  item.dataset.title = article.title;
+
+  return item;
 }

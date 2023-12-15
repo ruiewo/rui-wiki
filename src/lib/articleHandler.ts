@@ -1,8 +1,13 @@
-import { Article, createArticle } from "../components/article/article";
+import { Article } from "../components/article/article";
+import { getDateString } from "./util";
 
 declare global {
   interface HTMLElementEventMap {
-    articleDelete: CustomEvent<string>;
+    articleAdd: CustomEvent<Article>;
+  }
+
+  interface HTMLElementEventMap {
+    articleRemove: CustomEvent<string>;
   }
 }
 
@@ -11,9 +16,9 @@ let eventHandler = document.createElement("div");
 
 export const articleHandler = {
   initialize,
-  showArticle,
-  deleteArticle,
-  updateArticle,
+  add,
+  remove,
+  update,
   get articles() {
     return articles;
   },
@@ -22,7 +27,7 @@ export const articleHandler = {
 
 export const articleEvent = {
   add: "articleAdd",
-  delete: "articleDelete",
+  remove: "articleRemove",
   update: "articleUpdate",
 } as const;
 
@@ -30,33 +35,39 @@ function initialize(_articles: Article[]) {
   articles = _articles;
 }
 
-async function showArticle(title: string) {
-  const article = articles.find((article) => article.title === title);
-  if (!article) return;
+function add() {
+  const prefix = "New RuiWiki ";
 
-  const target = document.querySelector<HTMLElement>(
-    `.article[data-title="${article.title}"]`
-  );
+  let i = 1;
 
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" });
-    return;
+  while (articles.some((article) => article.title === prefix + i)) {
+    i++;
   }
 
-  const main = document.querySelector(".main")!;
-  main.appendChild(await createArticle(article));
-}
+  const title = prefix + i;
+  const article = {
+    title,
+    content: "",
+    created: getDateString(),
+    modified: getDateString(),
+  };
 
-function deleteArticle(title: string) {
-  articles = articles.filter((article) => article.title !== title);
+  articles.push(article);
   eventHandler.dispatchEvent(
-    new CustomEvent(articleEvent.delete, { detail: title })
+    new CustomEvent(articleEvent.add, { detail: article })
   );
 }
 
-function updateArticle(title: string, article: Article) {
+function remove(title: string) {
+  articles = articles.filter((article) => article.title !== title);
+  eventHandler.dispatchEvent(
+    new CustomEvent(articleEvent.remove, { detail: title })
+  );
+}
+
+function update(title: string, article: Article) {
   if (title !== article.title) {
-    deleteArticle(title);
+    remove(title);
   }
 
   // todo validate same title

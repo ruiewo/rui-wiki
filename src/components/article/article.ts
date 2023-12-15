@@ -1,7 +1,7 @@
 import "./article.scss";
 import "../../styles/github.scss";
 import { articleHandler } from "../../lib/articleHandler";
-import { clearChildren } from "../../lib/util";
+import { clearChildren, getDateString } from "../../lib/util";
 import { parse } from "../../lib/parser";
 import { getSvg } from "../../lib/svg";
 
@@ -13,12 +13,19 @@ export type Article = {
   modified: string;
 };
 
-export const createArticle = async (article: Article) => {
+export const createArticle = async (
+  article: Article,
+  isEdit: boolean = false
+) => {
   const section = document.createElement("section");
   section.classList.add("article");
   section.dataset.title = article.title;
 
-  createViewer(section, article);
+  if (isEdit) {
+    createEditor(section, article);
+  } else {
+    await createViewer(section, article);
+  }
 
   return section;
 };
@@ -87,7 +94,7 @@ async function createViewer(section: HTMLElement, article: Article) {
   });
 }
 
-async function createEditor(section: HTMLElement, article: Article) {
+function createEditor(section: HTMLElement, article: Article) {
   const editor = document.createElement("div");
   editor.classList.add("editor");
 
@@ -106,7 +113,7 @@ async function createEditor(section: HTMLElement, article: Article) {
       [
         "delete",
         (e: MouseEvent) => {
-          articleHandler.deleteArticle(article.title);
+          articleHandler.remove(article.title);
           removeSection(e);
         },
       ],
@@ -129,7 +136,7 @@ async function createEditor(section: HTMLElement, article: Article) {
             modified: getDateString(),
           };
 
-          articleHandler.updateArticle(article.title, newArticle);
+          articleHandler.update(article.title, newArticle);
           createViewer(section, newArticle);
         },
       ],
@@ -181,8 +188,4 @@ function removeSection(e: MouseEvent) {
   setTimeout(() => {
     section.remove();
   }, 500);
-}
-
-function getDateString() {
-  return new Date().toISOString().slice(0, 10);
 }

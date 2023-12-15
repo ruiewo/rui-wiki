@@ -1,4 +1,5 @@
 import { Article } from "../components/article/article";
+import { createMain } from "../components/main";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
 import { articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
@@ -19,8 +20,8 @@ export const MainPage = {
     const main = createMain();
     layout.appendChild(main);
 
-    const sidebar = createSideMenu(appData.setting, appData.articles);
-    layout.appendChild(sidebar);
+    const sideMenu = createSideMenu(appData.setting, appData.articles);
+    layout.appendChild(sideMenu);
 
     app.appendChild(layout);
   },
@@ -35,10 +36,4 @@ function createLayout() {
   const layout = document.createElement("div");
   layout.classList.add("layout");
   return layout;
-}
-
-function createMain() {
-  const main = document.createElement("main");
-  main.classList.add("main");
-  return main;
 }

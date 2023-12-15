@@ -9,3 +9,7 @@ export function clearChildren(element: HTMLElement) {
     element.removeChild(element.firstChild);
   }
 }
+
+export function getDateString() {
+  return new Date().toISOString().slice(0, 10);
+}
