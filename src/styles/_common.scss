@@ -11,6 +11,8 @@
   --odd-color: #282828;
   --even-color: #353535;
 
+  color-scheme: light dark;
+
   // color palette
   --primary-900: #f38112;
   --primary-800: #f6aa23;
@@ -63,8 +65,6 @@
   --green-700: #006b3e;
   --green-800: #005533;
   --green-900: #003c24;
-
-  color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: light) {

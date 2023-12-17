@@ -3,7 +3,7 @@ import { articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
-import { clearChildren } from "./util";
+import { assertExist, clearChildren } from "./util";
 
 async function download() {
   const html = document.querySelector<HTMLElement>("html")!;
@@ -49,6 +49,11 @@ async function exportData() {
   return JSON.stringify(data);
 }
 
+async function checkPassword(password: string) {
+  assertExist(dataHandler.data.fragment);
+  return await CryptoService.checkPassword(password, dataHandler.data.fragment);
+}
+
 async function updatePassword(password: string) {
   const { salt, iv, fragment } = await CryptoService.updatePassword(password);
 
@@ -57,4 +62,17 @@ async function updatePassword(password: string) {
   dataHandler.data.fragment = fragment;
 }
 
-export const appService = { download, updatePassword };
+function clearPassword() {
+  const { salt, iv, fragment } = CryptoService.clearPassword();
+
+  dataHandler.data.salt = salt;
+  dataHandler.data.iv = iv;
+  dataHandler.data.fragment = fragment;
+}
+
+export const appService = {
+  download,
+  checkPassword,
+  updatePassword,
+  clearPassword,
+};

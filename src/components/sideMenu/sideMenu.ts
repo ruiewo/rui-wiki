@@ -94,6 +94,26 @@ function createControls() {
         },
       ],
       ["setting", () => {}],
+      [
+        "lock",
+        () => {
+          const password = prompt("Enter password");
+          if (!password) {
+            flashMessage("error", "Password is required");
+            return;
+          }
+
+          appService.updatePassword(password);
+          flashMessage("success", "Password updated");
+        },
+      ],
+      [
+        "unlock",
+        () => {
+          appService.clearPassword();
+          flashMessage("success", "Password cleared");
+        },
+      ],
     ] as const
   ).forEach(([svg, onClick]) =>
     controls.appendChild(createIconButton(svg, onClick))

@@ -7,22 +7,28 @@ interface FlashMessage {
   message: string;
 }
 
-let flashMessages: FlashMessage[] = [];
+let messages: FlashMessage[] = [];
+
+function initialize() {
+  const container = document.createElement("div");
+  container.id = "flashMessageContainer";
+  document.body.appendChild(container);
+}
+
+initialize();
 
 export function flashMessage(type: FlashMessageType, message: string) {
-  flashMessages.push({ type, message });
+  messages.push({ type, message });
 
-  const flashMessageContainer = document.getElementById(
-    "flashMessageContainer"
-  );
-  const flashMessageElement = document.createElement("span");
-  flashMessageElement.className = `flash-message ${type}`;
-  flashMessageElement.textContent = message;
+  const flashMessage = document.createElement("span");
+  flashMessage.className = `flashMessage ${type}`;
+  flashMessage.textContent = message;
 
-  flashMessageContainer?.appendChild(flashMessageElement);
+  const container = document.getElementById("flashMessageContainer");
+  container?.appendChild(flashMessage);
 
   setTimeout(() => {
-    flashMessages = flashMessages.filter((m) => m.message !== message);
-    flashMessageContainer?.removeChild(flashMessageElement);
+    messages = messages.filter((m) => m.message !== message);
+    container?.removeChild(flashMessage);
   }, 8000);
 }

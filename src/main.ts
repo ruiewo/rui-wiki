@@ -1,20 +1,21 @@
-import { showLoginDialog } from "./components/dialog/dialog";
+import { showLoginDialog } from "./components/dialog";
 import { articleHandler } from "./lib/articleHandler";
 import { CryptoService } from "./lib/crypto";
 import { settingHandler } from "./lib/setting";
 import { dataHandler } from "./lib/store";
-import { getFaviconSvg } from "./lib/svg";
+import { createSvgSymbols, getFaviconSvg } from "./lib/svg";
 import { AppData, MainPage } from "./pages/main";
 import "./styles/_common.scss";
 
 async function initialize() {
   setFavicon();
+  createSvgSymbols();
 
   const data = dataHandler.data;
   CryptoService.initialize(data.salt, data.iv);
   let appData = data.appData;
   if (data.salt && data.iv && data.fragment) {
-    await showLoginDialog(data.fragment);
+    await showLoginDialog();
     appData = await CryptoService.decrypt(appData);
   }
 

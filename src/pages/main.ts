@@ -3,7 +3,6 @@ import { createMain } from "../components/main";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
 import { articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
-import { createSvgSymbols } from "../lib/svg";
 
 import "./main.scss";
 
@@ -11,7 +10,6 @@ export const MainPage = {
   load: (appData: AppData) => {
     settingHandler.initialize(appData.setting);
     articleHandler.initialize(appData.articles);
-    createSvgSymbols();
 
     const app = document.getElementById("app")!;
 

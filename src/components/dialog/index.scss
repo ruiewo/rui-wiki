@@ -1,6 +1,9 @@
 @use "../../styles/_button";
 
 .dialogContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   width: 100vw;
@@ -22,12 +25,14 @@
   }
 
   .appIcon {
-    width: 5rem;
-    height: 5rem;
-    background-image: url("/images/app.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    width: 4rem;
+    height: 4rem;
+
+    svg {
+      fill: #f8c32c;
+      width: inherit;
+      height: inherit;
+    }
   }
 
   button {

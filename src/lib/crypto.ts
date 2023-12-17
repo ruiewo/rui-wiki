@@ -60,6 +60,22 @@ export class CryptoService {
     };
   }
 
+  static clearPassword() {
+    crypto = {
+      encrypt: async (text: string) => text,
+      decrypt: async (text: string) => text,
+    };
+
+    CryptoService.salt = undefined;
+    CryptoService.iv = undefined;
+
+    return {
+      salt: CryptoService.salt,
+      iv: CryptoService.iv,
+      fragment: undefined,
+    };
+  }
+
   static encrypt(text: string) {
     return crypto.encrypt(text);
   }
