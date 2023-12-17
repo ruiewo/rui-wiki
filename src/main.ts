@@ -1,7 +1,5 @@
 import { showLoginDialog } from "./components/dialog";
-import { articleHandler } from "./lib/articleHandler";
 import { CryptoService } from "./lib/crypto";
-import { settingHandler } from "./lib/setting";
 import { dataHandler } from "./lib/store";
 import { createSvgSymbols, getFaviconSvg } from "./lib/svg";
 import { AppData, MainPage } from "./pages/main";
@@ -30,17 +28,6 @@ function setFavicon() {
   document
     .querySelector('link[rel="apple-touch-icon"]')
     ?.setAttribute("href", dataUrl);
-}
-
-export async function exportData() {
-  const data = dataHandler.data;
-  data.appData = await CryptoService.encrypt(
-    JSON.stringify({
-      setting: settingHandler.setting,
-      articles: articleHandler.articles,
-    } satisfies AppData)
-  );
-  return JSON.stringify(data);
 }
 
 const defaultAppData: AppData = {

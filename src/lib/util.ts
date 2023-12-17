@@ -34,3 +34,17 @@ export function createElementFromHTML(htmlString: string) {
 
   return div.firstChild;
 }
+
+export function downloadHtml(text: string, fileName: string) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type: "text/html" }));
+  a.download = fileName;
+  a.click();
+}
+
+export function downloadJson(text: string, fileName: string) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+  a.download = fileName;
+  a.click();
+}

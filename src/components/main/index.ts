@@ -14,7 +14,7 @@ export function createMain() {
 }
 
 export async function showArticle(title: string, isEdit: boolean = false) {
-  const article = articleHandler.articles.find((x) => x.title === title);
+  const article = articleHandler.find(title);
   if (!article) return;
 
   let target = document.querySelector<HTMLElement>(

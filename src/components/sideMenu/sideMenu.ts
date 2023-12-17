@@ -1,6 +1,6 @@
 import { appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
-import { createIconButton } from "../../lib/util";
+import { clearChildren, createIconButton } from "../../lib/util";
 import { Article } from "../article/article";
 import { flashMessage } from "../flashMessage";
 import { showArticle } from "../main";
@@ -38,7 +38,7 @@ export function createSideMenu(setting: any, articles: Article[]) {
 
   articleHandler.eventHandler.addEventListener(articleEvent.add, (e) => {
     const title = e.detail;
-    const article = articleHandler.articles.find((x) => x.title === title);
+    const article = articleHandler.find(title);
     if (!article) return;
 
     const month = article.modified.slice(0, -3);
@@ -84,16 +84,8 @@ function createControls() {
     [
       ["add", articleHandler.add],
       ["download", appService.download],
-      [
-        "save2",
-        () => {
-          const types = ["error", "info", "success"] as const;
-          const type = types[Math.floor(Math.random() * types.length)];
-
-          flashMessage(type, "year!!!!!");
-        },
-      ],
-      ["setting", () => {}],
+      ["save2", appService.exportData],
+      ["setting", appService.importData],
       [
         "lock",
         () => {
@@ -104,16 +96,9 @@ function createControls() {
           }
 
           appService.updatePassword(password);
-          flashMessage("success", "Password updated");
         },
       ],
-      [
-        "unlock",
-        () => {
-          appService.clearPassword();
-          flashMessage("success", "Password cleared");
-        },
-      ],
+      ["unlock", appService.clearPassword],
     ] as const
   ).forEach(([svg, onClick]) =>
     controls.appendChild(createIconButton(svg, onClick))
@@ -133,6 +118,15 @@ function createSearchBox(articles: Article[]) {
   input.placeholder = "Search";
   searchBox.appendChild(input);
 
+  input.oninput = () => {
+    const value = input.value.trim().toLowerCase();
+    const articles = articleHandler.search(value);
+
+    clearChildren(list);
+    list.appendChild(createArticleList(articles));
+    console.log(`${articles.length} articles found`);
+  };
+
   const tabs = document.createElement("details");
   tabs.classList.add("tabs");
 
@@ -145,6 +139,17 @@ function createSearchBox(articles: Article[]) {
     showArticle(item.dataset.title!);
   };
 
+  list.appendChild(createArticleList(articles));
+
+  wrapper.appendChild(searchBox);
+  wrapper.appendChild(tabs);
+  wrapper.appendChild(list);
+
+  return wrapper;
+}
+
+function createArticleList(articles: Article[]) {
+  const fragment = document.createDocumentFragment();
   const map = new Map<string, Article[]>();
   articles.forEach((article) => {
     const month = article.modified.slice(0, -3);
@@ -153,16 +158,21 @@ function createSearchBox(articles: Article[]) {
     map.set(month, articles);
   });
 
-  map.forEach((articles, month) => {
-    const itemListWrapper = createItemListWrapper(articles, month);
-    list.appendChild(itemListWrapper);
-  });
+  [...map]
+    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .forEach(([month, articles]) => {
+      const itemListWrapper = createItemListWrapper(articles, month);
+      fragment.appendChild(itemListWrapper);
+    });
 
-  wrapper.appendChild(searchBox);
-  wrapper.appendChild(tabs);
-  wrapper.appendChild(list);
+  // sort by title
+  // articles
+  //   .sort((a, b) => a.title.localeCompare(b.title))
+  //   .forEach((article) => {
+  //     fragment.appendChild(createItem(article));
+  //   });
 
-  return wrapper;
+  return fragment;
 }
 
 function createItemListWrapper(articles: Article[], month: string) {

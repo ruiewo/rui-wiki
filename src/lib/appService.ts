@@ -1,9 +1,10 @@
+import { flashMessage } from "../components/flashMessage";
 import { AppData } from "../pages/main";
 import { articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
-import { assertExist, clearChildren } from "./util";
+import { assertExist, clearChildren, downloadHtml, downloadJson } from "./util";
 
 async function download() {
   const html = document.querySelector<HTMLElement>("html")!;
@@ -22,22 +23,54 @@ async function download() {
     }
 
     if (node.id === "data") {
-      node.textContent = await exportData();
+      node.textContent = await getUserData();
       continue;
     }
 
     node.remove();
   }
 
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(
-    new Blob([myHtml.outerHTML], { type: "text/html" })
-  );
-  a.download = "index.html";
-  a.click();
+  downloadHtml(myHtml.outerHTML, "RuiWiki.html");
 }
 
 async function exportData() {
+  downloadJson(JSON.stringify(articleHandler.articles), "RuiWiki.json");
+}
+
+async function importData() {
+  // FIXME: this is for tiddly wiki data.
+  const file = document.createElement("input");
+  file.type = "file";
+  file.accept = ".json";
+
+  // convert yyyymmddhhssfff to yyyy-mm-dd
+  function convertDateFormat(dateStr: string) {
+    const year = dateStr.substring(0, 4);
+    const month = dateStr.substring(4, 6);
+    const day = dateStr.substring(6, 8);
+    return `${year}-${month}-${day}`;
+  }
+
+  file.onchange = async () => {
+    if (!file.files || !file.files[0]) return;
+    const json = await file.files[0].text();
+    const articles = JSON.parse(json) as any[];
+    const converted = articles.map((x) => ({
+      title: x.title ?? "",
+      content: x.text ?? "",
+      tags: x.tags,
+      created: convertDateFormat(x.created),
+      modified: convertDateFormat(x.modified),
+    }));
+
+    articleHandler.articles.forEach((x) => articleHandler.remove(x.title));
+    converted.forEach((x) => articleHandler.update(x.title, x));
+  };
+
+  file.click();
+}
+
+async function getUserData() {
   const data = dataHandler.data;
   data.appData = await CryptoService.encrypt(
     JSON.stringify({
@@ -60,6 +93,8 @@ async function updatePassword(password: string) {
   dataHandler.data.salt = salt;
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
+
+  flashMessage("success", "Password updated");
 }
 
 function clearPassword() {
@@ -68,10 +103,14 @@ function clearPassword() {
   dataHandler.data.salt = salt;
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
+
+  flashMessage("success", "Password cleared");
 }
 
 export const appService = {
   download,
+  exportData,
+  importData,
   checkPassword,
   updatePassword,
   clearPassword,

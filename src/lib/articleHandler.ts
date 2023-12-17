@@ -19,6 +19,8 @@ export const articleHandler = {
   add,
   remove,
   update,
+  search,
+  find: (title: string) => articles.find((article) => article.title === title),
   get articles() {
     return articles;
   },
@@ -76,7 +78,7 @@ function update(title: string, article: Article) {
   if (!target) {
     articles.push(article);
     eventHandler.dispatchEvent(
-      new CustomEvent(articleEvent.add, { detail: article.title })
+      new CustomEvent(articleEvent.update, { detail: article.title })
     );
   } else {
     Object.assign(target, article);
@@ -84,4 +86,15 @@ function update(title: string, article: Article) {
       new CustomEvent(articleEvent.update, { detail: article.title })
     );
   }
+}
+
+function search(text: string) {
+  if (!text) return articles;
+
+  return articles.filter((article) => {
+    return (
+      article.title.toLowerCase().includes(text.toLowerCase()) ||
+      article.content.toLowerCase().includes(text.toLowerCase())
+    );
+  });
 }
