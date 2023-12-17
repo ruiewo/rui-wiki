@@ -1,4 +1,5 @@
 import { CryptoService } from "../../lib/crypto";
+import { flashMessage } from "../flashMessage";
 import "./dialog.scss";
 
 export async function showLoginDialog(fragment: string) {
@@ -24,7 +25,7 @@ export async function showLoginDialog(fragment: string) {
       if (await CryptoService.checkPassword(password, fragment)) {
         resolve("success");
       } else {
-        // flashMessage("Wrong password");
+        flashMessage("error", "Wrong password");
       }
     };
   });
