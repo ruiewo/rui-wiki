@@ -5,14 +5,12 @@ import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
 import { clearChildren } from "./util";
 
-export const appService = { download };
-
 async function download() {
   const html = document.querySelector<HTMLElement>("html")!;
   const myHtml = html.cloneNode(true) as HTMLElement;
   const body = myHtml.querySelector<HTMLElement>("body")!;
 
-  for (const node of body.childNodes) {
+  for (const node of [...body.childNodes]) {
     if (!(node instanceof HTMLElement)) {
       node.remove();
       continue;
@@ -47,5 +45,16 @@ async function exportData() {
       articles: articleHandler.articles,
     } satisfies AppData)
   );
+
   return JSON.stringify(data);
 }
+
+async function updatePassword(password: string) {
+  const { salt, iv, fragment } = await CryptoService.updatePassword(password);
+
+  dataHandler.data.salt = salt;
+  dataHandler.data.iv = iv;
+  dataHandler.data.fragment = fragment;
+}
+
+export const appService = { download, updatePassword };

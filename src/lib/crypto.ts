@@ -23,9 +23,8 @@ export class CryptoService {
     assertExist(CryptoService.salt);
     assertExist(CryptoService.iv);
 
-    const encoder = new TextEncoder();
-    const salt = encoder.encode(CryptoService.salt);
-    const iv = encoder.encode(CryptoService.iv);
+    const salt = fromBase64(CryptoService.salt);
+    const iv = fromBase64(CryptoService.iv);
 
     const { key } = await generateKey(password, salt);
     const decrypted = await decrypt(encrypted, key, iv);
@@ -49,9 +48,16 @@ export class CryptoService {
       decrypt: (text: string) => decrypt(text, key, iv),
     };
 
-    const decoder = new TextDecoder();
-    CryptoService.salt = decoder.decode(salt);
-    CryptoService.iv = decoder.decode(iv);
+    CryptoService.salt = toBase64(salt);
+    CryptoService.iv = toBase64(iv);
+
+    return {
+      salt: CryptoService.salt,
+      iv: CryptoService.iv,
+      fragment: await CryptoService.encrypt(
+        CryptoService.salt + CryptoService.iv
+      ),
+    };
   }
 
   static encrypt(text: string) {
@@ -70,11 +76,11 @@ async function encrypt(text: string, key: CryptoKey, iv: Uint8Array) {
     encoded
   );
 
-  return new TextDecoder().decode(encrypted);
+  return toBase64(encrypted);
 }
 
-async function decrypt(text: string, key: CryptoKey, iv: Uint8Array) {
-  const encoded = new TextEncoder().encode(text);
+async function decrypt(base64: string, key: CryptoKey, iv: Uint8Array) {
+  const encoded = fromBase64(base64);
 
   const decrypted = await window.crypto.subtle.decrypt(
     { name: "AES-GCM", iv },
@@ -113,4 +119,12 @@ async function generateKey(
   );
 
   return { key, salt };
+}
+
+function toBase64(buffer: ArrayBuffer) {
+  return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+}
+
+function fromBase64(base64: string) {
+  return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
 }
