@@ -25,7 +25,7 @@ renderer.code = (code, info, escaped) => {
       }</span><br/>`;
     }
 
-    return result;
+    return `<div class="keyValue">${result}</div>`;
   }
 
   return codeRenderer.call(renderer, code, info, escaped);

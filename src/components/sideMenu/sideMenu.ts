@@ -82,6 +82,12 @@ function createControls() {
 
   (
     [
+      [
+        "light",
+        () => {
+          document.body.classList.toggle("dark");
+        },
+      ],
       ["add", articleHandler.add],
       ["download", appService.download],
       ["save2", appService.exportData],

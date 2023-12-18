@@ -103,6 +103,21 @@ function createEditor(section: HTMLElement, article: Article) {
   const controls = document.createElement("div");
   controls.classList.add("controls");
 
+  const save = () => {
+    const newTitle = title.value.trim();
+    const newContent = content.value.trim();
+
+    const newArticle = {
+      ...article,
+      title: newTitle,
+      content: newContent,
+      // modified: getDateString(),
+    };
+
+    articleHandler.update(article.title, newArticle);
+    createViewer(section, newArticle);
+  };
+
   (
     [
       [
@@ -118,23 +133,7 @@ function createEditor(section: HTMLElement, article: Article) {
           createViewer(section, article);
         },
       ],
-      [
-        "save",
-        () => {
-          const newTitle = title.value.trim();
-          const newContent = content.value.trim();
-
-          const newArticle = {
-            ...article,
-            title: newTitle,
-            content: newContent,
-            modified: getDateString(),
-          };
-
-          articleHandler.update(article.title, newArticle);
-          createViewer(section, newArticle);
-        },
-      ],
+      ["save", save],
     ] as const
   ).forEach(([svg, onClick]) =>
     controls.appendChild(createIconButton(svg, onClick))
@@ -154,6 +153,16 @@ function createEditor(section: HTMLElement, article: Article) {
     content.style.height = `${content.scrollHeight + 4}px`;
   }
   content.addEventListener("input", setTextareaHeight);
+  content.addEventListener("keydown", (e: KeyboardEvent) => {
+    // ctrl+enter for windows, command+return for mac
+    if (
+      ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
+      e.key === "Enter"
+    ) {
+      save();
+    }
+  });
+
 
   header.appendChild(controls);
   header.appendChild(editorTitle);
