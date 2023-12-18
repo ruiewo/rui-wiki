@@ -1,3 +1,4 @@
+import { Article } from "../components/article/article";
 import { flashMessage } from "../components/flashMessage";
 import { AppData } from "../pages/main";
 import { articleHandler } from "./articleHandler";
@@ -38,37 +39,54 @@ async function exportData() {
 }
 
 async function importData() {
-  // FIXME: this is for tiddly wiki data.
   const file = document.createElement("input");
   file.type = "file";
   file.accept = ".json";
 
-  // convert yyyymmddhhssfff to yyyy-mm-dd
-  function convertDateFormat(dateStr: string) {
-    const year = dateStr.substring(0, 4);
-    const month = dateStr.substring(4, 6);
-    const day = dateStr.substring(6, 8);
-    return `${year}-${month}-${day}`;
-  }
-
   file.onchange = async () => {
     if (!file.files || !file.files[0]) return;
     const json = await file.files[0].text();
-    const articles = JSON.parse(json) as any[];
-    const converted = articles.map((x) => ({
-      title: x.title ?? "",
-      content: x.text ?? "",
-      tags: x.tags,
-      created: convertDateFormat(x.created),
-      modified: convertDateFormat(x.modified),
-    }));
+    const articles = JSON.parse(json) as Article[];
 
     articleHandler.articles.forEach((x) => articleHandler.remove(x.title));
-    converted.forEach((x) => articleHandler.update(x.title, x));
+    articles.forEach((x) => articleHandler.update(x.title, x));
   };
 
   file.click();
 }
+
+// async function importDataFromTiddlyWiki() {
+//   // FIXME: this is for tiddly wiki data.
+//   const file = document.createElement("input");
+//   file.type = "file";
+//   file.accept = ".json";
+
+//   // convert yyyymmddhhssfff to yyyy-mm-dd
+//   function convertDateFormat(dateStr: string) {
+//     const year = dateStr.substring(0, 4);
+//     const month = dateStr.substring(4, 6);
+//     const day = dateStr.substring(6, 8);
+//     return `${year}-${month}-${day}`;
+//   }
+
+//   file.onchange = async () => {
+//     if (!file.files || !file.files[0]) return;
+//     const json = await file.files[0].text();
+//     const articles = JSON.parse(json) as any[];
+//     const converted = articles.map((x) => ({
+//       title: x.title ?? "",
+//       content: x.text ?? "",
+//       tags: x.tags,
+//       created: convertDateFormat(x.created),
+//       modified: convertDateFormat(x.modified),
+//     }));
+
+//     articleHandler.articles.forEach((x) => articleHandler.remove(x.title));
+//     converted.forEach((x) => articleHandler.update(x.title, x));
+//   };
+
+//   file.click();
+// }
 
 async function getUserData() {
   const data = dataHandler.data;

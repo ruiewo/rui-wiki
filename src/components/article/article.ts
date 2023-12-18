@@ -3,6 +3,7 @@ import "../../styles/github.scss";
 import { articleHandler } from "../../lib/articleHandler";
 import { clearChildren, createIconButton, getDateString } from "../../lib/util";
 import { parse } from "../../lib/parser";
+import { flashMessage } from "../flashMessage";
 
 export type Article = {
   title: string;
@@ -86,6 +87,7 @@ async function createViewer(section: HTMLElement, article: Article) {
     if (!value) return;
 
     navigator.clipboard.writeText(value);
+    flashMessage("success", "Copied to clipboard");
   });
 }
 
