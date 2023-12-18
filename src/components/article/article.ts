@@ -165,7 +165,6 @@ function createEditor(section: HTMLElement, article: Article) {
     }
   });
 
-
   header.appendChild(controls);
   header.appendChild(editorTitle);
 
