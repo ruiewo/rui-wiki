@@ -12,7 +12,7 @@ declare global {
 }
 
 let articles: Article[];
-let eventHandler = document.createElement("div");
+const eventHandler = document.createElement("div");
 
 export const articleHandler = {
   initialize,

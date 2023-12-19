@@ -30,5 +30,5 @@ export function flashMessage(type: FlashMessageType, message: string) {
   setTimeout(() => {
     messages = messages.filter((m) => m.message !== message);
     container?.removeChild(flashMessage);
-  }, 8000);
+  }, 5000);
 }

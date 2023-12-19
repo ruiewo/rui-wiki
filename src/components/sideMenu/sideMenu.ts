@@ -1,4 +1,4 @@
-import { appService } from "../../lib/appService";
+import { appEvent, appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
 import { clearChildren, createIconButton } from "../../lib/util";
 import { Article } from "../article/article";
@@ -56,6 +56,18 @@ export function createSideMenu(setting: any, articles: Article[]) {
     }
   });
 
+  articleHandler.eventHandler.addEventListener(articleEvent.update, () => {
+    controls
+      .querySelectorAll<HTMLElement>(".download, .save2")
+      ?.forEach((x) => x.classList.add("alert"));
+  });
+
+  appService.addEventListener(appEvent.saved, () => {
+    controls
+      .querySelectorAll<HTMLElement>(".download, .save2")
+      ?.forEach((x) => x.classList.remove("alert"));
+  });
+
   return sideMenu;
 }
 
@@ -84,7 +96,8 @@ function createControls() {
     [
       ["add", articleHandler.add],
       ["download", appService.download],
-      ["save2", appService.exportData],
+      ["save2", appService.overwrite],
+      // ["save", appService.exportData],
       ["setting", appService.importData],
       [
         "light",

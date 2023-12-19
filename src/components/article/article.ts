@@ -113,7 +113,7 @@ function createEditor(section: HTMLElement, article: Article) {
       ...article,
       title: newTitle,
       content: newContent,
-      // modified: getDateString(),
+      modified: getDateString(),
     };
 
     articleHandler.update(article.title, newArticle);

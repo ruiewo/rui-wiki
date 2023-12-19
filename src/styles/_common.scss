@@ -1,16 +1,6 @@
 @use "_reset";
 
 :root {
-  --theme-color: #db4d6f;
-  --dark-theme-color: rgb(83, 27, 35);
-  --lightDark-theme-color: rgb(168, 54, 71);
-  --background-color: #222;
-  --active-background-color: #3c3c3c;
-  --foreground-color: #ccc;
-
-  --odd-color: #282828;
-  --even-color: #353535;
-
   color-scheme: light dark;
 
   // color palette
@@ -171,6 +161,16 @@ input[type="email"] {
 
     &:hover {
       fill: var(--gray-800);
+    }
+  }
+
+  &.alert {
+    svg {
+      fill: var(--red-500);
+
+      &:hover {
+        fill: var(--red-700);
+      }
     }
   }
 }

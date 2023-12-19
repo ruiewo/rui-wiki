@@ -22,6 +22,7 @@ export function createIconButton(
 ) {
   const button = document.createElement("button");
   button.classList.add("iconButton");
+  button.classList.add(type);
   button.innerHTML = getSvg(type);
   button.onclick = onClick;
 

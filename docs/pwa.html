@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/images/app.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RuiWiki</title>
+    <script type="module" crossorigin>
+(function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))i(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const r of t.addedNodes)r.tagName==="LINK"&&r.rel==="modulepreload"&&i(r)}).observe(document,{childList:!0,subtree:!0});function n(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?t.credentials="include":e.crossOrigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function i(e){if(e.ep)return;e.ep=!0;const t=n(e);fetch(e.href,t)}})();let f=new Map;function y(){document.body.classList.add("dark");const u='<nav class="open"></nav><main></main>',o=document.getElementById("app");o.innerHTML=u;const n=document.querySelector("nav"),i=document.querySelector("main");n.innerHTML='<div class="menuButton"><span class="bar"></span></div><button class="directory">directory</button><ul></ul>';const e=n.querySelector(".menuButton");e.onclick=()=>{n.classList.toggle("open")};const t=n.querySelector("button");t.onclick=async()=>{const r=await window.showDirectoryPicker();for await(let[c,a]of r)a.kind==="file"&&(f.set(c,a),n.querySelector("ul").insertAdjacentHTML("beforeend",`<li>${c}</li>`))},n.onclick=async r=>{const c=r.target;if(c.tagName!=="LI")return;const a=c.textContent,d=f.get(a),m=await d.getFile(),s=document.createElement("iframe");s.src=URL.createObjectURL(m),i.innerHTML="",i.appendChild(s),s.onload=()=>{s.contentWindow.ruiwiki.pwa.overwrite=async p=>{try{const l=await d.createWritable();return l.write(p),await l.close(),!0}catch(l){return console.log(l),!1}}}}}y();
+
+</script>
+    <style>
+*:where(:not(html,iframe,canvas,img,svg,video,audio):not(svg *,symbol *)){all:unset;display:revert}*,*:before,*:after{box-sizing:border-box}html{-moz-text-size-adjust:none;-webkit-text-size-adjust:none;text-size-adjust:none}a,button{cursor:revert}ol,ul,menu,summary{list-style:none}img{max-inline-size:100%;max-block-size:100%}table{border-collapse:collapse}input,textarea{-webkit-user-select:auto}textarea{white-space:revert}meter{-webkit-appearance:revert;-moz-appearance:revert;appearance:revert}:where(pre){all:revert;box-sizing:border-box}::placeholder{color:unset}:where([hidden]){display:none}:where([contenteditable]:not([contenteditable=false])){-moz-user-modify:read-write;-webkit-user-modify:read-write;overflow-wrap:break-word;-webkit-line-break:after-white-space;-webkit-user-select:auto}:where([draggable=true]){-webkit-user-drag:element}:where(dialog:modal){all:revert;box-sizing:border-box}::-webkit-details-marker{display:none}html{font-size:16px}body{color:var(--gray-800);background-color:var(--gray-300);width:100vw;height:100vh;overflow:hidden;--gray-50: #f7f7f7;--gray-100: #ebedee;--gray-200: #e7e7e7;--gray-300: #d5d5d5;--gray-400: #9696a2;--gray-500: #81808d;--gray-600: #4d4c54;--gray-700: #313135;--gray-800: #1b1a1f;--gray-900: #131215}body.dark{--gray-50: #131215;--gray-100: #1b1a1f;--gray-200: #313135;--gray-300: #4d4c54;--gray-400: #81808d;--gray-500: #9696a2;--gray-600: #d5d5d5;--gray-700: #e7e7e7;--gray-800: #ebedee;--gray-900: #f7f7f7}#app{display:flex;flex-direction:row;width:100vw;height:100vh;overflow:auto}nav{position:fixed;display:block;left:-17rem;top:0;width:17rem;height:100vh;background-color:var(--gray-200);color:var(--gray-800);flex-shrink:0;padding:1rem;transition:.3s;opacity:.5}nav.open{left:0;top:0;opacity:1}main{flex-grow:1;width:100%}iframe{width:100%;height:100%;border:none;display:block}.menuButton{position:fixed;top:1rem;left:1rem;display:flex;height:3rem;width:3rem;justify-content:center;align-items:center;z-index:1;background-color:var(--gray-400);border-radius:50%}.menuButton span,.menuButton span:before,.menuButton span:after{content:"";display:block;height:3px;width:25px;border-radius:3px;background-color:var(--gray-600);position:absolute;transition:.3s}.menuButton span:before{bottom:8px}.menuButton span:after{top:8px}.open .menuButton span{background-color:#fff0}.open .menuButton span:before{bottom:0;transform:rotate(45deg)}.open .menuButton span:after{top:0;transform:rotate(-45deg)}.directory{margin-left:4rem}button{display:inline-block;outline:0;border:0;cursor:pointer;will-change:box-shadow,transform;background:var(--gray-100);box-shadow:0 2px 4px #2d234266,0 7px 13px -3px #2d23424d,inset 0 -3px 0 var(--gray-300);height:48px;padding:0 32px;font-size:18px;border-radius:6px;color:var(--gray-700);transition:box-shadow .15s ease,transform .15s ease}button:hover{box-shadow:0 4px 8px #2d234266,0 7px 13px -3px #2d23424d,inset 0 -3px 0 var(--gray-300);transform:translateY(-2px)}button:active{box-shadow:inset 0 3px 7px var(--gray-300);transform:translateY(2px)}ul{padding:1rem 0}li{display:block;color:var(--gray-500);padding-left:1rem;line-height:2rem;cursor:pointer}li:hover{color:var(--gray-800);text-decoration:underline}
+
+</style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/typescript">
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('failed: ', error);
+          });
+      }
+    </script>
+  </body>
+</html>

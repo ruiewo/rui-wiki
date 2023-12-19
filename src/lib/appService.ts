@@ -7,10 +7,16 @@ import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
 import { assertExist, clearChildren, downloadHtml, downloadJson } from "./util";
 
-async function download() {
+const eventHandler = document.createElement("div");
+
+export const appEvent = {
+  saved: "appSaved",
+} as const;
+
+async function getHtml() {
   const html = document.querySelector<HTMLElement>("html")!;
-  const myHtml = html.cloneNode(true) as HTMLElement;
-  const body = myHtml.querySelector<HTMLElement>("body")!;
+  const newHtml = html.cloneNode(true) as HTMLElement;
+  const body = newHtml.querySelector<HTMLElement>("body")!;
 
   for (const node of [...body.childNodes]) {
     if (!(node instanceof HTMLElement)) {
@@ -31,7 +37,12 @@ async function download() {
     node.remove();
   }
 
-  downloadHtml(myHtml.outerHTML, "RuiWiki.html");
+  return newHtml.outerHTML;
+}
+
+async function download() {
+  downloadHtml(await getHtml(), "RuiWiki.html");
+  eventHandler.dispatchEvent(new CustomEvent(appEvent.saved));
 }
 
 async function exportData() {
@@ -132,4 +143,34 @@ export const appService = {
   checkPassword,
   updatePassword,
   clearPassword,
+  addEventListener: eventHandler.addEventListener.bind(eventHandler),
+  removeEventListener: eventHandler.removeEventListener.bind(eventHandler),
+
+  // pwa
+  overwrite: async () => {
+    const html = await getHtml();
+    const succeed = await window.ruiwiki.pwa.overwrite(html);
+
+    if (succeed) {
+      eventHandler.dispatchEvent(new CustomEvent(appEvent.saved));
+      flashMessage("info", "Overwritten!");
+    } else {
+      flashMessage("error", "Failed to overwrite");
+    }
+  },
+};
+
+export interface RuiWikiWindow extends Window {
+  ruiwiki: {
+    pwa: { overwrite: (html: string) => Promise<boolean> };
+  };
+}
+
+declare let window: RuiWikiWindow;
+
+window.ruiwiki = {
+  //** need to implement in pwa app */
+  pwa: {
+    overwrite: async (_: string) => false,
+  },
 };

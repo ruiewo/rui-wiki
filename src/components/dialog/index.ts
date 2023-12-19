@@ -26,7 +26,14 @@ export async function showLoginDialog() {
       ] as const,
     ];
 
-    showDialog(content, buttons);
+    const dialog = showDialog(content, buttons);
+    const input = dialog.querySelector<HTMLInputElement>("#password")!;
+    input.focus();
+    input.onkeydown = (e) => {
+      if (e.key === "Enter") {
+        dialog.querySelector<HTMLButtonElement>("button")!.click();
+      }
+    };
   });
 }
 
@@ -56,4 +63,6 @@ function showDialog(
   });
 
   document.body.appendChild(dialogContainer);
+
+  return dialogContainer;
 }
