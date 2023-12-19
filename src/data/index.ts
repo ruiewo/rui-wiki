@@ -16,8 +16,11 @@ Similar to TiddlyWiki, RuiWiki operates on a single HTML file. This means that y
 - Single HTML: All information is stored in one HTML file, eliminating the need for any special databases or servers.
 - User-friendly: Its simple and intuitive interface allows anyone to start using it easily.
 
-With these features, RuiWiki can handle a variety of uses, from personal note-taking to project management. Organize your information and share your knowledge with RuiWiki.`,
+With these features, RuiWiki can handle a variety of uses, from personal note-taking to project management. Organize your information and share your knowledge with RuiWiki.
 
+### PWA
+[PWA site](https://ruiewo.github.io/rui-wiki/pwa.html)
+`,
       tags: "area1",
       created: "2023-12-18",
       modified: "2023-12-18",

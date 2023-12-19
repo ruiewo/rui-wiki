@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/images/app.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/rui-wiki/app.svg" />
+    <link rel="manifest" href="/rui-wiki/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RuiWiki</title>
     <script type="module" crossorigin>
@@ -20,7 +20,7 @@
     <script type="text/typescript">
       if (navigator.serviceWorker) {
         navigator.serviceWorker
-          .register('/sw.js')
+          .register('/rui-wiki/sw.js')
           .then((registration) => {
             console.log('scope:', registration.scope);
           })

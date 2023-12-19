@@ -10,7 +10,7 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "/logo-512.png",
+      "src": "/rui-wiki/logo-512.png",
       "sizes": "512x512"
     }
   ]
