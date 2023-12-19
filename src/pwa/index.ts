@@ -1,6 +1,9 @@
 import { RuiWikiWindow } from "../lib/appService";
 import "./index.scss";
 
+// todo serialize file handle
+// https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read
+
 let handleMap = new Map<string, FileSystemFileHandle>();
 
 function initialize() {
