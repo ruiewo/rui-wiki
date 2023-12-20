@@ -7,7 +7,7 @@ import "./index.scss";
 export async function showLoginDialog() {
   return new Promise((resolve) => {
     const contentStr = `<div class="input"><input type="password" id="password" placeholder="Password"></div>`;
-    const content = createElementFromHTML(contentStr) as HTMLElement;
+    const content = createElementFromHTML(contentStr);
 
     const buttons = [
       [
@@ -48,7 +48,7 @@ function showDialog(
     `</div>` +
     `</div>`;
 
-  const dialogContainer = createElementFromHTML(html) as HTMLElement;
+  const dialogContainer = createElementFromHTML(html);
 
   const dialog = dialogContainer.querySelector<HTMLElement>(".dialog")!;
   dialog.appendChild(content);

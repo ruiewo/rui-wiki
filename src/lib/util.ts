@@ -33,19 +33,27 @@ export function createElementFromHTML(htmlString: string) {
   const div = document.createElement("div");
   div.innerHTML = htmlString.trim();
 
-  return div.firstChild;
+  return div.firstChild as HTMLElement;
 }
 
-export function downloadHtml(text: string, fileName: string) {
+export function download(
+  text: string,
+  fileName: string,
+  fileType: "html" | "json"
+) {
+  let type;
+  switch (fileType) {
+    case "html":
+      type = "text/html";
+      break;
+    case "json":
+      type = "application/json";
+      break;
+    default:
+      throw new Error("Assertion failed. fileType is invalid");
+  }
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([text], { type: "text/html" }));
-  a.download = fileName;
-  a.click();
-}
-
-export function downloadJson(text: string, fileName: string) {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+  a.href = URL.createObjectURL(new Blob([text], { type }));
   a.download = fileName;
   a.click();
 }

@@ -5,27 +5,17 @@ import { articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
-import {
-  EventHandler,
-  assertExist,
-  clearChildren,
-  downloadHtml,
-  downloadJson,
-} from "./util";
+import { EventHandler, assertExist, clearChildren, download } from "./util";
 
 type EventMap = {
   save: undefined;
 };
 
-export const articleEvent: { [K in keyof EventMap]: K } = {
+export const appEvent: { [K in keyof EventMap]: K } = {
   save: "save",
 } as const;
 
 const eventHandler = new EventHandler<EventMap>();
-
-export const appEvent = {
-  save: "save",
-} as const;
 
 async function getHtml() {
   const html = document.querySelector<HTMLElement>("html")!;
@@ -54,13 +44,13 @@ async function getHtml() {
   return newHtml.outerHTML;
 }
 
-async function download() {
-  downloadHtml(await getHtml(), "RuiWiki.html");
+async function downloadHtml() {
+  download(await getHtml(), "RuiWiki.html", "html");
   eventHandler.emit(appEvent.save, undefined);
 }
 
 async function exportData() {
-  downloadJson(JSON.stringify(articleHandler.articles), "RuiWiki.json");
+  download(JSON.stringify(articleHandler.articles), "RuiWiki.json", "json");
 }
 
 async function importData() {
@@ -130,7 +120,13 @@ async function checkPassword(password: string) {
   return await CryptoService.checkPassword(password, dataHandler.data.fragment);
 }
 
-async function updatePassword(password: string) {
+async function updatePassword() {
+  const password = prompt("Enter password");
+  if (!password) {
+    flashMessage("error", "Password is required");
+    return;
+  }
+
   const { salt, iv, fragment } = await CryptoService.updatePassword(password);
 
   dataHandler.data.salt = salt;
@@ -150,13 +146,18 @@ function clearPassword() {
   flashMessage("success", "Password cleared");
 }
 
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+}
+
 export const appService = {
-  download,
+  downloadHtml,
   exportData,
   importData,
   checkPassword,
   updatePassword,
   clearPassword,
+  toggleTheme,
   on: eventHandler.on.bind(eventHandler),
   off: eventHandler.off.bind(eventHandler),
 

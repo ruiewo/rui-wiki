@@ -33,6 +33,17 @@
   color: var(--gray-400);
 }
 
+.tabs {
+  &[open] > summary:first-of-type {
+    list-style-type: disclosure-open;
+  }
+  & > summary:first-of-type {
+    display: list-item;
+    counter-increment: list-item 0;
+    list-style: inside disclosure-closed;
+  }
+}
+
 .sideMenu {
   .itemListWrapper {
   }
@@ -51,5 +62,16 @@
       color: var(--gray-800);
       text-decoration: underline;
     }
+  }
+}
+
+.selectable {
+  color: var(--gray-500);
+  padding-left: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--gray-800);
+    text-decoration: underline;
   }
 }

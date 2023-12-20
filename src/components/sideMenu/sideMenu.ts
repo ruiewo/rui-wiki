@@ -1,8 +1,11 @@
 import { appEvent, appService } from "../../lib/appService";
 import { articleEvent, articleHandler } from "../../lib/articleHandler";
-import { clearChildren, createIconButton } from "../../lib/util";
+import {
+  clearChildren,
+  createElementFromHTML,
+  createIconButton,
+} from "../../lib/util";
 import { Article } from "../article/article";
-import { flashMessage } from "../flashMessage";
 import { showArticle } from "../main";
 import "./sideMenu.scss";
 
@@ -92,28 +95,12 @@ function createControls() {
   (
     [
       ["add", articleHandler.add],
-      ["download", appService.download],
+      ["download", appService.downloadHtml],
       ["save2", appService.overwrite],
       // ["save", appService.exportData],
-      ["setting", appService.importData],
-      [
-        "light",
-        () => {
-          document.body.classList.toggle("dark");
-        },
-      ],
-      [
-        "lock",
-        () => {
-          const password = prompt("Enter password");
-          if (!password) {
-            flashMessage("error", "Password is required");
-            return;
-          }
-
-          appService.updatePassword(password);
-        },
-      ],
+      ["setting", () => {}],
+      ["light", appService.toggleTheme],
+      ["lock", appService.updatePassword],
       ["unlock", appService.clearPassword],
     ] as const
   ).forEach(([svg, onClick]) =>
@@ -143,8 +130,24 @@ function createSearchBox(articles: Article[]) {
     console.log(`${articles.length} articles found`);
   };
 
-  const tabs = document.createElement("details");
-  tabs.classList.add("tabs");
+  const arr = [
+    ["import data", appService.importData],
+    ["export data", appService.exportData],
+    ["update password", appService.updatePassword],
+    ["clear password", appService.clearPassword],
+    ["toggle color theme", appService.toggleTheme],
+  ] as const;
+  const tabs = createElementFromHTML(
+    `<details class="tabs"><summary>tools</summary><ul></ul></details>`
+  );
+  const ul = tabs.querySelector("ul")!;
+  arr.forEach(([text, onClick]) => {
+    const li = document.createElement("li");
+    li.classList.add("selectable");
+    li.textContent = text;
+    li.onclick = onClick;
+    ul.appendChild(li);
+  });
 
   const list = document.createElement("div");
   list.classList.add("list");
