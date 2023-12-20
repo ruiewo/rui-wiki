@@ -5,8 +5,7 @@ export function createMain() {
   const main = document.createElement("main");
   main.classList.add("main");
 
-  articleHandler.eventHandler.addEventListener(articleEvent.add, async (e) => {
-    const title = e.detail;
+  articleHandler.on(articleEvent.add, async ({ title }) => {
     await showArticle(title, true);
   });
 

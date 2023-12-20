@@ -1,3 +1,4 @@
+import { get, set } from "idb-keyval";
 import { RuiWikiWindow } from "../lib/appService";
 import "./index.scss";
 
@@ -6,7 +7,7 @@ import "./index.scss";
 
 let handleMap = new Map<string, FileSystemFileHandle>();
 
-function initialize() {
+async function initialize() {
   document.body.classList.add("dark");
   const html = `<nav class="open"></nav><main></main>`;
   const app = document.getElementById("app")!;
@@ -25,17 +26,8 @@ function initialize() {
   const button = nav.querySelector("button")!;
   button.onclick = async () => {
     const dirHandle = await window.showDirectoryPicker();
-
-    for await (let [name, handle] of dirHandle) {
-      if (handle.kind !== "file") {
-        continue;
-      }
-
-      handleMap.set(name, handle);
-      nav
-        .querySelector("ul")!
-        .insertAdjacentHTML("beforeend", `<li>${name}</li>`);
-    }
+    await set("directory", dirHandle);
+    await showList(dirHandle, nav);
   };
 
   nav.onclick = async (e) => {
@@ -70,6 +62,46 @@ function initialize() {
       };
     };
   };
+
+  const dirHandle = (await get("directory")) as
+    | FileSystemDirectoryHandle
+    | undefined;
+  if (dirHandle && (await verifyPermission(dirHandle))) {
+    await showList(dirHandle, nav);
+  }
+}
+
+async function showList(
+  dirHandle: FileSystemDirectoryHandle,
+  nav: HTMLElement
+) {
+  for await (let [name, handle] of dirHandle) {
+    if (handle.kind !== "file") {
+      continue;
+    }
+
+    handleMap.set(name, handle);
+    nav
+      .querySelector("ul")!
+      .insertAdjacentHTML("beforeend", `<li>${name}</li>`);
+  }
+}
+
+async function verifyPermission(
+  dirHandle: FileSystemDirectoryHandle,
+  readWrite: FileSystemPermissionMode = "readwrite"
+) {
+  const options = { mode: readWrite };
+
+  if ((await dirHandle.queryPermission(options)) === "granted") {
+    return true;
+  }
+
+  if ((await dirHandle.requestPermission(options)) === "granted") {
+    return true;
+  }
+
+  return false;
 }
 
 initialize();

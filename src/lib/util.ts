@@ -49,3 +49,32 @@ export function downloadJson(text: string, fileName: string) {
   a.download = fileName;
   a.click();
 }
+
+export class EventHandler<EventMap extends Record<string, any>> {
+  private listeners: {
+    [K in keyof EventMap]?: Array<(event: EventMap[K]) => void>;
+  } = {};
+
+  on<K extends keyof EventMap>(
+    event: K,
+    listener: (event: EventMap[K]) => void
+  ): void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]?.push(listener);
+  }
+
+  off<K extends keyof EventMap>(
+    event: K,
+    listener: (event: EventMap[K]) => void
+  ): void {
+    this.listeners[event] = this.listeners[event]?.filter(
+      (x) => x !== listener
+    );
+  }
+
+  emit<K extends keyof EventMap>(event: K, data: EventMap[K]): void {
+    this.listeners[event]?.forEach((listener) => listener(data));
+  }
+}

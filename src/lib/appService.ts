@@ -5,12 +5,26 @@ import { articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
-import { assertExist, clearChildren, downloadHtml, downloadJson } from "./util";
+import {
+  EventHandler,
+  assertExist,
+  clearChildren,
+  downloadHtml,
+  downloadJson,
+} from "./util";
 
-const eventHandler = document.createElement("div");
+type EventMap = {
+  save: undefined;
+};
+
+export const articleEvent: { [K in keyof EventMap]: K } = {
+  save: "save",
+} as const;
+
+const eventHandler = new EventHandler<EventMap>();
 
 export const appEvent = {
-  saved: "appSaved",
+  save: "save",
 } as const;
 
 async function getHtml() {
@@ -42,7 +56,7 @@ async function getHtml() {
 
 async function download() {
   downloadHtml(await getHtml(), "RuiWiki.html");
-  eventHandler.dispatchEvent(new CustomEvent(appEvent.saved));
+  eventHandler.emit(appEvent.save, undefined);
 }
 
 async function exportData() {
@@ -143,8 +157,8 @@ export const appService = {
   checkPassword,
   updatePassword,
   clearPassword,
-  addEventListener: eventHandler.addEventListener.bind(eventHandler),
-  removeEventListener: eventHandler.removeEventListener.bind(eventHandler),
+  on: eventHandler.on.bind(eventHandler),
+  off: eventHandler.off.bind(eventHandler),
 
   // pwa
   overwrite: async () => {
@@ -152,7 +166,7 @@ export const appService = {
     const succeed = await window.ruiwiki.pwa.overwrite(html);
 
     if (succeed) {
-      eventHandler.dispatchEvent(new CustomEvent(appEvent.saved));
+      eventHandler.emit(appEvent.save, undefined);
       flashMessage("info", "Overwritten!");
     } else {
       flashMessage("error", "Failed to overwrite");

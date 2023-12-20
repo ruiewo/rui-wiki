@@ -19,9 +19,7 @@ export function createSideMenu(setting: any, articles: Article[]) {
   const searchBox = createSearchBox(articles);
   sideMenu.appendChild(searchBox);
 
-  articleHandler.eventHandler.addEventListener(articleEvent.remove, (e) => {
-    const title = e.detail;
-
+  articleHandler.on(articleEvent.delete, ({ title }) => {
     const item = sideMenu.querySelector<HTMLElement>(
       `.item[data-title="${title}"]`
     );
@@ -36,8 +34,7 @@ export function createSideMenu(setting: any, articles: Article[]) {
     }
   });
 
-  articleHandler.eventHandler.addEventListener(articleEvent.add, (e) => {
-    const title = e.detail;
+  articleHandler.on(articleEvent.add, ({ title }) => {
     const article = articleHandler.find(title);
     if (!article) return;
 
@@ -56,13 +53,13 @@ export function createSideMenu(setting: any, articles: Article[]) {
     }
   });
 
-  articleHandler.eventHandler.addEventListener(articleEvent.update, () => {
+  articleHandler.on(articleEvent.update, () => {
     controls
       .querySelectorAll<HTMLElement>(".download, .save2")
       ?.forEach((x) => x.classList.add("alert"));
   });
 
-  appService.addEventListener(appEvent.saved, () => {
+  appService.on(appEvent.save, () => {
     controls
       .querySelectorAll<HTMLElement>(".download, .save2")
       ?.forEach((x) => x.classList.remove("alert"));

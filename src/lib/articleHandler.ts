@@ -1,18 +1,21 @@
 import { Article } from "../components/article/article";
-import { getDateString } from "./util";
+import { EventHandler, getDateString } from "./util";
 
-declare global {
-  interface HTMLElementEventMap {
-    articleAdd: CustomEvent<string>;
-  }
+type ArticleEventMap = {
+  add: { title: string };
+  delete: { title: string };
+  update: { title: string };
+};
 
-  interface HTMLElementEventMap {
-    articleRemove: CustomEvent<string>;
-  }
-}
+export const articleEvent: { [K in keyof ArticleEventMap]: K } = {
+  add: "add",
+  delete: "delete",
+  update: "update",
+} as const;
+
+const eventHandler = new EventHandler<ArticleEventMap>();
 
 let articles: Article[];
-const eventHandler = document.createElement("div");
 
 export const articleHandler = {
   initialize,
@@ -24,14 +27,9 @@ export const articleHandler = {
   get articles() {
     return articles;
   },
-  eventHandler,
+  on: eventHandler.on.bind(eventHandler),
+  off: eventHandler.off.bind(eventHandler),
 };
-
-export const articleEvent = {
-  add: "articleAdd",
-  remove: "articleRemove",
-  update: "articleUpdate",
-} as const;
 
 function initialize(_articles: Article[]) {
   articles = _articles;
@@ -55,16 +53,13 @@ function add() {
   };
 
   articles.push(article);
-  eventHandler.dispatchEvent(
-    new CustomEvent(articleEvent.add, { detail: article.title })
-  );
+
+  eventHandler.emit(articleEvent.add, { title: article.title });
 }
 
 function remove(title: string) {
   articles = articles.filter((article) => article.title !== title);
-  eventHandler.dispatchEvent(
-    new CustomEvent(articleEvent.remove, { detail: title })
-  );
+  eventHandler.emit(articleEvent.delete, { title });
 }
 
 function update(title: string, article: Article) {
@@ -77,14 +72,10 @@ function update(title: string, article: Article) {
   const target = articles.find((article) => article.title === title);
   if (!target) {
     articles.push(article);
-    eventHandler.dispatchEvent(
-      new CustomEvent(articleEvent.update, { detail: article.title })
-    );
+    eventHandler.emit(articleEvent.update, { title });
   } else {
     Object.assign(target, article);
-    eventHandler.dispatchEvent(
-      new CustomEvent(articleEvent.update, { detail: article.title })
-    );
+    eventHandler.emit(articleEvent.update, { title });
   }
 }
 

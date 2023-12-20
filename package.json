@@ -15,6 +15,7 @@
     "vite-plugin-singlefile": "^0.13.5"
   },
   "dependencies": {
+    "idb-keyval": "^6.2.1",
     "marked": "^11.1.0"
   }
 }
