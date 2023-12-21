@@ -138,6 +138,7 @@ function createSearchBox(articles: Article[]) {
   searchBox.classList.add("searchBox");
 
   const input = document.createElement("input");
+  input.type = "text";
   input.placeholder = "Search";
   searchBox.appendChild(input);
 

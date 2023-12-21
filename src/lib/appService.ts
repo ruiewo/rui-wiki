@@ -157,8 +157,8 @@ export const appService = {
   updatePassword,
   clearPassword,
   toggleTheme,
-  on: eventHandler.on.bind(eventHandler),
-  off: eventHandler.off.bind(eventHandler),
+  on: eventHandler.on,
+  off: eventHandler.off,
 
   // pwa
   overwrite: async () => {
@@ -167,9 +167,9 @@ export const appService = {
 
     if (succeed) {
       eventHandler.emit(appEvent.save, undefined);
-      flashMessage("info", "Overwritten!");
+      flashMessage("info", "file saved");
     } else {
-      flashMessage("error", "Failed to overwrite");
+      flashMessage("error", "Failed to save file");
     }
   },
 };

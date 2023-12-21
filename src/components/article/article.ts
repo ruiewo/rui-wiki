@@ -144,7 +144,7 @@ function createEditor(section: HTMLElement, article: Article) {
 
   function setTextareaHeight() {
     content.style.height = "auto";
-    content.style.height = `${content.scrollHeight + 4}px`;
+    content.style.height = `${content.scrollHeight + 8}px`;
   }
   content.addEventListener("input", setTextareaHeight);
   content.addEventListener("keydown", (e: KeyboardEvent) => {

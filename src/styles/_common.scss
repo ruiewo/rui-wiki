@@ -148,10 +148,18 @@ input[type="email"] {
   outline: none;
   background-color: var(--gray-200);
   border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
+  padding: 0 0.5rem;
 
   &:focus {
-    background-color: var(--gray-300);
     border-bottom: 0.3rem solid rgba(200, 0, 0, 0.3);
+  }
+}
+
+textarea {
+  border: 0.3rem solid rgba(0, 0, 0, 0);
+  border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
+  &:focus {
+    border: 0.3rem solid rgba(160, 0, 0, 0.3);
   }
 }
 

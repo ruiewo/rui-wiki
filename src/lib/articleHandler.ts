@@ -40,8 +40,8 @@ export const articleHandler = {
   get rawData() {
     return [...articleMap.values()].map(({ id, ...rest }) => rest);
   },
-  on: eventHandler.on.bind(eventHandler),
-  off: eventHandler.off.bind(eventHandler),
+  on: eventHandler.on,
+  off: eventHandler.off,
 };
 
 function initialize(articles: RawArticle[]) {

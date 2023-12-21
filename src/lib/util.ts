@@ -63,30 +63,30 @@ export class EventHandler<EventMap extends Record<string, any>> {
     [K in keyof EventMap]?: Array<(event: EventMap[K]) => void>;
   } = {};
 
-  on<K extends keyof EventMap>(
+  on = <K extends keyof EventMap>(
     event: K | K[],
     listener: (event: EventMap[K]) => void
-  ): void {
+  ) => {
     (Array.isArray(event) ? event : [event]).forEach((event) => {
       if (!this.listeners[event]) {
         this.listeners[event] = [];
       }
       this.listeners[event]?.push(listener);
     });
-  }
+  };
 
-  off<K extends keyof EventMap>(
+  off = <K extends keyof EventMap>(
     event: K | K[],
     listener: (event: EventMap[K]) => void
-  ): void {
+  ) => {
     (Array.isArray(event) ? event : [event]).forEach((event) => {
       this.listeners[event] = this.listeners[event]?.filter(
         (x) => x !== listener
       );
     });
-  }
+  };
 
-  emit<K extends keyof EventMap>(event: K, data: EventMap[K]): void {
+  emit = <K extends keyof EventMap>(event: K, data: EventMap[K]) => {
     this.listeners[event]?.forEach((listener) => listener(data));
-  }
+  };
 }
