@@ -80,6 +80,10 @@ async function showList(
       continue;
     }
 
+    if (!handle.name.endsWith(".html") || handle.name.endsWith(".rwk")) {
+      continue;
+    }
+
     handleMap.set(name, handle);
     nav
       .querySelector("ul")!

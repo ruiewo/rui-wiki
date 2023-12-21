@@ -1,15 +1,22 @@
 import { appEvent, appService } from "../../lib/appService";
-import { articleEvent, articleHandler } from "../../lib/articleHandler";
+import {
+  Article,
+  articleEvent,
+  articleHandler,
+} from "../../lib/articleHandler";
+import { settingHandler } from "../../lib/setting";
 import {
   clearChildren,
   createElementFromHTML,
   createIconButton,
 } from "../../lib/util";
-import { Article } from "../article/article";
 import { showArticle } from "../main";
 import "./sideMenu.scss";
 
-export function createSideMenu(setting: any, articles: Article[]) {
+export function createSideMenu() {
+  const setting = settingHandler.setting;
+  const articles = articleHandler.articles;
+
   const sideMenu = document.createElement("div");
   sideMenu.classList.add("sideMenu");
 
@@ -22,10 +29,8 @@ export function createSideMenu(setting: any, articles: Article[]) {
   const searchBox = createSearchBox(articles);
   sideMenu.appendChild(searchBox);
 
-  articleHandler.on(articleEvent.delete, ({ title }) => {
-    const item = sideMenu.querySelector<HTMLElement>(
-      `.item[data-title="${title}"]`
-    );
+  articleHandler.on(articleEvent.delete, ({ id }) => {
+    const item = sideMenu.querySelector<HTMLElement>(`.item[data-id="${id}"]`);
 
     if (!item) return;
 
@@ -37,11 +42,8 @@ export function createSideMenu(setting: any, articles: Article[]) {
     }
   });
 
-  articleHandler.on(articleEvent.add, ({ title }) => {
-    const article = articleHandler.find(title);
-    if (!article) return;
-
-    const month = article.modified.slice(0, -3);
+  function addToList(article: Article) {
+    const month = getMonth(article);
 
     const wrapper = sideMenu.querySelector<HTMLElement>(
       `.itemListWrapper[data-month="${month}"]`
@@ -54,13 +56,31 @@ export function createSideMenu(setting: any, articles: Article[]) {
       const list = sideMenu.querySelector<HTMLElement>(".list");
       list?.prepend(createItemListWrapper([article], month));
     }
+  }
+
+  articleHandler.on(articleEvent.add, addToList);
+
+  articleHandler.on(articleEvent.update, (article) => {
+    const item = sideMenu.querySelector<HTMLElement>(
+      `.item[data-id="${article.id}"]`
+    );
+
+    if (item) {
+      item.textContent = article.title;
+      return;
+    }
+
+    addToList(article);
   });
 
-  articleHandler.on(articleEvent.update, () => {
-    controls
-      .querySelectorAll<HTMLElement>(".download, .save2")
-      ?.forEach((x) => x.classList.add("alert"));
-  });
+  articleHandler.on(
+    [articleEvent.add, articleEvent.delete, articleEvent.update],
+    () => {
+      controls
+        .querySelectorAll<HTMLElement>(".download, .save2")
+        ?.forEach((x) => x.classList.add("alert"));
+    }
+  );
 
   appService.on(appEvent.save, () => {
     controls
@@ -155,7 +175,9 @@ function createSearchBox(articles: Article[]) {
     const item = (e.target as HTMLElement).closest<HTMLElement>(".item");
     if (!item) return;
 
-    showArticle(item.dataset.title!);
+    const id = parseInt(item.dataset.id!);
+    const article = articleHandler.get(id)!;
+    showArticle(article);
   };
 
   list.appendChild(createArticleList(articles));
@@ -167,11 +189,15 @@ function createSearchBox(articles: Article[]) {
   return wrapper;
 }
 
+function getMonth(article: Article) {
+  return article.modified.slice(0, -3);
+}
+
 function createArticleList(articles: Article[]) {
   const fragment = document.createDocumentFragment();
   const map = new Map<string, Article[]>();
   articles.forEach((article) => {
-    const month = article.modified.slice(0, -3);
+    const month = getMonth(article);
     const articles = map.get(month) || [];
     articles.push(article);
     map.set(month, articles);
@@ -220,7 +246,7 @@ function createItem(article: Article) {
   const item = document.createElement("a");
   item.classList.add("item");
   item.textContent = article.title;
-  item.dataset.title = article.title;
+  item.dataset.id = `${article.id}`;
 
   return item;
 }

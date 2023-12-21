@@ -1,17 +1,9 @@
 import "./article.scss";
 import "../../styles/github.scss";
-import { articleHandler } from "../../lib/articleHandler";
+import { Article, articleHandler } from "../../lib/articleHandler";
 import { clearChildren, createIconButton, getDateString } from "../../lib/util";
 import { parse } from "../../lib/parser";
 import { flashMessage } from "../flashMessage";
-
-export type Article = {
-  title: string;
-  content: string;
-  tags?: string;
-  created: string;
-  modified: string;
-};
 
 export const createArticle = async (
   article: Article,
@@ -19,7 +11,7 @@ export const createArticle = async (
 ) => {
   const section = document.createElement("section");
   section.classList.add("article");
-  section.dataset.title = article.title;
+  section.dataset.id = `${article.id}`;
 
   if (isEdit) {
     createEditor(section, article);
@@ -116,7 +108,7 @@ function createEditor(section: HTMLElement, article: Article) {
       modified: getDateString(),
     };
 
-    articleHandler.update(article.title, newArticle);
+    articleHandler.update(newArticle);
     createViewer(section, newArticle);
   };
 
@@ -125,7 +117,7 @@ function createEditor(section: HTMLElement, article: Article) {
       [
         "delete",
         (e: MouseEvent) => {
-          articleHandler.remove(article.title);
+          articleHandler.remove(article.id);
           removeSection(e);
         },
       ],

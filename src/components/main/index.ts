@@ -1,23 +1,24 @@
-import { articleEvent, articleHandler } from "../../lib/articleHandler";
+import {
+  Article,
+  articleEvent,
+  articleHandler,
+} from "../../lib/articleHandler";
 import { createArticle } from "../article/article";
 
 export function createMain() {
   const main = document.createElement("main");
   main.classList.add("main");
 
-  articleHandler.on(articleEvent.add, async ({ title }) => {
-    await showArticle(title, true);
+  articleHandler.on(articleEvent.add, async (article) => {
+    await showArticle(article, true);
   });
 
   return main;
 }
 
-export async function showArticle(title: string, isEdit: boolean = false) {
-  const article = articleHandler.find(title);
-  if (!article) return;
-
+export async function showArticle(article: Article, isEdit: boolean = false) {
   let target = document.querySelector<HTMLElement>(
-    `.article[data-title="${article.title}"]`
+    `.article[data-id="${article.id}"]`
   );
 
   if (!target) {

@@ -1,7 +1,6 @@
-import { Article } from "../components/article/article";
 import { createMain } from "../components/main";
 import { createSideMenu } from "../components/sideMenu/sideMenu";
-import { articleHandler } from "../lib/articleHandler";
+import { RawArticle, articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
 
 import "./main.scss";
@@ -18,7 +17,7 @@ export const MainPage = {
     const main = createMain();
     layout.appendChild(main);
 
-    const sideMenu = createSideMenu(appData.setting, appData.articles);
+    const sideMenu = createSideMenu();
     layout.appendChild(sideMenu);
 
     app.appendChild(layout);
@@ -27,7 +26,7 @@ export const MainPage = {
 
 export type AppData = {
   setting: Setting;
-  articles: Article[];
+  articles: RawArticle[];
 };
 
 function createLayout() {

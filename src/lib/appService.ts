@@ -1,7 +1,6 @@
-import { Article } from "../components/article/article";
 import { flashMessage } from "../components/flashMessage";
 import { AppData } from "../pages/main";
-import { articleHandler } from "./articleHandler";
+import { RawArticle, articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
@@ -50,7 +49,7 @@ async function downloadHtml() {
 }
 
 async function exportData() {
-  download(JSON.stringify(articleHandler.articles), "RuiWiki.json", "json");
+  download(JSON.stringify(articleHandler.rawData), "RuiWiki.json", "json");
 }
 
 async function importData() {
@@ -61,10 +60,10 @@ async function importData() {
   file.onchange = async () => {
     if (!file.files || !file.files[0]) return;
     const json = await file.files[0].text();
-    const articles = JSON.parse(json) as Article[];
+    const articles = JSON.parse(json) as RawArticle[];
 
-    articleHandler.articles.forEach((x) => articleHandler.remove(x.title));
-    articles.forEach((x) => articleHandler.update(x.title, x));
+    articleHandler.articles.forEach((x) => articleHandler.remove(x.id));
+    articles.forEach((x, i) => articleHandler.update({ ...x, id: i }, true));
   };
 
   file.click();
@@ -108,7 +107,7 @@ async function getUserData() {
   data.appData = await CryptoService.encrypt(
     JSON.stringify({
       setting: settingHandler.setting,
-      articles: articleHandler.articles,
+      articles: articleHandler.rawData,
     } satisfies AppData)
   );
 
