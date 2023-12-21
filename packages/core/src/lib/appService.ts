@@ -5,6 +5,7 @@ import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
 import { EventHandler, assertExist, clearChildren, download } from "./util";
+import { RuiWikiWindow } from "@rui-wiki/shared";
 
 type EventMap = {
   save: undefined;
@@ -173,12 +174,6 @@ export const appService = {
     }
   },
 };
-
-export interface RuiWikiWindow extends Window {
-  ruiwiki: {
-    pwa: { overwrite: (html: string) => Promise<boolean> };
-  };
-}
 
 declare let window: RuiWikiWindow;
 

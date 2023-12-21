@@ -6,8 +6,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: "index.html",
-        // pwa: "pwa.html",
+        pwa: "pwa.html",
       },
     },
   },

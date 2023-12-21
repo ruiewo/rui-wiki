@@ -1,6 +1,7 @@
 import { get, set } from "idb-keyval";
-import { RuiWikiWindow } from "../lib/appService";
-import "./index.scss";
+
+import { RuiWikiWindow } from "@rui-wiki/shared";
+import "./styles/index.scss";
 
 // todo serialize file handle
 // https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read

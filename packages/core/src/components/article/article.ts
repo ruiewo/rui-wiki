@@ -1,5 +1,5 @@
 import "./article.scss";
-import "../../styles/github.scss";
+import "../../styles/markdown.scss";
 import { Article, articleHandler } from "../../lib/articleHandler";
 import { clearChildren, createIconButton, getDateString } from "../../lib/util";
 import { parse } from "../../lib/parser";
