@@ -157,6 +157,7 @@ function createSearchBox(articles: Article[]) {
     ["update password", appService.updatePassword],
     ["clear password", appService.clearPassword],
     ["toggle color theme", appService.toggleTheme],
+    ["version up", appService.versionUp],
   ] as const;
   const tabs = createElementFromHTML(
     `<details class="tabs"><summary>tools</summary><ul></ul></details>`

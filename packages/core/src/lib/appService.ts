@@ -17,8 +17,8 @@ export const appEvent: { [K in keyof EventMap]: K } = {
 
 const eventHandler = new EventHandler<EventMap>();
 
-async function getHtml() {
-  const html = document.querySelector<HTMLElement>("html")!;
+async function getHtml(doc = document) {
+  const html = doc.querySelector<HTMLElement>("html")!;
   const newHtml = html.cloneNode(true) as HTMLElement;
   const body = newHtml.querySelector<HTMLElement>("body")!;
 
@@ -150,6 +150,18 @@ function toggleTheme() {
   document.body.classList.toggle("dark");
 }
 
+async function versionUp() {
+  const url = "https://ruiewo.github.io/rui-wiki/index.html";
+  const response = await fetch(url);
+
+  const doc = new DOMParser().parseFromString(
+    await response.text(),
+    "text/html"
+  );
+
+  download(await getHtml(doc), "RuiWiki.html", "html");
+}
+
 export const appService = {
   downloadHtml,
   exportData,
@@ -158,6 +170,7 @@ export const appService = {
   updatePassword,
   clearPassword,
   toggleTheme,
+  versionUp,
   on: eventHandler.on,
   off: eventHandler.off,
 
