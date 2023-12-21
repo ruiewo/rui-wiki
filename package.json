@@ -2,10 +2,12 @@
   "name": "rui-wiki",
   "version": "0.1.0",
   "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "npm run build --workspaces --if-present && npm run copy",
+    "copy": "npm run copyCore && npm run copyPwa",
+    "copyCore": "node -e \"require('fs').copyFileSync('./packages/core/dist/index.html', './docs/index.html')\"",
+    "copyPwa": "node -e \"require('fs').copyFileSync('./packages/pwa/dist/index.html', './docs/pwa.html')\""
   },
   "devDependencies": {
     "@types/wicg-file-system-access": "^2023.10.4",
@@ -14,8 +16,9 @@
     "vite": "^5.0.0",
     "vite-plugin-singlefile": "^0.13.5"
   },
-  "dependencies": {
-    "idb-keyval": "^6.2.1",
-    "marked": "^11.1.0"
-  }
+  "workspaces": [
+    "packages/shared",
+    "packages/pwa",
+    "packages/core"
+  ]
 }
