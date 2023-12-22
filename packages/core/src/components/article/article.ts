@@ -1,9 +1,13 @@
 import "./article.scss";
 import "../../styles/markdown.scss";
 import { Article, articleHandler } from "../../lib/articleHandler";
-import { clearChildren, createIconButton, getDateString } from "../../lib/util";
+import {
+  clearChildren,
+  copyToClipboard,
+  createIconButton,
+  getDateString,
+} from "../../lib/util";
 import { parse } from "../../lib/parser";
-import { flashMessage } from "../flashMessage";
 
 export const createArticle = async (
   article: Article,
@@ -71,15 +75,20 @@ async function createViewer(section: HTMLElement, article: Article) {
 
   section.appendChild(viewer);
 
-  section.addEventListener("click", (e) => {
+  viewer.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     if (!target.classList.contains("value")) return;
 
-    const value = target.textContent;
-    if (!value) return;
+    copyToClipboard(target.textContent);
+  });
 
-    navigator.clipboard.writeText(value);
-    flashMessage("success", "Copied to clipboard");
+  viewer.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("copyButton")) return;
+
+    copyToClipboard(
+      target.closest(".codeBlock")?.querySelector("code")?.textContent
+    );
   });
 }
 
@@ -170,6 +179,7 @@ function createEditor(section: HTMLElement, article: Article) {
   clearChildren(section);
 
   section.appendChild(editor);
+
   setTextareaHeight();
 }
 

@@ -1,3 +1,4 @@
+import { flashMessage } from "../components/flashMessage";
 import { SvgType, getSvg } from "./svg";
 
 export function assertExist<T>(params: T): asserts params is NonNullable<T> {
@@ -89,4 +90,11 @@ export class EventHandler<EventMap extends Record<string, any>> {
   emit = <K extends keyof EventMap>(event: K, data: EventMap[K]) => {
     this.listeners[event]?.forEach((listener) => listener(data));
   };
+}
+
+export function copyToClipboard(text: string | null | undefined) {
+  if (!text) return;
+
+  navigator.clipboard.writeText(text.trim());
+  flashMessage("success", "Copied to clipboard");
 }

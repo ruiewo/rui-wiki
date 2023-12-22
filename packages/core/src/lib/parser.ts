@@ -11,8 +11,8 @@ renderer.link = (href, title, text) => {
 };
 
 const codeRenderer = renderer.code;
-renderer.code = (code, info, escaped) => {
-  if (info === "kv") {
+renderer.code = (code, language, isEscaped) => {
+  if (language === "kv") {
     const lines = code.split("\n");
 
     // 奇数行目をキー、偶数行目を値として解釈
@@ -28,7 +28,12 @@ renderer.code = (code, info, escaped) => {
     return `<div class="keyValue">${result}</div>`;
   }
 
-  return codeRenderer.call(renderer, code, info, escaped);
+  const fileInfo = `<div class="fileInfo">lang: ${language}</div>`;
+  const copyButton = `<button class="copyButton">Copy</button>`;
+  const originalCode = codeRenderer.call(renderer, code, language, isEscaped);
+  const newCode = `<div class="codeBlock">${fileInfo}${originalCode}${copyButton}</div>`;
+
+  return newCode;
 };
 
 marked.use({
