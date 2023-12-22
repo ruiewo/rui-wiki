@@ -32,7 +32,7 @@ renderer.code = (code, info, escaped) => {
 };
 
 marked.use({
-  breaks: false,
+  breaks: true,
   gfm: true,
 });
 
