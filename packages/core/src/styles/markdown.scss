@@ -53,8 +53,6 @@
   --color-done-fg: #a371f7;
   --color-done-emphasis: #8957e5;
 }
-// @media (prefers-color-scheme: dark) {
-// }
 
 .markdown-body {
   /*light*/
@@ -89,9 +87,10 @@
   --color-prettylights-syntax-brackethighlighter-angle: #57606a;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
   --color-prettylights-syntax-constant-other-reference-link: #0a3069;
-  --color-fg-default: #1f2328;
+  --color-fg-default: var(--gray-800);
   --color-fg-muted: #656d76;
   --color-fg-subtle: #6e7781;
+  // --color-fg-default: #1f2328;
   // --color-canvas-default: #ffffff;
   // --color-canvas-subtle: #f6f8fa;
   --color-canvas-default: var(--gray-00);
@@ -867,7 +866,7 @@
   line-height: 1.45;
   color: var(--color-fg-default);
   background-color: var(--color-canvas-subtle);
-  border-radius: 6px;
+  margin-bottom: 0;
 }
 
 .markdown-body pre code,
@@ -1202,4 +1201,35 @@
 
 .markdown-body .markdown-alert.markdown-alert-caution .markdown-alert-title {
   color: var(--color-danger-fg);
+}
+
+/* Custom Style*/
+.markdown-body {
+  .codeBlock {
+    position: relative;
+    background-color: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    margin-bottom: 20px;
+  }
+
+  .fileInfo {
+    padding: 10px;
+    font-size: 0.8em;
+    color: var(--gray-500);
+  }
+
+  .copyButton {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    padding: 5px 10px;
+    background-color: var(--gray-100);
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: none;
+
+    &:hover {
+      background-color: var(--gray-300);
+    }
+  }
 }
