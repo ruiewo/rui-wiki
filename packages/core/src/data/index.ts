@@ -21,7 +21,7 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
 ### PWA
 [PWA site](https://ruiewo.github.io/rui-wiki/pwa.html)
 `,
-      tags: "area1",
+      tags: "",
       created: "2023-12-18",
       modified: "2023-12-18",
     },
@@ -51,21 +51,24 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
   value2
   \`\`\`
   `,
-      tags: "area2",
+      tags: "",
       created: "2020-03-03",
       modified: "2020-03-03",
     },
     {
-      title: "article4",
-      content: "content",
-      tags: "area2",
-      created: "2020-03-03",
-      modified: "2020-03-03",
+      title: "Release Note",
+      content: `# alpha version
+## 0.1.0 2023-12-21
+alpha 0.1.0 released
+`,
+      tags: "",
+      created: "2023-12-21",
+      modified: "2023-12-21",
     },
     {
       title: "article5",
       content: "content",
-      tags: "area2",
+      tags: "",
       created: "2020-03-03",
       modified: "2020-03-03",
     },
@@ -121,7 +124,7 @@ value2
 
 
 `,
-      tags: "area2",
+      tags: "",
       created: "2023-12-19",
       modified: "2023-12-19",
     },
