@@ -147,7 +147,8 @@ function createEditor(section: HTMLElement, article: Article) {
     content.style.height = `${content.scrollHeight + 8}px`;
   }
   content.addEventListener("input", setTextareaHeight);
-  content.addEventListener("keydown", (e: KeyboardEvent) => {
+
+  function setSaveShortcut(e: KeyboardEvent) {
     // ctrl+enter for windows, command+return for mac
     if (
       ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
@@ -155,7 +156,9 @@ function createEditor(section: HTMLElement, article: Article) {
     ) {
       save();
     }
-  });
+  }
+  title.addEventListener("keydown", setSaveShortcut);
+  content.addEventListener("keydown", setSaveShortcut);
 
   header.appendChild(controls);
   header.appendChild(editorTitle);
