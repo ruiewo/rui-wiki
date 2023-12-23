@@ -85,10 +85,12 @@ async function showList(
       continue;
     }
 
+    handleMap.clear();
     handleMap.set(name, handle);
-    nav
-      .querySelector("ul")!
-      .insertAdjacentHTML("beforeend", `<li>${name}</li>`);
+
+    const ul = nav.querySelector("ul")!;
+    ul.innerHTML = "";
+    ul.insertAdjacentHTML("beforeend", `<li>${name}</li>`);
   }
 }
 
