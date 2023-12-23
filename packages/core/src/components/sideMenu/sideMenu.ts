@@ -117,7 +117,6 @@ function createControls() {
       ["add", articleHandler.add],
       ["download", appService.downloadHtml],
       ["save2", appService.overwrite],
-      // ["save", appService.exportData],
       ["setting", () => {}],
       ["light", appService.toggleTheme],
       ["lock", appService.updatePassword],
