@@ -64,7 +64,7 @@ async function importData() {
     const articles = JSON.parse(json) as RawArticle[];
 
     articleHandler.articles.forEach((x) => articleHandler.remove(x.id));
-    articles.forEach((x, i) => articleHandler.update({ ...x, id: i }, true));
+    articles.forEach((x, i) => articleHandler.import({ ...x, id: i }));
   };
 
   file.click();
