@@ -1,5 +1,5 @@
-import { IEditorFactory, EditorUtil } from "@rui-wiki/shared/plugin/editor";
-import { dynamicImportJs } from "../lib/loader";
+import { EditorUtil, IEditorFactory } from "@rui-wiki/shared/src";
+import { middleware } from "../main";
 
 let editor: IEditorFactory | null = null;
 
@@ -11,39 +11,8 @@ export async function getEditor(content: string, fn: EditorUtil) {
   return editor.create(content, fn);
 }
 
-const myPlugin = {
-  init: async () => {
-    await dynamicImportJs(
-      "https://cdn.jsdelivr.net/npm/ace-builds@1.32.2/src-min-noconflict/ace.min.js"
-    );
-
-    return {
-      create: (content: string, fn: EditorUtil) => {
-        const element = document.createElement("div");
-        const editor = ace.edit(element);
-
-        editor.setOptions({
-          maxLines: Infinity,
-          copyWithEmptySelection: true,
-        });
-
-        editor.setValue(content);
-
-        return {
-          dom: element,
-          get value() {
-            return editor.getValue();
-          },
-        };
-      },
-    };
-  },
-};
-
 async function getPluginEditor() {
-  //   const plugin = window.ruiwiki.plugins.editor;
-  const plugin = myPlugin;
-  return plugin.init();
+  return middleware.editor?.init(window);
 }
 
 function getDefaultEditor() {

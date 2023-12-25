@@ -1,3 +1,7 @@
+export interface IEditorPlugin {
+  init: (window: Window) => Promise<IEditorFactory>;
+}
+
 export interface IEditorFactory {
   create: (content: string, fn: EditorUtil) => IEditor;
 }

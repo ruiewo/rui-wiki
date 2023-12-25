@@ -1,3 +1,4 @@
+import { IEditorPlugin, RuiWikiWindow } from "@rui-wiki/shared/src";
 import { showLoginDialog } from "./components/dialog";
 import { defaultAppData } from "./data";
 import { CryptoService } from "./lib/crypto";
@@ -7,6 +8,8 @@ import { MainPage } from "./pages/main";
 import "./styles/_common.scss";
 
 async function initialize() {
+  initPlugin();
+
   setFavicon();
   createSvgSymbols();
 
@@ -30,5 +33,37 @@ function setFavicon() {
     .querySelector('link[rel="apple-touch-icon"]')
     ?.setAttribute("href", dataUrl);
 }
+
+function isInIframe() {
+  return window !== window.parent;
+}
+
+function initPlugin() {
+  if (!isInIframe()) return;
+
+  const { overwrite, plugins } = (
+    window.parent as RuiWikiWindow
+  ).ruiwiki.getSettings();
+
+  const defaultOverwrite = async (_html: string) => false;
+  window.ruiwiki = {
+    pwa: {
+      overwrite: overwrite ?? defaultOverwrite,
+    },
+    // @ts-ignore
+    getSettings: undefined,
+  };
+  middleware.editor = plugins.editor;
+}
+
+export const middleware: Middleware = {
+  editor: null,
+};
+
+type Middleware = {
+  editor: IEditorPlugin | null;
+};
+
+declare let window: RuiWikiWindow;
 
 initialize();

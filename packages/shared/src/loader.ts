@@ -1,7 +1,7 @@
-const loadJs = (url: string): Promise<HTMLScriptElement> => {
-  const script = document.createElement("script");
+const loadJs = (url: string, window: Window): Promise<HTMLScriptElement> => {
+  const script = window.document.createElement("script");
   script.src = url;
-  document.querySelector("head")!.appendChild(script);
+  window.document.querySelector("head")!.appendChild(script);
 
   return new Promise((resolve, reject): void => {
     script.addEventListener("load", () => {
@@ -13,11 +13,11 @@ const loadJs = (url: string): Promise<HTMLScriptElement> => {
   });
 };
 
-const loadCss = (url: string): Promise<HTMLLinkElement> => {
-  const link = document.createElement("link");
+const loadCss = (url: string, window: Window): Promise<HTMLLinkElement> => {
+  const link = window.document.createElement("link");
   link.rel = "stylesheet";
   link.href = url;
-  document.querySelector("head")!.appendChild(link);
+  window.document.querySelector("head")!.appendChild(link);
 
   return new Promise((resolve, reject): void => {
     link.addEventListener("load", () => {
@@ -29,24 +29,27 @@ const loadCss = (url: string): Promise<HTMLLinkElement> => {
   });
 };
 
-export type Loader<T extends HTMLElement> = (url: string) => Promise<T>;
+export type Loader<T extends HTMLElement> = (
+  url: string,
+  window: Window
+) => Promise<T>;
 
 export function createDynamicLoader<T extends HTMLElement>(
   loader: Loader<T>
-): (url: string) => Promise<T> {
+): (url: string, window: Window) => Promise<T> {
   const cacheMap = new Map<string, T>();
 
-  return (url: string): Promise<T> => {
+  return (url: string, window: Window): Promise<T> => {
     const cachedElement = cacheMap.get(url);
     if (cachedElement) {
       return Promise.resolve(cachedElement);
     }
-    return loader(url).then((element) => {
+    return loader(url, window).then((element) => {
       cacheMap.set(url, element);
       return element;
     });
   };
 }
 
-export const dynamicImportJs = createDynamicLoader((url) => loadJs(url));
-export const dynamicImportCss = createDynamicLoader((url) => loadCss(url));
+export const dynamicImportJs = createDynamicLoader(loadJs);
+export const dynamicImportCss = createDynamicLoader(loadCss);

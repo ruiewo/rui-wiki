@@ -5,7 +5,9 @@ import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
 import { EventHandler, assertExist, clearChildren, download } from "./util";
-import { RuiWikiWindow } from "@rui-wiki/shared";
+import { RuiWikiWindow } from "@rui-wiki/shared/src";
+
+declare let window: RuiWikiWindow;
 
 type EventMap = {
   save: undefined;
@@ -185,14 +187,5 @@ export const appService = {
     } else {
       flashMessage("error", "Failed to save file");
     }
-  },
-};
-
-declare let window: RuiWikiWindow;
-
-window.ruiwiki = {
-  //** need to implement in pwa app */
-  pwa: {
-    overwrite: async (_: string) => false,
   },
 };

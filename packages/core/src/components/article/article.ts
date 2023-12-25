@@ -8,7 +8,7 @@ import {
   getDateString,
 } from "../../lib/util";
 import { parse } from "../../lib/parser";
-import { getEditor } from "../../plugin/editor";
+import { getEditor } from "../../plugins/editor";
 
 export const createArticle = async (
   article: Article,
