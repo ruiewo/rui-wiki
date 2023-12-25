@@ -1,12 +1,16 @@
 import { get, set } from "idb-keyval";
-
-import { RuiWikiWindow } from "@rui-wiki/shared";
+import { editor } from "./plugins/editor";
+import { RuiWikiWindow } from "@rui-wiki/shared/src";
 import "./styles/index.scss";
 
 // todo serialize file handle
 // https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read
 
 let handleMap = new Map<string, FileSystemFileHandle>();
+
+// FIXME
+// @ts-ignore
+window.ruiwiki = {};
 
 async function initialize() {
   document.body.classList.add("dark");
@@ -44,13 +48,12 @@ async function initialize() {
     const iframe = document.createElement("iframe");
     iframe.src = URL.createObjectURL(file);
 
-    main.innerHTML = "";
-    main.appendChild(iframe);
+    (window as unknown as RuiWikiWindow).ruiwiki.getSettings = () => {
+      const overwrite = async (html: string) => {
+        if (!handle) {
+          return false;
+        }
 
-    iframe.onload = () => {
-      (iframe.contentWindow as RuiWikiWindow).ruiwiki.pwa.overwrite = async (
-        html: string
-      ) => {
         try {
           const writable = await handle.createWritable();
           writable.write(html);
@@ -61,9 +64,20 @@ async function initialize() {
           return false;
         }
       };
+
+      return {
+        overwrite,
+        plugins: {
+          editor,
+        },
+      };
     };
+
+    main.innerHTML = "";
+    main.appendChild(iframe);
   };
 
+  // FIXME needs user action
   const dirHandle = (await get("directory")) as
     | FileSystemDirectoryHandle
     | undefined;
@@ -76,6 +90,10 @@ async function showList(
   dirHandle: FileSystemDirectoryHandle,
   nav: HTMLElement
 ) {
+  handleMap.clear();
+  const ul = nav.querySelector("ul")!;
+  ul.innerHTML = "";
+
   for await (let [name, handle] of dirHandle) {
     if (handle.kind !== "file") {
       continue;
@@ -85,11 +103,7 @@ async function showList(
       continue;
     }
 
-    handleMap.clear();
     handleMap.set(name, handle);
-
-    const ul = nav.querySelector("ul")!;
-    ul.innerHTML = "";
     ul.insertAdjacentHTML("beforeend", `<li>${name}</li>`);
   }
 }

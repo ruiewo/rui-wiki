@@ -8,6 +8,7 @@ import {
   getDateString,
 } from "../../lib/util";
 import { parse } from "../../lib/parser";
+import { getEditor } from "../../plugins/editor";
 
 export const createArticle = async (
   article: Article,
@@ -18,7 +19,7 @@ export const createArticle = async (
   section.dataset.id = `${article.id}`;
 
   if (isEdit) {
-    createEditor(section, article);
+    await createEditor(section, article);
   } else {
     await createViewer(section, article);
   }
@@ -44,15 +45,19 @@ async function createViewer(section: HTMLElement, article: Article) {
   const controls = document.createElement("div");
   controls.classList.add("controls");
 
+  const fn = {
+    edit: () => {
+      createEditor(section, article);
+    },
+    close: () => {
+      removeSection(section);
+    },
+  };
+
   (
     [
-      [
-        "edit",
-        () => {
-          createEditor(section, article);
-        },
-      ],
-      ["close", removeSection],
+      ["edit", fn.edit],
+      ["close", fn.close],
     ] as const
   ).forEach(([svg, onClick]) =>
     controls.appendChild(createIconButton(svg, onClick))
@@ -92,7 +97,7 @@ async function createViewer(section: HTMLElement, article: Article) {
   });
 }
 
-function createEditor(section: HTMLElement, article: Article) {
+async function createEditor(section: HTMLElement, article: Article) {
   const editor = document.createElement("div");
   editor.classList.add("editor");
 
@@ -106,37 +111,35 @@ function createEditor(section: HTMLElement, article: Article) {
   const controls = document.createElement("div");
   controls.classList.add("controls");
 
-  const save = () => {
-    const newTitle = title.value.trim();
-    const newContent = content.value.trim();
+  const fn = {
+    save: () => {
+      const newTitle = title.value.trim();
+      const newContent = contentEditor!.value;
 
-    const newArticle = {
-      ...article,
-      title: newTitle,
-      content: newContent,
-      modified: getDateString(),
-    };
+      const newArticle = {
+        ...article,
+        title: newTitle,
+        content: newContent,
+        modified: getDateString(),
+      };
 
-    articleHandler.update(newArticle);
-    createViewer(section, newArticle);
+      articleHandler.update(newArticle);
+      createViewer(section, newArticle);
+    },
+    delete: () => {
+      articleHandler.remove(article.id);
+      removeSection(section);
+    },
+    close: () => {
+      createViewer(section, article);
+    },
   };
 
   (
     [
-      [
-        "delete",
-        (e: MouseEvent) => {
-          articleHandler.remove(article.id);
-          removeSection(e);
-        },
-      ],
-      [
-        "close",
-        () => {
-          createViewer(section, article);
-        },
-      ],
-      ["save", save],
+      ["delete", fn.delete],
+      ["close", fn.close],
+      ["save", fn.save],
     ] as const
   ).forEach(([svg, onClick]) =>
     controls.appendChild(createIconButton(svg, onClick))
@@ -146,48 +149,32 @@ function createEditor(section: HTMLElement, article: Article) {
   title.classList.add("title");
   title.type = "text";
   title.value = article.title;
-
-  const content = document.createElement("textarea");
-  content.classList.add("content");
-  content.innerHTML = article.content;
-
-  function setTextareaHeight() {
-    content.style.height = "auto";
-    content.style.height = `${content.scrollHeight + 8}px`;
-  }
-  content.addEventListener("input", setTextareaHeight);
-
   function setSaveShortcut(e: KeyboardEvent) {
     // ctrl+enter for windows, command+return for mac
     if (
       ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
       e.key === "Enter"
     ) {
-      save();
+      fn.save();
     }
   }
   title.addEventListener("keydown", setSaveShortcut);
-  content.addEventListener("keydown", setSaveShortcut);
+
+  const contentEditor = await getEditor(article.content, fn);
 
   header.appendChild(controls);
   header.appendChild(editorTitle);
 
   editor.appendChild(header);
   editor.appendChild(title);
-  editor.appendChild(content);
+  editor.appendChild(contentEditor.dom);
 
   clearChildren(section);
 
   section.appendChild(editor);
-
-  setTextareaHeight();
 }
 
-function removeSection(e: MouseEvent) {
-  const section = (e.target as HTMLElement).closest("section");
-
-  if (!section) return;
-
+function removeSection(section: HTMLElement) {
   section.style.height = `${section.offsetHeight}px`;
   section.classList.add("close");
 

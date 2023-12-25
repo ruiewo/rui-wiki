@@ -32,6 +32,10 @@ export const articleHandler = {
   add,
   remove,
   update,
+  import: (article: Article) => {
+    articleMap.set(article.id, article);
+    eventHandler.emit(articleEvent.add, article);
+  },
   search,
   get: (id: number) => articleMap.get(id),
   get articles() {
@@ -77,18 +81,12 @@ function remove(id: number) {
   eventHandler.emit(articleEvent.delete, { id });
 }
 
-function update(article: Article, isImport = false) {
+function update(article: Article) {
   // todo validate same title
 
   const target = articleMap.get(article.id);
   if (!target) {
-    if (!isImport) {
-      throw new Error(`article not found: ${article.id}`);
-    }
-
-    articleMap.set(article.id, article);
-    eventHandler.emit(articleEvent.update, article);
-    return;
+    throw new Error(`article not found: ${article.id}`);
   }
 
   Object.assign(target, article);
