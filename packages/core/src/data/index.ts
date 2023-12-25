@@ -26,36 +26,6 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
       modified: "2023-12-18",
     },
     {
-      title: "article2",
-      content: "# header1\n## header2\n### header3\n content",
-      tags: "area1",
-      created: "2022-02-02",
-      modified: "2022-02-02",
-    },
-    {
-      title: "article3",
-      content: `content
-  
-  \`\`\`kv
-  key
-  value
-  key2
-  value2
-  key3
-  \`\`\`
-  
-  \`\`\`kv2
-  key
-  value
-  key2
-  value2
-  \`\`\`
-  `,
-      tags: "",
-      created: "2020-03-03",
-      modified: "2020-03-03",
-    },
-    {
       title: "Release Note",
       content: `# alpha version
 ## 0.1.0 2023-12-21
@@ -66,32 +36,31 @@ alpha 0.1.0 released
       modified: "2023-12-21",
     },
     {
-      title: "article5",
-      content: "content",
-      tags: "",
-      created: "2020-03-03",
-      modified: "2020-03-03",
-    },
-    {
       title: "Markdown",
       content: `
-### link
+# header1
+## header2
+### header3
+#### header4
+##### header5
+
+## link
 [RuiWiki GitHub repository](https://github.com/ruiewo/rui-wiki)
 
-### text style
+## text style
 **strong**
 
 *em*
 
 \`code\`
 
-### image
+## image
 ![image](https://avatars0.githubusercontent.com/u/20625401?s=460&v=4)
 
-### blockquote
+## blockquote
 > blockquote
 
-### list
+## list
 
 - term1
     - My description of term1
@@ -101,13 +70,13 @@ alpha 0.1.0 released
 
 
 
-### table
+## table
 | Heading 1 | Heading 2 | Heading 3 |
 |-----------|-----------|-----------|
 | cell 1    | cell 2    | cell 3    |
 | cell 4    | cell 5    | cell 6    |
 
-### code block
+## code block
 
 \`\`\`js
 const a = 1;

@@ -43,10 +43,10 @@ export function createSideMenu() {
   });
 
   function addToList(article: Article) {
-    const month = getMonth(article);
+    const group = getGroup(article);
 
     const wrapper = sideMenu.querySelector<HTMLElement>(
-      `.itemListWrapper[data-month="${month}"]`
+      `.itemListWrapper[data-group="${group}"]`
     );
 
     if (wrapper) {
@@ -54,7 +54,7 @@ export function createSideMenu() {
       itemList?.prepend(createItem(article));
     } else {
       const list = sideMenu.querySelector<HTMLElement>(".list");
-      list?.prepend(createItemListWrapper([article], month));
+      list?.prepend(createItemListWrapper([article], group));
     }
   }
 
@@ -190,24 +190,24 @@ function createSearchBox(articles: Article[]) {
   return wrapper;
 }
 
-function getMonth(article: Article) {
-  return article.modified.slice(0, -3);
+function getGroup(article: Article) {
+  return article.modified;
 }
 
 function createArticleList(articles: Article[]) {
   const fragment = document.createDocumentFragment();
   const map = new Map<string, Article[]>();
   articles.forEach((article) => {
-    const month = getMonth(article);
-    const articles = map.get(month) || [];
+    const group = getGroup(article);
+    const articles = map.get(group) || [];
     articles.push(article);
-    map.set(month, articles);
+    map.set(group, articles);
   });
 
   [...map]
     .sort((a, b) => (a[0] < b[0] ? 1 : -1))
-    .forEach(([month, articles]) => {
-      const itemListWrapper = createItemListWrapper(articles, month);
+    .forEach(([group, articles]) => {
+      const itemListWrapper = createItemListWrapper(articles, group);
       fragment.appendChild(itemListWrapper);
     });
 
@@ -221,14 +221,14 @@ function createArticleList(articles: Article[]) {
   return fragment;
 }
 
-function createItemListWrapper(articles: Article[], month: string) {
+function createItemListWrapper(articles: Article[], group: string) {
   const itemListWrapper = document.createElement("div");
   itemListWrapper.classList.add("itemListWrapper");
-  itemListWrapper.dataset.month = month;
+  itemListWrapper.dataset.group = group;
 
   const itemListHeader = document.createElement("div");
   itemListHeader.classList.add("itemListHeader");
-  itemListHeader.textContent = month;
+  itemListHeader.textContent = group;
 
   const itemList = document.createElement("div");
   itemList.classList.add("itemList");
