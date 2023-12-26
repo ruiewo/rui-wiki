@@ -77,14 +77,14 @@ export function createSideMenu() {
     [articleEvent.add, articleEvent.delete, articleEvent.update],
     () => {
       controls
-        .querySelectorAll<HTMLElement>(".download, .save2")
+        .querySelectorAll<HTMLElement>(".download, .overwrite")
         ?.forEach((x) => x.classList.add("alert"));
     }
   );
 
   appService.on(appEvent.save, () => {
     controls
-      .querySelectorAll<HTMLElement>(".download, .save2")
+      .querySelectorAll<HTMLElement>(".download, .overwrite")
       ?.forEach((x) => x.classList.remove("alert"));
   });
 
@@ -116,7 +116,7 @@ function createControls() {
     [
       ["add", articleHandler.add],
       ["download", appService.downloadHtml],
-      ["save2", appService.overwrite],
+      ["overwrite", appService.overwrite],
       ["setting", () => {}],
       ["light", appService.toggleTheme],
       ["lock", appService.updatePassword],

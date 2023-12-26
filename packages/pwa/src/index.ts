@@ -2,6 +2,7 @@ import { get, set } from "idb-keyval";
 import { editor } from "./plugins/editor";
 import { RuiWikiWindow } from "@rui-wiki/shared/src";
 import "./styles/index.scss";
+import { isCtrlKeyHeldDown } from "@rui-wiki/shared/src/key";
 
 // todo serialize file handle
 // https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read
@@ -76,6 +77,17 @@ async function initialize() {
           editor,
         },
       };
+    };
+    iframe.onload = () => {
+      const body = iframe.contentWindow?.document.body;
+      body?.addEventListener("keydown", (e) => {
+        if (isCtrlKeyHeldDown(e) && e.key === "s") {
+          e.preventDefault();
+          body
+            ?.querySelector<HTMLElement>(".sideMenu .iconButton.overwrite")
+            ?.click();
+        }
+      });
     };
 
     main.innerHTML = "";
