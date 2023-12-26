@@ -6,7 +6,7 @@ import "./index.scss";
 
 export async function showLoginDialog() {
   return new Promise((resolve) => {
-    const contentStr = `<div class="input"><input type="password" id="password" placeholder="Password"></div>`;
+    const contentStr = `<div><input type="password" id="password" class="input" placeholder="Password"></div>`;
     const content = createElementFromHTML(contentStr);
 
     const buttons = [
