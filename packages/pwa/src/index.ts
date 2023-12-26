@@ -41,6 +41,11 @@ async function initialize() {
       return;
     }
 
+    nav
+      .querySelectorAll(".selected")
+      .forEach((el) => el.classList.remove("selected"));
+    target.classList.add("selected");
+
     const name = target.textContent!;
     const handle = handleMap.get(name)!;
     const file = await handle.getFile();

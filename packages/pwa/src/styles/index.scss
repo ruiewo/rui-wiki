@@ -169,3 +169,6 @@ li {
     text-decoration: underline;
   }
 }
+li.selected {
+  color: var(--gray-700);
+}
