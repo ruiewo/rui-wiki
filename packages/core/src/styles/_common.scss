@@ -141,10 +141,7 @@ body {
   background-color: transparent;
 }
 
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+.input {
   outline: none;
   background-color: var(--gray-200);
   border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
@@ -155,7 +152,7 @@ input[type="email"] {
   }
 }
 
-textarea {
+textarea.input {
   border: 0.3rem solid rgba(0, 0, 0, 0);
   border-bottom: 0.3rem solid rgba(0, 0, 0, 0.3);
   &:focus {

@@ -156,6 +156,7 @@ async function createEditor(section: HTMLElement, article: Article) {
   );
 
   const title = document.createElement("input");
+  title.classList.add("input");
   title.classList.add("title");
   title.type = "text";
   title.value = article.title;

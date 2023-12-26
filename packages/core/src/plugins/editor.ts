@@ -18,6 +18,7 @@ async function getPluginEditor() {
 function getDefaultEditor() {
   const create = (content: string, _fn: EditorUtil) => {
     const textarea = document.createElement("textarea");
+    textarea.classList.add("input");
     textarea.classList.add("content");
     textarea.innerHTML = content;
 
