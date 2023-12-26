@@ -9,6 +9,7 @@ import {
 } from "../../lib/util";
 import { parse } from "../../lib/parser";
 import { getEditor } from "../../plugins/editor";
+import { isCtrlKeyHeldDown } from "@rui-wiki/shared/src/key";
 
 export const createArticle = async (
   article: Article,
@@ -102,11 +103,7 @@ async function createEditor(section: HTMLElement, article: Article) {
   editor.classList.add("editor");
 
   editor.addEventListener("keydown", (e: KeyboardEvent) => {
-    // ctrl+enter for windows, command+return for mac
-    if (
-      ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
-      e.key === "Enter"
-    ) {
+    if (isCtrlKeyHeldDown(e) && e.key === "Enter") {
       fn.save();
     }
   });
