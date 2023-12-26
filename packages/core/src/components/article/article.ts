@@ -101,6 +101,16 @@ async function createEditor(section: HTMLElement, article: Article) {
   const editor = document.createElement("div");
   editor.classList.add("editor");
 
+  editor.addEventListener("keydown", (e: KeyboardEvent) => {
+    // ctrl+enter for windows, command+return for mac
+    if (
+      ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
+      e.key === "Enter"
+    ) {
+      fn.save();
+    }
+  });
+
   const header = document.createElement("header");
   header.classList.add("header");
 
@@ -149,16 +159,6 @@ async function createEditor(section: HTMLElement, article: Article) {
   title.classList.add("title");
   title.type = "text";
   title.value = article.title;
-  function setSaveShortcut(e: KeyboardEvent) {
-    // ctrl+enter for windows, command+return for mac
-    if (
-      ((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) &&
-      e.key === "Enter"
-    ) {
-      fn.save();
-    }
-  }
-  title.addEventListener("keydown", setSaveShortcut);
 
   const contentEditor = await getEditor(article.content, fn);
 
