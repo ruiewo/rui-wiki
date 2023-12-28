@@ -1,13 +1,13 @@
+import { h } from "../../lib/jsxFactory";
 import {
   Article,
   articleEvent,
   articleHandler,
 } from "../../lib/articleHandler";
-import { createArticle } from "../article/article";
+import { createArticle } from "../article";
 
 export function createMain() {
-  const main = document.createElement("main");
-  main.classList.add("main");
+  const main = <main class="main" />;
 
   articleHandler.on(articleEvent.add, async (article) => {
     await showArticle(article, true);

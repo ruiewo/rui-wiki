@@ -1,5 +1,10 @@
+// @ts-ignore
+import { h, Fragment } from "../jsxFactory";
+import { createElementFromHTML } from "../util";
+
 /** svgは512*512固定 */
 export function createSvgSymbols() {
+  console.log("createSvgSymbols");
   const symbols = Object.entries(svg)
     .map(
       ([id, svg]) =>
@@ -16,8 +21,9 @@ export function createSvgSymbols() {
   const bgImage = `linear-gradient(var(--gray-300), color-mix(in srgb, var(--gray-300) 75%, transparent)), url("${dataUrl}")`;
   document.body.style.backgroundImage = bgImage; // todo 他の方法を考える bodyにstyleを設定すると保存時にhtmlが汚れる
 }
+
 export function getSvg(type: SvgType) {
-  return `<svg><use href="#${type}Svg"></svg>`;
+  return createElementFromHTML(`<svg><use href="#${type}Svg"></svg>`);
 }
 
 export function getFaviconSvg(type: SvgType) {

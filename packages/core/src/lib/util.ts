@@ -1,5 +1,4 @@
 import { flashMessage } from "../components/flashMessage";
-import { SvgType, getSvg } from "./svg";
 
 export function assertExist<T>(params: T): asserts params is NonNullable<T> {
   if (params === null || params === undefined) {
@@ -15,19 +14,6 @@ export function clearChildren(element: HTMLElement) {
 
 export function getDateString() {
   return new Date().toISOString().slice(0, 10);
-}
-
-export function createIconButton(
-  type: SvgType,
-  onClick: (e: MouseEvent) => void
-) {
-  const button = document.createElement("button");
-  button.classList.add("iconButton");
-  button.classList.add(type);
-  button.innerHTML = getSvg(type);
-  button.onclick = onClick;
-
-  return button;
 }
 
 export function createElementFromHTML(htmlString: string) {

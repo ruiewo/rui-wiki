@@ -1,3 +1,4 @@
+import { h } from "../lib/jsxFactory";
 import { EditorUtil, IEditorFactory } from "@rui-wiki/shared/src";
 import { middleware } from "../main";
 
@@ -17,10 +18,9 @@ async function getPluginEditor() {
 
 function getDefaultEditor() {
   const create = (content: string, _fn: EditorUtil) => {
-    const textarea = document.createElement("textarea");
-    textarea.classList.add("input");
-    textarea.classList.add("content");
-    textarea.innerHTML = content;
+    const textarea = (
+      <textarea class="input content">{content}</textarea>
+    ) as HTMLTextAreaElement;
 
     function setTextareaHeight() {
       textarea.style.height = "auto";
