@@ -1,3 +1,4 @@
+import { h } from "../../lib/jsxFactory";
 import "./index.scss";
 
 type FlashMessageType = "success" | "error" | "info";
@@ -8,10 +9,10 @@ interface FlashMessage {
 }
 
 let messages: FlashMessage[] = [];
+let container: HTMLElement | null = null;
 
 function initialize() {
-  const container = document.createElement("div");
-  container.id = "flashMessageContainer";
+  container = <div id="flashMessageContainer"></div>;
   document.body.appendChild(container);
 }
 
@@ -20,11 +21,8 @@ initialize();
 export function flashMessage(type: FlashMessageType, message: string) {
   messages.push({ type, message });
 
-  const flashMessage = document.createElement("span");
-  flashMessage.className = `flashMessage ${type}`;
-  flashMessage.textContent = message;
+  const flashMessage = <span class={`flashMessage ${type}`}>{message}</span>;
 
-  const container = document.getElementById("flashMessageContainer");
   container?.appendChild(flashMessage);
 
   setTimeout(() => {

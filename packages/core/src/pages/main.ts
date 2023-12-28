@@ -1,5 +1,5 @@
 import { createMain } from "../components/main";
-import { createSideMenu } from "../components/sideMenu/sideMenu";
+import { createSideMenu } from "../components/sideMenu";
 import { RawArticle, articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
 
