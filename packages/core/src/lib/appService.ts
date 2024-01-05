@@ -47,7 +47,7 @@ async function getHtml(doc = document) {
 }
 
 async function downloadHtml() {
-  download(await getHtml(), "RuiWiki.html", "html");
+  download(await getHtml(), getFileName(), "html");
   eventHandler.emit(appEvent.save, undefined);
 }
 
@@ -161,7 +161,12 @@ async function versionUp() {
     "text/html"
   );
 
-  download(await getHtml(doc), "RuiWiki.html", "html");
+  download(await getHtml(doc), getFileName(), "html");
+}
+
+function getFileName() {
+  const fileName = window.location.pathname.split("/").pop() ?? "";
+  return fileName.endsWith(".html") ? fileName : "RuiWiki.html";
 }
 
 export const appService = {
