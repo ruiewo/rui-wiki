@@ -1,12 +1,14 @@
+import { flashMessage } from "../components/flashMessage";
 import { createMain } from "../components/main";
 import { createSideMenu } from "../components/sideMenu";
 import { RawArticle, articleHandler } from "../lib/articleHandler";
 import { Setting, settingHandler } from "../lib/setting";
+import { updateAvailable } from "../lib/version";
 
 import "./main.scss";
 
 export const MainPage = {
-  load: (appData: AppData) => {
+  load: async (appData: AppData) => {
     settingHandler.initialize(appData.setting);
     articleHandler.initialize(appData.articles);
 
@@ -21,6 +23,10 @@ export const MainPage = {
     layout.appendChild(sideMenu);
 
     app.appendChild(layout);
+
+    if (await updateAvailable()) {
+      flashMessage("info", "A new version of RuiWiki is available.", 10000);
+    }
   },
 };
 

@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "versionUp": "lerna version",
-    "build": "npm run build --workspaces --if-present && npm run copy",
-    "copy": "npm run copyCore && npm run copyPwa",
-    "copyCore": "node -e \"require('fs').copyFileSync('./packages/core/dist/index.html', './docs/index.html')\"",
-    "copyPwa": "node -e \"require('fs').copyFileSync('./packages/pwa/dist/index.html', './docs/pwa.html')\""
+    "build": "npm run build --workspaces --if-present",
+    "postbuild": "node build.js"
   },
   "devDependencies": {
     "@lerna-lite/cli": "^3.1.0",

@@ -18,7 +18,11 @@ function initialize() {
 
 initialize();
 
-export function flashMessage(type: FlashMessageType, message: string) {
+export function flashMessage(
+  type: FlashMessageType,
+  message: string,
+  msec: number = 5000
+) {
   messages.push({ type, message });
 
   const flashMessage = <span class={`flashMessage ${type}`}>{message}</span>;
@@ -28,5 +32,5 @@ export function flashMessage(type: FlashMessageType, message: string) {
   setTimeout(() => {
     messages = messages.filter((m) => m.message !== message);
     container?.removeChild(flashMessage);
-  }, 5000);
+  }, msec);
 }

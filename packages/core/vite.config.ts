@@ -6,5 +6,23 @@ export default defineConfig({
     jsxFactory: "h",
     jsxFragment: "Fragment",
   },
-  plugins: [viteSingleFile()],
+  plugins: [htmlPlugin(), viteSingleFile()],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
 });
+
+function htmlPlugin() {
+  const params: Record<string, string | undefined> = {
+    VERSION: process.env.npm_package_version,
+  };
+
+  return {
+    name: "html-transform",
+    transformIndexHtml: {
+      order: "pre" as const,
+      handler: (html: string): string =>
+        html.replace(/%(.*?)%/g, (match, p1) => params[p1] ?? match),
+    },
+  };
+}

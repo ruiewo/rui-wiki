@@ -21,7 +21,7 @@ async function initialize() {
     appData = await CryptoService.decrypt(appData);
   }
 
-  MainPage.load(appData ? JSON.parse(appData) : defaultAppData);
+  await MainPage.load(appData ? JSON.parse(appData) : defaultAppData);
 }
 
 function setFavicon() {
