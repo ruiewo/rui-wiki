@@ -1,4 +1,5 @@
 import { flashMessage } from "../components/flashMessage";
+import { appUrl } from "../const";
 import { AppData } from "../pages/main";
 import { RawArticle, articleHandler } from "./articleHandler";
 import { CryptoService } from "./crypto";
@@ -153,8 +154,7 @@ function toggleTheme() {
 }
 
 async function versionUp() {
-  const url = "https://ruiewo.github.io/rui-wiki/index.html";
-  const response = await fetch(url);
+  const response = await fetch(appUrl);
 
   const doc = new DOMParser().parseFromString(
     await response.text(),

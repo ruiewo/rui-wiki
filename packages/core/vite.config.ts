@@ -20,8 +20,8 @@ function htmlPlugin() {
   return {
     name: "html-transform",
     transformIndexHtml: {
-      enforce: "pre" as const,
-      transform: (html: string): string =>
+      order: "pre" as const,
+      handler: (html: string): string =>
         html.replace(/%(.*?)%/g, (match, p1) => params[p1] ?? match),
     },
   };

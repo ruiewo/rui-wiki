@@ -25,7 +25,7 @@ export const MainPage = {
     app.appendChild(layout);
 
     if (await updateAvailable()) {
-      flashMessage("info", "A new version of RuiWiki is available.");
+      flashMessage("info", "A new version of RuiWiki is available.", 10000);
     }
   },
 };

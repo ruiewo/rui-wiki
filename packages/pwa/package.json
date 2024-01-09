@@ -1,6 +1,7 @@
 {
   "name": "@rui-wiki/pwa",
   "version": "0.1.2",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
