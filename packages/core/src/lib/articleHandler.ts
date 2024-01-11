@@ -1,3 +1,4 @@
+import { flashMessage } from "../components/flashMessage";
 import { isSystemTag } from "./tag";
 import { EventHandler, getDateString } from "./util";
 
@@ -83,15 +84,22 @@ function remove(id: number) {
 }
 
 function update(article: Article) {
-  // todo validate same title
-
   const target = articleMap.get(article.id);
   if (!target) {
     throw new Error(`article not found: ${article.id}`);
   }
 
+  if (
+    article.title !== target.title &&
+    articleHandler.articles.some((x) => x.title === article.title)
+  ) {
+    flashMessage("error", "Title already exists.");
+    return false;
+  }
+
   Object.assign(target, article);
   eventHandler.emit(articleEvent.update, target);
+  return true;
 }
 
 function search(text: string) {

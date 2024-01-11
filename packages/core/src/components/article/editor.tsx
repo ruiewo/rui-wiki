@@ -20,8 +20,10 @@ export async function showEditor(section: HTMLElement, article: Article) {
         modified: getDateString(),
       };
 
-      articleHandler.update(newArticle);
-      showViewer(section, newArticle);
+      const succeed = articleHandler.update(newArticle);
+      if (succeed) {
+        showViewer(section, newArticle);
+      }
     },
     delete: () => {
       articleHandler.remove(article.id);

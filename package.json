@@ -10,6 +10,7 @@
   "devDependencies": {
     "@lerna-lite/cli": "^3.2.0",
     "@lerna-lite/version": "^3.2.0",
+    "@types/node": "^20.10.8",
     "@types/wicg-file-system-access": "^2023.10.4",
     "sass": "^1.69.7",
     "typescript": "^5.3.3",
