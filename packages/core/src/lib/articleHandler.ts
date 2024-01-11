@@ -1,3 +1,4 @@
+import { isSystemTag } from "./tag";
 import { EventHandler, getDateString } from "./util";
 
 type ArticleEventMap = {
@@ -98,6 +99,8 @@ function search(text: string) {
   if (!text) return articles;
 
   return articles.filter((article) => {
+    if (isSystemTag(article.tags)) return false;
+
     return (
       article.title.toLowerCase().includes(text.toLowerCase()) ||
       article.content.toLowerCase().includes(text.toLowerCase())

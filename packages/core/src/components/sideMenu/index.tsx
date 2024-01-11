@@ -5,15 +5,16 @@ import {
   articleEvent,
   articleHandler,
 } from "../../lib/articleHandler";
-import { IconButton } from "../IconButton";
 import { settingHandler } from "../../lib/setting";
+import { isSystemTag } from "../../lib/tag";
 import { clearChildren } from "../../lib/util";
+import { IconButton } from "../IconButton";
 import { showArticle } from "../main";
 import "./sideMenu.scss";
 
 export function createSideMenu() {
   const setting = settingHandler.setting;
-  const articles = articleHandler.articles;
+  const articles = articleHandler.articles.filter((x) => !isSystemTag(x.tags));
 
   const sideMenu = (
     <div class="sideMenu">

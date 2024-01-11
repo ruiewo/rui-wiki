@@ -1,6 +1,6 @@
 import { get, set } from "idb-keyval";
 import { editor } from "./plugins/editor";
-import { RuiWikiWindow } from "@rui-wiki/shared/src";
+import { RuiWikiWindow } from "@rui-wiki/shared/src/window";
 import "./styles/index.scss";
 import { isCtrlKeyHeldDown } from "@rui-wiki/shared/src/key";
 
