@@ -6,7 +6,7 @@ import { CryptoService } from "./crypto";
 import { settingHandler } from "./setting";
 import { dataHandler } from "./store";
 import { EventHandler, assertExist, clearChildren, download } from "./util";
-import { RuiWikiWindow } from "@rui-wiki/shared/src";
+import { RuiWikiWindow } from "@rui-wiki/shared/src/window";
 
 declare let window: RuiWikiWindow;
 

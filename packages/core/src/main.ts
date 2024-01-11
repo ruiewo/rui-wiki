@@ -1,4 +1,4 @@
-import { IEditorPlugin, RuiWikiWindow } from "@rui-wiki/shared/src";
+import { RuiWikiWindow } from "@rui-wiki/shared/src/window";
 import { showLoginDialog } from "./components/dialog";
 import { defaultAppData } from "./data";
 import { CryptoService } from "./lib/crypto";
@@ -57,11 +57,11 @@ function initPlugin() {
 }
 
 export const middleware: Middleware = {
-  editor: null,
+  // editor: null,
 };
 
 type Middleware = {
-  editor: IEditorPlugin | null;
+  editor?: string;
 };
 
 declare let window: RuiWikiWindow;

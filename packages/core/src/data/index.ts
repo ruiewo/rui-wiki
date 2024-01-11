@@ -1,4 +1,5 @@
 import { AppData } from "../pages/main";
+// import { plugins } from "./plugins";
 
 export const defaultAppData: AppData = {
   setting: {
@@ -97,5 +98,6 @@ value2
       created: "2023-12-19",
       modified: "2023-12-19",
     },
+    // ...plugins, // todo
   ],
 };
