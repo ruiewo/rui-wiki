@@ -1,4 +1,4 @@
-import { marked } from "marked";
+import { TokenizerAndRendererExtension, marked } from "marked";
 
 const renderer = new marked.Renderer();
 const linkRenderer = renderer.link;
@@ -44,3 +44,27 @@ marked.use({
 export async function parse(text: string) {
   return await marked(text, { renderer });
 }
+
+const ruiwikiLink: TokenizerAndRendererExtension = {
+  name: "ruiwikiLink",
+  level: "inline",
+  start(src: string) {
+    return src.match(/\[\[.*\]\]/)?.index;
+  },
+  tokenizer(src) {
+    const rule = /\[\[(.*)\]\]/;
+    const match = rule.exec(src);
+    if (match) {
+      return {
+        type: "ruiwikiLink",
+        raw: match[0],
+        ruiwikiLink: match[1].trim(),
+      };
+    }
+  },
+  renderer(token) {
+    return `<a class="ruiwikiLink">${token.ruiwikiLink}</a>`;
+  },
+  childTokens: [],
+};
+marked.use({ extensions: [ruiwikiLink] });
