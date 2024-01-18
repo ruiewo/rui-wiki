@@ -1232,4 +1232,16 @@
       background-color: var(--gray-300);
     }
   }
+
+  a.ruiwikiLink {
+    color: var(--color-accent-fg);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-accent-fg);
+    transition: none;
+
+    &:hover {
+      background-color: var(--color-accent-fg);
+      color: var(--color-canvas-default);
+    }
+  }
 }

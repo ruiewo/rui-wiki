@@ -1,10 +1,11 @@
 import { h } from "../../lib/jsxFactory";
-import { Article } from "../../lib/articleHandler";
+import { Article, articleHandler } from "../../lib/articleHandler";
 import { IconButton } from "../IconButton";
 import { parse } from "../../lib/parser";
 import { clearChildren, copyToClipboard } from "../../lib/util";
 import { removeSection } from ".";
 import { showEditor } from "./editor";
+import { showArticle } from "../main";
 
 export async function showViewer(section: HTMLElement, article: Article) {
   const fn = {
@@ -51,6 +52,16 @@ export async function showViewer(section: HTMLElement, article: Article) {
     copyToClipboard(
       target.closest(".codeBlock")?.querySelector("code")?.textContent
     );
+  });
+
+  viewer.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.classList.contains("ruiwikiLink")) return;
+
+    const title = target.textContent!;
+    const article = articleHandler.articles.find((x) => x.title === title);
+    if (!article) return;
+    showArticle(article);
   });
 
   clearChildren(section);
