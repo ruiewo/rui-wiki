@@ -12,8 +12,8 @@ export function clearChildren(element: HTMLElement) {
   }
 }
 
-export function getDateString() {
-  return new Date().toISOString().slice(0, 10);
+export function getTimestamp() {
+  return new Date().toISOString();
 }
 
 export function createElementFromHTML(htmlString: string) {

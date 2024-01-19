@@ -1,7 +1,7 @@
 import { h } from "../../lib/jsxFactory";
 import { Article, articleHandler } from "../../lib/articleHandler";
 import { IconButton } from "../IconButton";
-import { clearChildren, getDateString } from "../../lib/util";
+import { clearChildren, getTimestamp } from "../../lib/util";
 import { isCtrlKeyHeldDown } from "@rui-wiki/shared/src/key";
 import { getEditor } from "../../plugins/editor";
 import { showViewer } from "./viewer";
@@ -17,7 +17,7 @@ export async function showEditor(section: HTMLElement, article: Article) {
         ...article,
         title: newTitle,
         content: newContent,
-        modified: getDateString(),
+        modified: getTimestamp(),
       };
 
       const succeed = articleHandler.update(newArticle);

@@ -1,6 +1,6 @@
 import { flashMessage } from "../components/flashMessage";
 import { isSystemTag } from "./tag";
-import { EventHandler, getDateString } from "./util";
+import { EventHandler, getTimestamp } from "./util";
 
 type ArticleEventMap = {
   add: Article;
@@ -51,7 +51,16 @@ export const articleHandler = {
 };
 
 function initialize(articles: RawArticle[]) {
-  articles.forEach((article, i) => articleMap.set(i, { ...article, id: i }));
+  // articles.forEach((article, i) => articleMap.set(i, { ...article, id: i }));
+  // todo remove this line. needed for update version 0.1.4.
+  articles.forEach((article, i) =>
+    articleMap.set(i, {
+      ...article,
+      created: new Date(article.created).toISOString(),
+      modified: new Date(article.modified).toISOString(),
+      id: i,
+    })
+  );
   lastId = articles.length - 1;
 }
 
@@ -65,13 +74,13 @@ function add() {
     i++;
   }
 
-  const title = prefix + i;
+  const timestamp = getTimestamp();
   const article: Article = {
     id: ++lastId,
-    title,
+    title: prefix + i,
     content: "",
-    created: getDateString(),
-    modified: getDateString(),
+    created: timestamp,
+    modified: timestamp,
   };
 
   articleMap.set(article.id, article);
