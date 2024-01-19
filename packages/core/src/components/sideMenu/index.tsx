@@ -60,12 +60,39 @@ export function createSideMenu() {
       `.item[data-id="${article.id}"]`
     );
 
-    if (item) {
-      item.textContent = article.title;
+    if (!item) {
+      addToList(article);
       return;
     }
 
-    addToList(article);
+    item.textContent = article.title;
+
+    // todo refactoring. articleの移動ロジックが複雑なのでwrapper単位で再生成する方が良いかも
+    const group = getGroup(article);
+
+    const originalWrapper = item.closest<HTMLElement>(".itemListWrapper")!;
+
+    if (group === originalWrapper.dataset.group) {
+      item.parentElement?.prepend(item);
+      return;
+    }
+
+    const moveTargetWrapper = sideMenu.querySelector<HTMLElement>(
+      `.itemListWrapper[data-group="${group}"]`
+    );
+    if (moveTargetWrapper) {
+      const itemList =
+        moveTargetWrapper.querySelector<HTMLElement>(".itemList");
+      itemList?.prepend(item);
+    } else {
+      const list = sideMenu.querySelector<HTMLElement>(".list");
+      list?.prepend(<ListGroup articles={[article]} group={group} />);
+      item.remove();
+    }
+
+    if (!originalWrapper.querySelector(".item")) {
+      originalWrapper.remove();
+    }
   });
 
   articleHandler.on(
@@ -163,7 +190,7 @@ const SearchBox = ({ articles }: { articles: Article[] }) => {
 };
 
 function getGroup(article: Article) {
-  return article.modified;
+  return new Date(article.modified).toISOString().slice(0, 10);
 }
 
 const List = ({ articles }: { articles: Article[] }) => {
@@ -204,7 +231,10 @@ const ListGroups = ({ articles }: { articles: Article[] }) => {
   return (
     <>
       {...sorted.map(([group, articles]) => (
-        <ListGroup articles={articles} group={group} />
+        <ListGroup
+          articles={articles.sort((a, b) => (a.modified < b.modified ? 1 : -1))}
+          group={group}
+        />
       ))}
     </>
   );
