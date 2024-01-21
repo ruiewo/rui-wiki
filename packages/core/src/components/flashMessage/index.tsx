@@ -1,7 +1,6 @@
-import { h } from "../../lib/jsxFactory";
-import "./index.scss";
+import './index.scss';
 
-type FlashMessageType = "success" | "error" | "info";
+type FlashMessageType = 'success' | 'error' | 'info';
 
 interface FlashMessage {
   type: FlashMessageType;

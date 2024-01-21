@@ -1,14 +1,14 @@
-import { AppData } from "../pages/main";
+import { AppData } from '../pages/main';
 // import { plugins } from "./plugins";
 
 export const defaultAppData: AppData = {
   setting: {
-    title: "RuiWiki",
-    subTitle: "Your Personal Knowledge Base",
+    title: 'RuiWiki',
+    subTitle: 'Your Personal Knowledge Base',
   },
   articles: [
     {
-      title: "RuiWiki",
+      title: 'RuiWiki',
       content: `RuiWiki is a tool that perfectly combines simplicity and convenience, making it ideal for personal information management and knowledge organization.
 
 Similar to TiddlyWiki, RuiWiki operates on a single HTML file. This means that you don't need any special databases or servers, and you can easily manage your information on any device.
@@ -22,22 +22,22 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
 ### PWA
 [PWA site](https://ruiewo.github.io/rui-wiki/pwa.html)
 `,
-      tags: "",
-      created: "2023-12-18",
-      modified: "2023-12-18",
+      tags: '',
+      created: '2023-12-18',
+      modified: '2023-12-18',
     },
     {
-      title: "Release Note",
+      title: 'Release Note',
       content: `# alpha version
 ## 0.1.0 2023-12-21
 alpha 0.1.0 released
 `,
-      tags: "",
-      created: "2023-12-21",
-      modified: "2023-12-21",
+      tags: '',
+      created: '2023-12-21',
+      modified: '2023-12-21',
     },
     {
-      title: "Markdown",
+      title: 'Markdown',
       content: `
 # header1
 ## header2
@@ -94,9 +94,9 @@ value2
 
 
 `,
-      tags: "",
-      created: "2023-12-19",
-      modified: "2023-12-19",
+      tags: '',
+      created: '2023-12-19',
+      modified: '2023-12-19',
     },
     // ...plugins, // todo
   ],

@@ -1,7 +1,10 @@
 button {
   position: relative;
   border: none;
-  transition: color 0.5s, transform 0.2s, background-color 0.2s;
+  transition:
+    color 0.5s,
+    transform 0.2s,
+    background-color 0.2s;
   outline: none;
   user-select: none;
   cursor: pointer;
@@ -24,7 +27,7 @@ button {
 
   &::after,
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -47,7 +50,9 @@ button {
     border: 0.3rem solid var(--hoverBorder);
     opacity: 0;
     transform: scaleX(1.1) scaleY(1.3);
-    transition: transform 0.3s, opacity 0.3s;
+    transition:
+      transform 0.3s,
+      opacity 0.3s;
   }
 
   &:hover::after {

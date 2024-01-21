@@ -1,9 +1,8 @@
-import { h } from "../../lib/jsxFactory";
-import { Article } from "../../lib/articleHandler";
-import { showViewer } from "./viewer";
-import { showEditor } from "./editor";
-import "./article.scss";
-import "../../styles/markdown.scss";
+import { Article } from '../../lib/articleHandler';
+import { showViewer } from './viewer';
+import { showEditor } from './editor';
+import './article.scss';
+import '../../styles/markdown.scss';
 
 export const createArticle = async (
   article: Article,
@@ -22,7 +21,7 @@ export const createArticle = async (
 
 export function removeSection(section: HTMLElement) {
   section.style.height = `${section.offsetHeight}px`;
-  section.classList.add("close");
+  section.classList.add('close');
 
   setTimeout(() => {
     section.remove();

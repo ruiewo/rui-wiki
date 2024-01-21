@@ -1,5 +1,4 @@
-import { h } from "../lib/jsxFactory";
-import { SvgType, getSvg } from "../lib/svg";
+import { SvgType, getSvg } from '../lib/svg';
 
 export const IconButton = ({
   type,

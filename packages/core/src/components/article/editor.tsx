@@ -1,11 +1,10 @@
-import { h } from "../../lib/jsxFactory";
-import { Article, articleHandler } from "../../lib/articleHandler";
-import { IconButton } from "../IconButton";
-import { clearChildren, getTimestamp } from "../../lib/util";
-import { isCtrlKeyHeldDown } from "@rui-wiki/shared/src/key";
-import { getEditor } from "../../plugins/editor";
-import { showViewer } from "./viewer";
-import { removeSection } from ".";
+import { Article, articleHandler } from '../../lib/articleHandler';
+import { IconButton } from '../IconButton';
+import { clearChildren, getTimestamp } from '../../lib/util';
+import { isCtrlKeyHeldDown } from '@rui-wiki/shared/src/key';
+import { getEditor } from '../../plugins/editor';
+import { showViewer } from './viewer';
+import { removeSection } from '.';
 
 export async function showEditor(section: HTMLElement, article: Article) {
   const fn = {
@@ -59,8 +58,8 @@ export async function showEditor(section: HTMLElement, article: Article) {
     </div>
   );
 
-  editor.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (isCtrlKeyHeldDown(e) && e.key === "Enter") {
+  editor.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (isCtrlKeyHeldDown(e) && e.key === 'Enter') {
       fn.save();
     }
   });

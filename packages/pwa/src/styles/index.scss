@@ -1,4 +1,4 @@
-@use "./_reset";
+@use './_reset';
 
 html {
   font-size: 16px;
@@ -88,7 +88,7 @@ iframe {
   span,
   span:before,
   span:after {
-    content: "";
+    content: '';
     display: block;
     height: 3px;
     width: 25px;
@@ -130,21 +130,29 @@ button {
   outline: 0;
   border: 0;
   cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
   will-change: box-shadow, transform;
   background: var(--gray-100);
-  box-shadow: 0px 2px 4px rgb(45 35 66 / 40%),
-    0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px var(--gray-300);
+  box-shadow:
+    0px 2px 4px rgb(45 35 66 / 40%),
+    0px 7px 13px -3px rgb(45 35 66 / 30%),
+    inset 0px -3px 0px var(--gray-300);
   height: 48px;
   padding: 0 32px;
   font-size: 18px;
   border-radius: 6px;
   color: var(--gray-700);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 
   &:hover {
-    box-shadow: 0px 4px 8px rgb(45 35 66 / 40%),
-      0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px var(--gray-300);
+    box-shadow:
+      0px 4px 8px rgb(45 35 66 / 40%),
+      0px 7px 13px -3px rgb(45 35 66 / 30%),
+      inset 0px -3px 0px var(--gray-300);
     transform: translateY(-2px);
   }
 

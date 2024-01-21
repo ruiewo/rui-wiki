@@ -1,10 +1,9 @@
-import { h } from "../../lib/jsxFactory";
 import {
   Article,
   articleEvent,
   articleHandler,
-} from "../../lib/articleHandler";
-import { createArticle } from "../article";
+} from '../../lib/articleHandler';
+import { createArticle } from '../article';
 
 export function createMain() {
   const main = <main class="main" />;
@@ -23,8 +22,8 @@ export async function showArticle(article: Article, isEdit: boolean = false) {
 
   if (!target) {
     target = await createArticle(article, isEdit);
-    document.querySelector(".main")?.prepend(target);
+    document.querySelector('.main')?.prepend(target);
   }
 
-  target.scrollIntoView({ behavior: "smooth" });
+  target.scrollIntoView({ behavior: 'smooth' });
 }

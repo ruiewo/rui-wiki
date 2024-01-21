@@ -1,8 +1,8 @@
-import { flashMessage } from "../components/flashMessage";
+import { flashMessage } from '../components/flashMessage';
 
 export function assertExist<T>(params: T): asserts params is NonNullable<T> {
   if (params === null || params === undefined) {
-    throw new Error("Assertion failed. params is null or undefined");
+    throw new Error('Assertion failed. params is null or undefined');
   }
 }
 
@@ -17,7 +17,7 @@ export function getTimestamp() {
 }
 
 export function createElementFromHTML(htmlString: string) {
-  const div = document.createElement("div");
+  const div = document.createElement('div');
   div.innerHTML = htmlString.trim();
 
   return div.firstChild as HTMLElement;
@@ -26,26 +26,26 @@ export function createElementFromHTML(htmlString: string) {
 export function download(
   text: string,
   fileName: string,
-  fileType: "html" | "json"
+  fileType: 'html' | 'json'
 ) {
   let type;
   switch (fileType) {
-    case "html":
-      type = "text/html";
+    case 'html':
+      type = 'text/html';
       break;
-    case "json":
-      type = "application/json";
+    case 'json':
+      type = 'application/json';
       break;
     default:
-      throw new Error("Assertion failed. fileType is invalid");
+      throw new Error('Assertion failed. fileType is invalid');
   }
-  const a = document.createElement("a");
+  const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([text], { type }));
   a.download = fileName;
   a.click();
 }
 
-export class EventHandler<EventMap extends Record<string, any>> {
+export class EventHandler<EventMap extends Record<string, unknown>> {
   private listeners: {
     [K in keyof EventMap]?: Array<(event: EventMap[K]) => void>;
   } = {};
@@ -82,5 +82,5 @@ export function copyToClipboard(text: string | null | undefined) {
   if (!text) return;
 
   navigator.clipboard.writeText(text.trim());
-  flashMessage("success", "Copied to clipboard");
+  flashMessage('success', 'Copied to clipboard');
 }

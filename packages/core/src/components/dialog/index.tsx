@@ -1,8 +1,7 @@
-import { h } from "../../lib/jsxFactory";
-import { appService } from "../../lib/appService";
-import { getSvg } from "../../lib/svg";
-import { flashMessage } from "../flashMessage";
-import "./index.scss";
+import { appService } from '../../lib/appService';
+import { getSvg } from '../../lib/svg';
+import { flashMessage } from '../flashMessage';
+import './index.scss';
 
 export async function showLoginDialog() {
   return new Promise((resolve) => {
@@ -19,27 +18,27 @@ export async function showLoginDialog() {
 
     const buttons = [
       [
-        "Log in",
+        'Log in',
         async (close: () => void) => {
           const password =
-            content.querySelector<HTMLInputElement>("#password")!.value;
+            content.querySelector<HTMLInputElement>('#password')!.value;
 
           if (await appService.checkPassword(password)) {
             close();
-            resolve("success");
+            resolve('success');
           } else {
-            flashMessage("error", "Wrong password");
+            flashMessage('error', 'Wrong password');
           }
         },
       ] as const,
     ];
 
     const dialog = showDialog({ content, buttons });
-    const input = dialog.querySelector<HTMLInputElement>("#password")!;
+    const input = dialog.querySelector<HTMLInputElement>('#password')!;
     input.focus();
     input.onkeydown = (e) => {
-      if (e.key === "Enter") {
-        dialog.querySelector<HTMLButtonElement>("button")!.click();
+      if (e.key === 'Enter') {
+        dialog.querySelector<HTMLButtonElement>('button')!.click();
       }
     };
   });
@@ -63,7 +62,7 @@ const Dialog = ({ content, buttons }: DialogProps) => {
   const dialog = (
     <div class="dialogContainer">
       <div class="dialog">
-        <div class="appIcon">{getSvg("app")}</div>
+        <div class="appIcon">{getSvg('app')}</div>
         {content}
         {...buttons.map(([label, onClick]) => (
           <Button label={label} onClick={() => onClick(close)}></Button>
