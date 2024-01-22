@@ -1,4 +1,4 @@
-import { assertExist } from "./util";
+import { assertExist } from './util';
 
 type Crypto = {
   encrypt: (text: string) => Promise<string>;
@@ -87,7 +87,7 @@ export class CryptoService {
 async function encrypt(text: string, key: CryptoKey, iv: Uint8Array) {
   const encoded = new TextEncoder().encode(text);
   const encrypted = await window.crypto.subtle.encrypt(
-    { name: "AES-GCM", iv },
+    { name: 'AES-GCM', iv },
     key,
     encoded
   );
@@ -99,7 +99,7 @@ async function decrypt(base64: string, key: CryptoKey, iv: Uint8Array) {
   const encoded = fromBase64(base64);
 
   const decrypted = await window.crypto.subtle.decrypt(
-    { name: "AES-GCM", iv },
+    { name: 'AES-GCM', iv },
     key,
     encoded
   );
@@ -112,26 +112,26 @@ async function generateKey(
   salt: Uint8Array = window.crypto.getRandomValues(new Uint8Array(16))
 ) {
   const passPhrase = new TextEncoder().encode(password);
-  const digest = await window.crypto.subtle.digest("SHA-256", passPhrase);
+  const digest = await window.crypto.subtle.digest('SHA-256', passPhrase);
   const keyMaterial = await window.crypto.subtle.importKey(
-    "raw",
+    'raw',
     digest,
-    { name: "PBKDF2" },
+    { name: 'PBKDF2' },
     false,
-    ["deriveKey"]
+    ['deriveKey']
   );
 
   const key = await window.crypto.subtle.deriveKey(
     {
-      name: "PBKDF2",
+      name: 'PBKDF2',
       salt,
       iterations: 100000,
-      hash: "SHA-256",
+      hash: 'SHA-256',
     },
     keyMaterial,
-    { name: "AES-GCM", length: 256 },
+    { name: 'AES-GCM', length: 256 },
     false,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt']
   );
 
   return { key, salt };

@@ -1,11 +1,10 @@
-import { h } from "../lib/jsxFactory";
-import { middleware } from "../main";
-import { articleHandler } from "../lib/articleHandler";
+import { middleware } from '../main';
+import { articleHandler } from '../lib/articleHandler';
 import {
   EditorUtil,
   IEditorFactory,
-} from "@rui-wiki/shared/src/plugins/editor";
-import { loader } from "@rui-wiki/shared/src/plugins/loader";
+} from '@rui-wiki/shared/src/plugins/editor';
+import { loader } from '@rui-wiki/shared/src/plugins/loader';
 
 let editor: IEditorFactory | null = null;
 
@@ -19,7 +18,7 @@ export async function getEditor(content: string, fn: EditorUtil) {
 
 async function getPluginEditor() {
   const pluginStr =
-    articleHandler.articles.find((x) => x.title === "ruiwiki_plugin_editor")
+    articleHandler.articles.find((x) => x.title === 'ruiwiki_plugin_editor')
       ?.content ?? middleware.editor;
 
   if (!pluginStr) {
@@ -38,10 +37,10 @@ function getDefaultEditor() {
     ) as HTMLTextAreaElement;
 
     function setTextareaHeight() {
-      textarea.style.height = "auto";
+      textarea.style.height = 'auto';
       textarea.style.height = `${textarea.scrollHeight + 8}px`;
     }
-    textarea.addEventListener("input", setTextareaHeight);
+    textarea.addEventListener('input', setTextareaHeight);
 
     setTimeout(() => {
       setTextareaHeight(); // todo

@@ -1,12 +1,12 @@
-import { flashMessage } from "../components/flashMessage";
-import { appUrl } from "../const";
-import { AppData } from "../pages/main";
-import { RawArticle, articleHandler } from "./articleHandler";
-import { CryptoService } from "./crypto";
-import { settingHandler } from "./setting";
-import { dataHandler } from "./store";
-import { EventHandler, assertExist, clearChildren, download } from "./util";
-import { RuiWikiWindow } from "@rui-wiki/shared/src/window";
+import { flashMessage } from '../components/flashMessage';
+import { appUrl } from '../const';
+import { AppData } from '../pages/main';
+import { RawArticle, articleHandler } from './articleHandler';
+import { CryptoService } from './crypto';
+import { settingHandler } from './setting';
+import { dataHandler } from './store';
+import { EventHandler, assertExist, clearChildren, download } from './util';
+import { RuiWikiWindow } from '@rui-wiki/shared/src/window';
 
 declare let window: RuiWikiWindow;
 
@@ -15,15 +15,15 @@ type EventMap = {
 };
 
 export const appEvent: { [K in keyof EventMap]: K } = {
-  save: "save",
+  save: 'save',
 } as const;
 
 const eventHandler = new EventHandler<EventMap>();
 
 async function getHtml(doc = document) {
-  const html = doc.querySelector<HTMLElement>("html")!;
+  const html = doc.querySelector<HTMLElement>('html')!;
   const newHtml = html.cloneNode(true) as HTMLElement;
-  const body = newHtml.querySelector<HTMLElement>("body")!;
+  const body = newHtml.querySelector<HTMLElement>('body')!;
 
   for (const node of [...body.childNodes]) {
     if (!(node instanceof HTMLElement)) {
@@ -31,12 +31,12 @@ async function getHtml(doc = document) {
       continue;
     }
 
-    if (node.id === "app") {
+    if (node.id === 'app') {
       clearChildren(node);
       continue;
     }
 
-    if (node.id === "data") {
+    if (node.id === 'data') {
       node.textContent = await getUserData();
       continue;
     }
@@ -48,18 +48,18 @@ async function getHtml(doc = document) {
 }
 
 async function downloadHtml() {
-  download(await getHtml(), getFileName(), "html");
+  download(await getHtml(), getFileName(), 'html');
   eventHandler.emit(appEvent.save, undefined);
 }
 
 async function exportData() {
-  download(JSON.stringify(articleHandler.rawData), "RuiWiki.json", "json");
+  download(JSON.stringify(articleHandler.rawData), 'RuiWiki.json', 'json');
 }
 
 async function importData() {
-  const file = document.createElement("input");
-  file.type = "file";
-  file.accept = ".json";
+  const file = document.createElement('input');
+  file.type = 'file';
+  file.accept = '.json';
 
   file.onchange = async () => {
     if (!file.files || !file.files[0]) return;
@@ -124,9 +124,9 @@ async function checkPassword(password: string) {
 }
 
 async function updatePassword() {
-  const password = prompt("Enter password");
+  const password = prompt('Enter password');
   if (!password) {
-    flashMessage("error", "Password is required");
+    flashMessage('error', 'Password is required');
     return;
   }
 
@@ -136,7 +136,7 @@ async function updatePassword() {
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
 
-  flashMessage("success", "Password updated");
+  flashMessage('success', 'Password updated');
 }
 
 function clearPassword() {
@@ -146,11 +146,11 @@ function clearPassword() {
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
 
-  flashMessage("success", "Password cleared");
+  flashMessage('success', 'Password cleared');
 }
 
 function toggleTheme() {
-  document.body.classList.toggle("dark");
+  document.body.classList.toggle('dark');
 }
 
 async function versionUp() {
@@ -158,15 +158,15 @@ async function versionUp() {
 
   const doc = new DOMParser().parseFromString(
     await response.text(),
-    "text/html"
+    'text/html'
   );
 
-  download(await getHtml(doc), getFileName(), "html");
+  download(await getHtml(doc), getFileName(), 'html');
 }
 
 function getFileName() {
-  const fileName = window.location.pathname.split("/").pop() ?? "";
-  return fileName.endsWith(".html") ? fileName : "RuiWiki.html";
+  const fileName = window.location.pathname.split('/').pop() ?? '';
+  return fileName.endsWith('.html') ? fileName : 'RuiWiki.html';
 }
 
 export const appService = {
@@ -188,9 +188,9 @@ export const appService = {
 
     if (succeed) {
       eventHandler.emit(appEvent.save, undefined);
-      flashMessage("info", "file saved");
+      flashMessage('info', 'file saved');
     } else {
-      flashMessage("error", "Failed to save file");
+      flashMessage('error', 'Failed to save file');
     }
   },
 };

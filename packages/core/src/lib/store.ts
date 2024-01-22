@@ -2,7 +2,7 @@ class DataHandler {
   private _data: Data;
 
   constructor() {
-    const dataStr = document.getElementById("data")!.textContent!;
+    const dataStr = document.getElementById('data')!.textContent!;
     this._data = JSON.parse(dataStr) as Data;
   }
 

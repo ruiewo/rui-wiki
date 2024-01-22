@@ -1,8 +1,8 @@
-import { versionUrl } from "../const";
+import { versionUrl } from '../const';
 
 const version =
   document.querySelector<HTMLMetaElement>("meta[name='version']")?.content ??
-  "0.0.0";
+  '0.0.0';
 
 export const updateAvailable = async () => {
   try {
@@ -21,8 +21,8 @@ export const updateAvailable = async () => {
 };
 
 function compareVersions(version1: string, version2: string) {
-  const [major1, minor1, patch1] = version1.split(".").map(Number);
-  const [major2, minor2, patch2] = version2.split(".").map(Number);
+  const [major1, minor1, patch1] = version1.split('.').map(Number);
+  const [major2, minor2, patch2] = version2.split('.').map(Number);
 
   if (major1 > major2) return 1;
   if (major1 < major2) return -1;

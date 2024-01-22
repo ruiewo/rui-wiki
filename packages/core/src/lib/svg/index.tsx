@@ -1,23 +1,21 @@
-// @ts-ignore
-import { h, Fragment } from "../jsxFactory";
-import { createElementFromHTML } from "../util";
+import { createElementFromHTML } from '../util';
 
 /** svgは512*512固定 */
 export function createSvgSymbols() {
-  console.log("createSvgSymbols");
+  console.log('createSvgSymbols');
   const symbols = Object.entries(svg)
     .map(
       ([id, svg]) =>
         `<symbol id="${id}Svg" viewBox="0 0 512 512">${svg}</symbol>`
     )
-    .join("");
+    .join('');
 
   document.body.insertAdjacentHTML(
-    "beforeend",
+    'beforeend',
     `<svg aria-hidden="true" style="display: none;"><defs>${symbols}</defs></svg>`
   );
 
-  const dataUrl = "data:image/svg+xml;base64," + btoa(getFaviconSvg("app"));
+  const dataUrl = 'data:image/svg+xml;base64,' + btoa(getFaviconSvg('app'));
   const bgImage = `linear-gradient(var(--gray-300), color-mix(in srgb, var(--gray-300) 75%, transparent)), url("${dataUrl}")`;
   document.body.style.backgroundImage = bgImage; // todo 他の方法を考える bodyにstyleを設定すると保存時にhtmlが汚れる
 }

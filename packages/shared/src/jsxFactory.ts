@@ -1,4 +1,4 @@
-type Props = { [key: string]: any };
+type Props = { [key: string]: unknown };
 
 type Child = string | Element;
 
@@ -9,7 +9,7 @@ export function h(
   props: Props,
   ...children: Child[]
 ) {
-  const isString = typeof type === "string";
+  const isString = typeof type === 'string';
 
   const dom = isString
     ? document.createElement(type)
@@ -19,11 +19,11 @@ export function h(
     Object.entries(props ?? {}).forEach(([key, value]) => {
       if (!(dom instanceof Element)) throw new Error();
 
-      if (typeof value === "boolean") {
+      if (typeof value === 'boolean') {
         if (value) {
-          dom.setAttribute(key, "");
+          dom.setAttribute(key, '');
         }
-      } else if (typeof value === "function") {
+      } else if (typeof value === 'function') {
         // @ts-ignore
         dom[key] = value;
       } else {
@@ -41,6 +41,7 @@ export const Fragment = () => document.createDocumentFragment();
 
 // todo SVGElement support
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     type Element = HTMLElement;
     interface IntrinsicElements extends ValuePartial<HTMLElementTagNameMap> {}

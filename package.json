@@ -5,13 +5,21 @@
   "scripts": {
     "versionUp": "lerna version",
     "build": "npm run build --workspaces --if-present",
-    "postbuild": "node build.js"
+    "postbuild": "node build.js",
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:fix": "npm run lint:fix --workspaces --if-present"
   },
   "devDependencies": {
+    "@eslint/js": "^8.56.0",
     "@lerna-lite/cli": "^3.2.0",
     "@lerna-lite/version": "^3.2.0",
     "@types/node": "^20.10.8",
     "@types/wicg-file-system-access": "^2023.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.4",
     "sass": "^1.69.7",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",

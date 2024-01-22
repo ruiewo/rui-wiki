@@ -1,4 +1,4 @@
-import { TokenizerAndRendererExtension, marked } from "marked";
+import { TokenizerAndRendererExtension, marked } from 'marked';
 
 const renderer = new marked.Renderer();
 const linkRenderer = renderer.link;
@@ -12,17 +12,15 @@ renderer.link = (href, title, text) => {
 
 const codeRenderer = renderer.code;
 renderer.code = (code, language, isEscaped) => {
-  if (language === "kv") {
-    const lines = code.split("\n");
+  if (language === 'kv') {
+    const lines = code.split('\n');
 
     // 奇数行目をキー、偶数行目を値として解釈
-    let result = "";
+    let result = '';
     for (let i = 0; i < lines.length; i += 2) {
       const key = lines[i];
       const value = lines[i + 1];
-      result += `<span class="key">${key}</span><span class="value">${
-        value ?? ""
-      }</span><br/>`;
+      result += `<span class="key">${key}</span><span class="value">${value ?? ''}</span><br/>`;
     }
 
     return `<div class="keyValue">${result}</div>`;
@@ -46,8 +44,8 @@ export async function parse(text: string) {
 }
 
 const ruiwikiLink: TokenizerAndRendererExtension = {
-  name: "ruiwikiLink",
-  level: "inline",
+  name: 'ruiwikiLink',
+  level: 'inline',
   start(src: string) {
     return src.match(/\[\[.*\]\]/)?.index;
   },
@@ -56,7 +54,7 @@ const ruiwikiLink: TokenizerAndRendererExtension = {
     const match = rule.exec(src);
     if (match) {
       return {
-        type: "ruiwikiLink",
+        type: 'ruiwikiLink',
         raw: match[0],
         ruiwikiLink: match[1].trim(),
       };

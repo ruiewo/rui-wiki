@@ -1,10 +1,11 @@
-import { defineConfig } from "vite";
-import { viteSingleFile } from "vite-plugin-singlefile";
+import { defineConfig } from 'vite';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 
 export default defineConfig({
   esbuild: {
-    jsxFactory: "h",
-    jsxFragment: "Fragment",
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+    jsxInject: `import { h, Fragment } from "@rui-wiki/shared/src/jsxFactory"`,
   },
   plugins: [htmlPlugin(), viteSingleFile()],
   define: {
@@ -18,9 +19,9 @@ function htmlPlugin() {
   };
 
   return {
-    name: "html-transform",
+    name: 'html-transform',
     transformIndexHtml: {
-      order: "pre" as const,
+      order: 'pre' as const,
       handler: (html: string): string =>
         html.replace(/%(.*?)%/g, (match, p1) => params[p1] ?? match),
     },

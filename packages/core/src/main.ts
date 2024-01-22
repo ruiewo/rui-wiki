@@ -1,11 +1,11 @@
-import { RuiWikiWindow } from "@rui-wiki/shared/src/window";
-import { showLoginDialog } from "./components/dialog";
-import { defaultAppData } from "./data";
-import { CryptoService } from "./lib/crypto";
-import { dataHandler } from "./lib/store";
-import { createSvgSymbols, getFaviconSvg } from "./lib/svg";
-import { MainPage } from "./pages/main";
-import "./styles/_common.scss";
+import { RuiWikiWindow } from '@rui-wiki/shared/src/window';
+import { showLoginDialog } from './components/dialog';
+import { defaultAppData } from './data';
+import { CryptoService } from './lib/crypto';
+import { dataHandler } from './lib/store';
+import { createSvgSymbols, getFaviconSvg } from './lib/svg';
+import { MainPage } from './pages/main';
+import './styles/_common.scss';
 
 async function initialize() {
   initPlugin();
@@ -25,13 +25,13 @@ async function initialize() {
 }
 
 function setFavicon() {
-  const str = getFaviconSvg("app");
-  const dataUrl = "data:image/svg+xml;base64," + btoa(str);
+  const str = getFaviconSvg('app');
+  const dataUrl = 'data:image/svg+xml;base64,' + btoa(str);
 
-  document.querySelector('link[rel="icon"]')?.setAttribute("href", dataUrl);
+  document.querySelector('link[rel="icon"]')?.setAttribute('href', dataUrl);
   document
     .querySelector('link[rel="apple-touch-icon"]')
-    ?.setAttribute("href", dataUrl);
+    ?.setAttribute('href', dataUrl);
 }
 
 function isInIframe() {
@@ -50,7 +50,7 @@ function initPlugin() {
     pwa: {
       overwrite: overwrite ?? defaultOverwrite,
     },
-    // @ts-ignore
+    // @ts-ignore // FIXME separate PWA/Core window interface
     getSettings: undefined,
   };
   middleware.editor = plugins.editor;

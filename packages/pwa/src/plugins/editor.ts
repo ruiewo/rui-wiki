@@ -1,3 +1,3 @@
-import aceEditor from "@rui-wiki/shared/src/plugins/aceEditor";
+import aceEditor from '@rui-wiki/shared/src/plugins/aceEditor';
 
 export const editor = aceEditor;

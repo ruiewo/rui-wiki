@@ -1,29 +1,29 @@
 const loadJs = (url: string): Promise<HTMLScriptElement> => {
-  const script = document.createElement("script");
+  const script = document.createElement('script');
   script.src = url;
-  document.querySelector("head")!.appendChild(script);
+  document.querySelector('head')!.appendChild(script);
 
   return new Promise((resolve, reject): void => {
-    script.addEventListener("load", () => {
+    script.addEventListener('load', () => {
       resolve(script);
     });
-    script.addEventListener("error", () => {
+    script.addEventListener('error', () => {
       reject(new Error(`Can not load: ${url}`));
     });
   });
 };
 
 const loadCss = (url: string): Promise<HTMLLinkElement> => {
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
   link.href = url;
-  document.querySelector("head")!.appendChild(link);
+  document.querySelector('head')!.appendChild(link);
 
   return new Promise((resolve, reject): void => {
-    link.addEventListener("load", () => {
+    link.addEventListener('load', () => {
       resolve(link);
     });
-    link.addEventListener("error", () => {
+    link.addEventListener('error', () => {
       reject(new Error(`Can not load: ${url}`));
     });
   });

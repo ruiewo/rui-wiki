@@ -1,10 +1,10 @@
-import { flashMessage } from "../components/flashMessage";
-import { isSystemTag } from "./tag";
-import { EventHandler, getTimestamp } from "./util";
+import { flashMessage } from '../components/flashMessage';
+import { isSystemTag } from './tag';
+import { EventHandler, getTimestamp } from './util';
 
 type ArticleEventMap = {
   add: Article;
-  delete: { id: Article["id"] };
+  delete: { id: Article['id'] };
   update: Article;
 };
 
@@ -19,9 +19,9 @@ export type RawArticle = {
 export type Article = RawArticle & { id: number };
 
 export const articleEvent: { [K in keyof ArticleEventMap]: K } = {
-  add: "add",
-  delete: "delete",
-  update: "update",
+  add: 'add',
+  delete: 'delete',
+  update: 'update',
 } as const;
 
 const eventHandler = new EventHandler<ArticleEventMap>();
@@ -65,7 +65,7 @@ function initialize(articles: RawArticle[]) {
 }
 
 function add() {
-  const prefix = "New RuiWiki ";
+  const prefix = 'New RuiWiki ';
 
   let i = 1;
 
@@ -78,7 +78,7 @@ function add() {
   const article: Article = {
     id: ++lastId,
     title: prefix + i,
-    content: "",
+    content: '',
     created: timestamp,
     modified: timestamp,
   };
@@ -102,7 +102,7 @@ function update(article: Article) {
     article.title !== target.title &&
     articleHandler.articles.some((x) => x.title === article.title)
   ) {
-    flashMessage("error", "Title already exists.");
+    flashMessage('error', 'Title already exists.');
     return false;
   }
 

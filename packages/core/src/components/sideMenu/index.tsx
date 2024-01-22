@@ -1,16 +1,15 @@
-import { h, Fragment } from "../../lib/jsxFactory";
-import { appEvent, appService } from "../../lib/appService";
+import { appEvent, appService } from '../../lib/appService';
 import {
   Article,
   articleEvent,
   articleHandler,
-} from "../../lib/articleHandler";
-import { settingHandler } from "../../lib/setting";
-import { isSystemTag } from "../../lib/tag";
-import { clearChildren } from "../../lib/util";
-import { IconButton } from "../IconButton";
-import { showArticle } from "../main";
-import "./sideMenu.scss";
+} from '../../lib/articleHandler';
+import { settingHandler } from '../../lib/setting';
+import { isSystemTag } from '../../lib/tag';
+import { clearChildren } from '../../lib/util';
+import { IconButton } from '../IconButton';
+import { showArticle } from '../main';
+import './sideMenu.scss';
 
 export function createSideMenu() {
   const setting = settingHandler.setting;
@@ -29,10 +28,10 @@ export function createSideMenu() {
     const item = sideMenu.querySelector<HTMLElement>(`.item[data-id="${id}"]`);
     if (!item) return;
 
-    const itemListWrapper = item.closest<HTMLElement>(".itemListWrapper");
+    const itemListWrapper = item.closest<HTMLElement>('.itemListWrapper');
     item.remove();
 
-    if (!itemListWrapper?.querySelector(".item")) {
+    if (!itemListWrapper?.querySelector('.item')) {
       itemListWrapper?.remove();
     }
   });
@@ -45,10 +44,10 @@ export function createSideMenu() {
     );
 
     if (wrapper) {
-      const itemList = wrapper.querySelector<HTMLElement>(".itemList");
+      const itemList = wrapper.querySelector<HTMLElement>('.itemList');
       itemList?.prepend(<ListItem {...article} />);
     } else {
-      const list = sideMenu.querySelector<HTMLElement>(".list");
+      const list = sideMenu.querySelector<HTMLElement>('.list');
       list?.prepend(<ListGroup articles={[article]} group={group} />);
     }
   }
@@ -70,7 +69,7 @@ export function createSideMenu() {
     // todo refactoring. articleの移動ロジックが複雑なのでwrapper単位で再生成する方が良いかも
     const group = getGroup(article);
 
-    const originalWrapper = item.closest<HTMLElement>(".itemListWrapper")!;
+    const originalWrapper = item.closest<HTMLElement>('.itemListWrapper')!;
 
     if (group === originalWrapper.dataset.group) {
       item.parentElement?.prepend(item);
@@ -82,15 +81,15 @@ export function createSideMenu() {
     );
     if (moveTargetWrapper) {
       const itemList =
-        moveTargetWrapper.querySelector<HTMLElement>(".itemList");
+        moveTargetWrapper.querySelector<HTMLElement>('.itemList');
       itemList?.prepend(item);
     } else {
-      const list = sideMenu.querySelector<HTMLElement>(".list");
+      const list = sideMenu.querySelector<HTMLElement>('.list');
       list?.prepend(<ListGroup articles={[article]} group={group} />);
       item.remove();
     }
 
-    if (!originalWrapper.querySelector(".item")) {
+    if (!originalWrapper.querySelector('.item')) {
       originalWrapper.remove();
     }
   });
@@ -100,18 +99,18 @@ export function createSideMenu() {
     () => {
       sideMenu
         .querySelectorAll<HTMLElement>(
-          ".controls .download, .controls .overwrite"
+          '.controls .download, .controls .overwrite'
         )
-        ?.forEach((x) => x.classList.add("alert"));
+        ?.forEach((x) => x.classList.add('alert'));
     }
   );
 
   appService.on(appEvent.save, () => {
     sideMenu
       .querySelectorAll<HTMLElement>(
-        ".controls .download, .controls .overwrite"
+        '.controls .download, .controls .overwrite'
       )
-      ?.forEach((x) => x.classList.remove("alert"));
+      ?.forEach((x) => x.classList.remove('alert'));
   });
 
   return sideMenu;
@@ -195,7 +194,7 @@ function getGroup(article: Article) {
 
 const List = ({ articles }: { articles: Article[] }) => {
   const onClick = (e: MouseEvent) => {
-    const item = (e.target as HTMLElement).closest<HTMLElement>(".item");
+    const item = (e.target as HTMLElement).closest<HTMLElement>('.item');
     if (!item) return;
 
     const id = parseInt(item.dataset.id!);
