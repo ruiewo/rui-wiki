@@ -1,4 +1,4 @@
-import './index.scss';
+import './index.css';
 
 type FlashMessageType = 'success' | 'error' | 'info';
 

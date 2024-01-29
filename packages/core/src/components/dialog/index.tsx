@@ -1,7 +1,7 @@
 import { appService } from '../../lib/appService';
 import { getSvg } from '../../lib/svg';
 import { flashMessage } from '../flashMessage';
-import './index.scss';
+import './index.css';
 
 export async function showLoginDialog() {
   return new Promise((resolve) => {

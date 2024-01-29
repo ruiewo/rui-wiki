@@ -5,7 +5,7 @@ import { RawArticle, articleHandler } from '../lib/articleHandler';
 import { Setting, settingHandler } from '../lib/setting';
 import { updateAvailable } from '../lib/version';
 
-import './main.scss';
+import './main.css';
 
 export const MainPage = {
   load: async (appData: AppData) => {
