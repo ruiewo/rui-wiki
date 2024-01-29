@@ -7,7 +7,8 @@
     "build": "npm run build --workspaces --if-present",
     "postbuild": "node build.js",
     "lint": "npm run lint --workspaces --if-present",
-    "lint:fix": "npm run lint:fix --workspaces --if-present"
+    "lint:fix": "npm run lint:fix --workspaces --if-present",
+    "format": "npx prettier --write"
   },
   "devDependencies": {
     "@eslint/js": "^8.56.0",

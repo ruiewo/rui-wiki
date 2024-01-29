@@ -9,7 +9,7 @@ import { isSystemTag } from '../../lib/tag';
 import { clearChildren } from '../../lib/util';
 import { IconButton } from '../IconButton';
 import { showArticle } from '../main';
-import './sideMenu.scss';
+import './sideMenu.css';
 
 export function createSideMenu() {
   const setting = settingHandler.setting;

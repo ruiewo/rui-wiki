@@ -1,8 +1,8 @@
 import { Article } from '../../lib/articleHandler';
 import { showViewer } from './viewer';
 import { showEditor } from './editor';
-import './article.scss';
-import '../../styles/markdown.scss';
+import './article.css';
+import './markdown.css';
 
 export const createArticle = async (
   article: Article,

@@ -27,7 +27,7 @@ export function h(
         // @ts-ignore
         dom[key] = value;
       } else {
-        dom.setAttribute(key, value);
+        dom.setAttribute(key, value as string);
       }
     });
   }

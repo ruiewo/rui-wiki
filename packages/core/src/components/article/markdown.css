@@ -34,8 +34,8 @@
   --color-fg-default: #e6edf3;
   --color-fg-muted: #848d97;
   --color-fg-subtle: #6e7681;
-  // --color-canvas-default: #0d1117;
-  // --color-canvas-subtle: #161b22;
+  /* --color-canvas-default: #0d1117; */
+  /* --color-canvas-subtle: #161b22; */
   --color-canvas-default: var(--gray-00);
   --color-canvas-subtle: var(--gray-200);
   --color-border-default: #30363d;
@@ -90,9 +90,9 @@
   --color-fg-default: var(--gray-800);
   --color-fg-muted: #656d76;
   --color-fg-subtle: #6e7781;
-  // --color-fg-default: #1f2328;
-  // --color-canvas-default: #ffffff;
-  // --color-canvas-subtle: #f6f8fa;
+  /* --color-fg-default: #1f2328; */
+  /* --color-canvas-default: #ffffff; */
+  /* --color-canvas-subtle: #f6f8fa; */
   --color-canvas-default: var(--gray-00);
   --color-canvas-subtle: var(--gray-200);
   --color-border-default: #d0d7de;

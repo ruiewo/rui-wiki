@@ -5,7 +5,9 @@ import { CryptoService } from './lib/crypto';
 import { dataHandler } from './lib/store';
 import { createSvgSymbols, getFaviconSvg } from './lib/svg';
 import { MainPage } from './pages/main';
-import './styles/_common.scss';
+import './styles/reset.css';
+import './styles/common.css';
+import './styles/button.css';
 
 async function initialize() {
   initPlugin();

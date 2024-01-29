@@ -1,8 +1,9 @@
 import { get, set } from 'idb-keyval';
 import { editor } from './plugins/editor';
 import { RuiWikiWindow } from '@rui-wiki/shared/src/window';
-import './styles/index.scss';
 import { isCtrlKeyHeldDown } from '@rui-wiki/shared/src/key';
+import './styles/reset.css';
+import './styles/index.css';
 
 // todo serialize file handle
 // https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read
@@ -42,7 +43,9 @@ async function initialize() {
       return;
     }
 
-    nav.querySelectorAll('.selected').forEach((el) => el.classList.remove('selected'));
+    nav
+      .querySelectorAll('.selected')
+      .forEach((el) => el.classList.remove('selected'));
     target.classList.add('selected');
 
     const name = target.textContent!;
@@ -81,7 +84,9 @@ async function initialize() {
       body?.addEventListener('keydown', (e) => {
         if (isCtrlKeyHeldDown(e) && e.key === 's') {
           e.preventDefault();
-          body?.querySelector<HTMLElement>('.sideMenu .iconButton.overwrite')?.click();
+          body
+            ?.querySelector<HTMLElement>('.sideMenu .iconButton.overwrite')
+            ?.click();
         }
       });
     };
@@ -91,13 +96,18 @@ async function initialize() {
   };
 
   // FIXME needs user action
-  const dirHandle = (await get('directory')) as FileSystemDirectoryHandle | undefined;
+  const dirHandle = (await get('directory')) as
+    | FileSystemDirectoryHandle
+    | undefined;
   if (dirHandle && (await verifyPermission(dirHandle))) {
     await showList(dirHandle, nav);
   }
 }
 
-async function showList(dirHandle: FileSystemDirectoryHandle, nav: HTMLElement) {
+async function showList(
+  dirHandle: FileSystemDirectoryHandle,
+  nav: HTMLElement
+) {
   handleMap.clear();
   const ul = nav.querySelector('ul')!;
   ul.innerHTML = '';

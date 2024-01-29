@@ -1,5 +1,3 @@
-@use '../../styles/_button';
-
 .dialogContainer {
   position: fixed;
   top: 0;

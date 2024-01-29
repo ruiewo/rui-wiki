@@ -1,12 +1,10 @@
-@use '_reset';
-
 :root {
   color-scheme: light dark;
 
-  // color palette
+  /* color palette */
   --primary-900: #f38112;
   --primary-800: #f6aa23;
-  --primary-700: #f8c22c; //
+  --primary-700: #f8c22c;
   --primary-600: #fada35;
   --primary-500: #f6e836;
   --primary-400: #f9ed56;
@@ -18,7 +16,7 @@
   --secondary-800: #d14820;
   --secondary-700: #df4f23;
   --secondary-600: #ed5628;
-  --secondary-500: #f85c2c; //
+  --secondary-500: #f85c2c;
   --secondary-400: #f9734a;
   --secondary-300: #f98c6a;
   --secondary-200: #faac94;
@@ -28,7 +26,7 @@
   --tertiary-800: #9fb500;
   --tertiary-700: #aecd14;
   --tertiary-600: #bde523;
-  --tertiary-500: #c8f82c; //
+  --tertiary-500: #c8f82c;
   --tertiary-400: #cef851;
   --tertiary-300: #d8fb74;
   --tertiary-200: #e3fc9e;
@@ -107,7 +105,7 @@ body {
   overflow: auto;
 }
 
-// 要検討
+/* 要検討 */
 .hidden {
   display: none !important;
 }
