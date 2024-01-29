@@ -31,7 +31,18 @@ export async function showViewer(section: HTMLElement, article: Article) {
       <header class="header">
         {controls}
         <h1 class="title">{article.title}</h1>
-        <div class="modified">{article.modified}</div>
+        <div class="modified">
+          {new Date(article.modified)
+            .toLocaleString('ja-JP', {
+              timeZone: 'Asia/Tokyo',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+            .replace(/\//g, '-')}
+        </div>
       </header>
       {markdown}
     </div>
