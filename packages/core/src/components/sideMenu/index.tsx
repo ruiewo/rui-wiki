@@ -189,7 +189,14 @@ const SearchBox = ({ articles }: { articles: Article[] }) => {
 };
 
 function getGroup(article: Article) {
-  return new Date(article.modified).toISOString().slice(0, 10);
+  return new Date(article.modified)
+    .toLocaleString('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })
+    .replace(/\//g, '-');
 }
 
 const List = ({ articles }: { articles: Article[] }) => {

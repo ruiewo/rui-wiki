@@ -23,8 +23,8 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
 [PWA site](https://ruiewo.github.io/rui-wiki/pwa.html)
 `,
       tags: '',
-      created: '2023-12-18',
-      modified: '2023-12-18',
+      created: '2023-12-18T03:00:00.000Z',
+      modified: '2023-12-18T03:00:00.000Z',
     },
     {
       title: 'Release Note',
@@ -33,8 +33,8 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
 alpha 0.1.0 released
 `,
       tags: '',
-      created: '2023-12-21',
-      modified: '2023-12-21',
+      created: '2023-12-21T03:00:00.000Z',
+      modified: '2023-12-21T03:00:00.000Z',
     },
     {
       title: 'Markdown',
@@ -95,8 +95,8 @@ value2
 
 `,
       tags: '',
-      created: '2023-12-19',
-      modified: '2023-12-19',
+      created: '2023-12-19T03:00:00.000Z',
+      modified: '2023-12-19T03:00:00.000Z',
     },
     // ...plugins, // todo
   ],
