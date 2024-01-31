@@ -12,6 +12,7 @@ export async function showLoginDialog() {
           id="password"
           class="input"
           placeholder="Password"
+          autofocus
         />
       </div>
     );
@@ -35,7 +36,6 @@ export async function showLoginDialog() {
 
     const dialog = showDialog({ content, buttons });
     const input = dialog.querySelector<HTMLInputElement>('#password')!;
-    input.focus();
     input.onkeydown = (e) => {
       if (e.key === 'Enter') {
         dialog.querySelector<HTMLButtonElement>('button')!.click();
