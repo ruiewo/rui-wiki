@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@rui-wiki/shared": "^0.1.4",
-    "marked": "^11.1.1"
+    "marked": "^11.2.0"
   }
 }
