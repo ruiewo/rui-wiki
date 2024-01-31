@@ -1,7 +1,13 @@
 import { defineConfig } from 'vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      plugins: [visualizer()],
+    },
+  },
   esbuild: {
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
