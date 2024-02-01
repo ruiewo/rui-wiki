@@ -3,75 +3,50 @@ import { getSvg } from '../../lib/svg';
 import { flashMessage } from '../flashMessage';
 import './index.css';
 
-export async function showLoginDialog() {
+export const showLoginDialog = () => {
   return new Promise((resolve) => {
-    const content = (
-      <div>
-        <input
-          type="password"
-          id="password"
-          class="input"
-          placeholder="Password"
-          autofocus
+    const dialog = (
+      <dialog class="dialog">
+        <div class="appIcon">{getSvg('app')}</div>
+        <div>
+          <input
+            type="password"
+            id="password"
+            class="input"
+            placeholder="Password"
+            autofocus
+          />
+        </div>
+        <Button
+          label="Log in"
+          onClick={async () => {
+            const password =
+              dialog.querySelector<HTMLInputElement>('#password')!.value;
+
+            if (await appService.checkPassword(password)) {
+              dialog.close();
+              dialog.remove();
+              resolve('success');
+            } else {
+              flashMessage('error', 'Wrong password');
+            }
+          }}
         />
-      </div>
-    );
+      </dialog>
+    ) as HTMLDialogElement;
 
-    const buttons = [
-      [
-        'Log in',
-        async (close: () => void) => {
-          const password =
-            content.querySelector<HTMLInputElement>('#password')!.value;
+    dialog.oncancel = (e) => e.preventDefault(); // disable escape key
 
-          if (await appService.checkPassword(password)) {
-            close();
-            resolve('success');
-          } else {
-            flashMessage('error', 'Wrong password');
-          }
-        },
-      ] as const,
-    ];
-
-    const dialog = showDialog({ content, buttons });
     const input = dialog.querySelector<HTMLInputElement>('#password')!;
     input.onkeydown = (e) => {
       if (e.key === 'Enter') {
         dialog.querySelector<HTMLButtonElement>('button')!.click();
       }
     };
+
+    document.body.appendChild(dialog);
+    dialog.showModal();
   });
-}
-
-export function showDialog(props: DialogProps) {
-  const dialog = <Dialog {...props} />;
-  document.body.appendChild(dialog);
-
-  return dialog;
-}
-
-type ButtonCallback = (close: () => void) => void | Promise<void>;
-type DialogProps = {
-  content: HTMLElement;
-  buttons: (readonly [string, ButtonCallback])[];
-};
-
-const Dialog = ({ content, buttons }: DialogProps) => {
-  const close = () => dialog.remove();
-  const dialog = (
-    <div class="dialogContainer">
-      <div class="dialog">
-        <div class="appIcon">{getSvg('app')}</div>
-        {content}
-        {...buttons.map(([label, onClick]) => (
-          <Button label={label} onClick={() => onClick(close)}></Button>
-        ))}
-      </div>
-    </div>
-  );
-
-  return dialog;
 };
 
 type ButtonProps = {

@@ -150,8 +150,8 @@ const Tabs = () => {
     <details class="tabs">
       <summary>tools</summary>
       <ul>
-        <Item label="import data" onClick={appService.importData} />
-        <Item label="export data" onClick={appService.exportData} />
+        <Item label="import" onClick={appService.importData} />
+        <Item label="export" onClick={appService.exportData} />
         <Item label="update password" onClick={appService.updatePassword} />
         <Item label="clear password" onClick={appService.clearPassword} />
         <Item label="toggle color theme" onClick={appService.toggleTheme} />
