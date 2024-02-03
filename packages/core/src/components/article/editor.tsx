@@ -25,7 +25,7 @@ export async function showEditor(section: HTMLElement, article: Article) {
       }
     },
     delete: () => {
-      articleHandler.remove(article.id);
+      articleHandler.remove(article);
       removeSection(section);
     },
     close: () => {

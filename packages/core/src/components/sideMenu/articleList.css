@@ -1,0 +1,16 @@
+p {
+  margin: 0;
+  color: var(--gray-400);
+}
+
+a {
+  display: block;
+  color: var(--gray-500);
+  padding-left: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--gray-800);
+    text-decoration: underline;
+  }
+}

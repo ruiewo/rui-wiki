@@ -6,7 +6,7 @@ export function assertExist<T>(params: T): asserts params is NonNullable<T> {
   }
 }
 
-export function clearChildren(element: HTMLElement) {
+export function clearChildren(element: Element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
@@ -36,12 +36,10 @@ export function download(
     case 'json':
       type = 'application/json';
       break;
-    default:
-      throw new Error('Assertion failed. fileType is invalid');
   }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([text], { type }));
-  a.download = fileName;
+  a.download = `${fileName}.${fileType}`;
   a.click();
 }
 
