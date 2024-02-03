@@ -4,8 +4,8 @@ import { EventHandler, getTimestamp } from './util';
 
 type ArticleEventMap = {
   add: Article;
-  delete: { id: Article['id'] };
-  update: Article;
+  delete: Article;
+  update: { old: Article; new: Article };
 };
 
 export type RawArticle = {
@@ -51,16 +51,7 @@ export const articleHandler = {
 };
 
 function initialize(articles: RawArticle[]) {
-  // articles.forEach((article, i) => articleMap.set(i, { ...article, id: i }));
-  // todo remove this line. needed for update version 0.1.4.
-  articles.forEach((article, i) =>
-    articleMap.set(i, {
-      ...article,
-      created: new Date(article.created).toISOString(),
-      modified: new Date(article.modified).toISOString(),
-      id: i,
-    })
-  );
+  articles.forEach((article, i) => articleMap.set(i, { ...article, id: i }));
   lastId = articles.length - 1;
 }
 
@@ -87,9 +78,9 @@ function add() {
   eventHandler.emit(articleEvent.add, article);
 }
 
-function remove(id: number) {
-  articleMap.delete(id);
-  eventHandler.emit(articleEvent.delete, { id });
+function remove(article: Article) {
+  articleMap.delete(article.id);
+  eventHandler.emit(articleEvent.delete, article);
 }
 
 function update(article: Article) {
@@ -106,12 +97,14 @@ function update(article: Article) {
     return false;
   }
 
-  Object.assign(target, article);
-  eventHandler.emit(articleEvent.update, target);
+  const newArticle = { ...target, ...article };
+  articleMap.set(article.id, newArticle);
+  eventHandler.emit(articleEvent.update, { old: target, new: newArticle });
   return true;
 }
 
 function search(text: string) {
+  text = text.trim().toLowerCase();
   const articles = [...articleMap.values()];
   if (!text) return articles;
 
@@ -119,8 +112,8 @@ function search(text: string) {
     if (isSystemTag(article.tags)) return false;
 
     return (
-      article.title.toLowerCase().includes(text.toLowerCase()) ||
-      article.content.toLowerCase().includes(text.toLowerCase())
+      article.title.toLowerCase().includes(text) ||
+      article.content.toLowerCase().includes(text)
     );
   });
 }

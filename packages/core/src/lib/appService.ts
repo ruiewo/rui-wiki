@@ -53,7 +53,7 @@ async function downloadHtml() {
 }
 
 async function exportData() {
-  download(JSON.stringify(articleHandler.rawData), 'RuiWiki.json', 'json');
+  download(JSON.stringify(articleHandler.rawData), getFileName(), 'json');
 }
 
 async function importData() {
@@ -66,7 +66,7 @@ async function importData() {
     const json = await file.files[0].text();
     const articles = JSON.parse(json) as RawArticle[];
 
-    articleHandler.articles.forEach((x) => articleHandler.remove(x.id));
+    articleHandler.articles.forEach(articleHandler.remove);
     articles.forEach((x, i) => articleHandler.import({ ...x, id: i }));
   };
 
@@ -166,7 +166,9 @@ async function versionUp() {
 
 function getFileName() {
   const fileName = window.location.pathname.split('/').pop() ?? '';
-  return fileName.endsWith('.html') ? fileName : 'RuiWiki.html';
+  return fileName.endsWith('.html')
+    ? fileName.replace(/\.html$/, '')
+    : 'RuiWiki';
 }
 
 export const appService = {

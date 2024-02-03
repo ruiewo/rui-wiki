@@ -5,44 +5,39 @@ import './index.css';
 
 export const showLoginDialog = () => {
   return new Promise((resolve) => {
+    const passwordInput = (
+      <input
+        type="password"
+        class="input"
+        placeholder="Password"
+        autofocus
+        onkeydown={(e) => {
+          if (e.key === 'Enter') {
+            onSubmit();
+          }
+        }}
+      />
+    ) as HTMLInputElement;
+
+    const onSubmit = async () => {
+      if (await appService.checkPassword(passwordInput.value)) {
+        dialog.close();
+        dialog.remove();
+        resolve('success');
+      } else {
+        flashMessage('error', 'Wrong password');
+      }
+    };
+
     const dialog = (
       <dialog class="dialog">
         <div class="appIcon">{getSvg('app')}</div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            class="input"
-            placeholder="Password"
-            autofocus
-          />
-        </div>
-        <Button
-          label="Log in"
-          onClick={async () => {
-            const password =
-              dialog.querySelector<HTMLInputElement>('#password')!.value;
-
-            if (await appService.checkPassword(password)) {
-              dialog.close();
-              dialog.remove();
-              resolve('success');
-            } else {
-              flashMessage('error', 'Wrong password');
-            }
-          }}
-        />
+        <div>{passwordInput}</div>
+        <Button label="Log in" onClick={onSubmit} />
       </dialog>
     ) as HTMLDialogElement;
 
     dialog.oncancel = (e) => e.preventDefault(); // disable escape key
-
-    const input = dialog.querySelector<HTMLInputElement>('#password')!;
-    input.onkeydown = (e) => {
-      if (e.key === 'Enter') {
-        dialog.querySelector<HTMLButtonElement>('button')!.click();
-      }
-    };
 
     document.body.appendChild(dialog);
     dialog.showModal();

@@ -46,27 +46,6 @@
   }
 }
 
-.sideMenu {
-  .itemListWrapper {
-  }
-  .itemListHeader {
-    color: var(--gray-400);
-  }
-  .itemList {
-  }
-  .item {
-    display: block;
-    color: var(--gray-500);
-    padding-left: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--gray-800);
-      text-decoration: underline;
-    }
-  }
-}
-
 .selectable {
   color: var(--gray-500);
   padding-left: 1rem;
