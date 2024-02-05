@@ -1,6 +1,6 @@
 import { appService } from '../../lib/appService';
 import { getSvg } from '../../lib/svg';
-import { flashMessage } from '../flashMessage';
+import { message } from '../message';
 import './index.css';
 
 export const showLoginDialog = () => {
@@ -25,7 +25,7 @@ export const showLoginDialog = () => {
         dialog.remove();
         resolve('success');
       } else {
-        flashMessage('error', 'Wrong password');
+        message('error', 'Wrong password');
       }
     };
 

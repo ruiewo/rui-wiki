@@ -43,13 +43,9 @@
     gap: 1rem;
 
     button {
+      display: flex;
       height: 2rem;
       width: 2rem;
-
-      svg {
-        width: inherit;
-        height: inherit;
-      }
     }
   }
 
@@ -134,13 +130,9 @@
     gap: 1rem;
 
     button {
+      display: flex;
       height: 2rem;
       width: 2rem;
-
-      svg {
-        width: inherit;
-        height: inherit;
-      }
     }
   }
 

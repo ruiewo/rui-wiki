@@ -12,13 +12,11 @@
   text-align: center;
 
   .appIcon {
+    display: flex;
     width: 4rem;
     height: 4rem;
-
     svg {
       fill: #f8c32c;
-      width: inherit;
-      height: inherit;
     }
   }
 
