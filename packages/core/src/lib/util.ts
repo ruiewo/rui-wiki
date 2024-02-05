@@ -1,4 +1,4 @@
-import { flashMessage } from '../components/flashMessage';
+import { message } from '../components/message';
 
 export function assertExist<T>(params: T): asserts params is NonNullable<T> {
   if (params === null || params === undefined) {
@@ -80,5 +80,5 @@ export function copyToClipboard(text: string | null | undefined) {
   if (!text) return;
 
   navigator.clipboard.writeText(text.trim());
-  flashMessage('success', 'Copied to clipboard');
+  message('success', 'Copied');
 }

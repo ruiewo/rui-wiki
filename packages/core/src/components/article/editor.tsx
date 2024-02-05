@@ -1,6 +1,6 @@
 import { Article, articleHandler } from '../../lib/articleHandler';
 import { IconButton } from '../IconButton';
-import { clearChildren, getTimestamp } from '../../lib/util';
+import { clearChildren } from '../../lib/util';
 import { isCtrlKeyHeldDown } from '@rui-wiki/shared/src/key';
 import { getEditor } from '../../plugins/editor';
 import { showViewer } from './viewer';
@@ -9,18 +9,12 @@ import { removeSection } from '.';
 export async function showEditor(section: HTMLElement, article: Article) {
   const fn = {
     save: () => {
-      const newTitle = title.value.trim();
-      const newContent = contentEditor!.value;
-
-      const newArticle = {
-        ...article,
-        title: newTitle,
-        content: newContent,
-        modified: getTimestamp(),
-      };
-
-      const succeed = articleHandler.update(newArticle);
-      if (succeed) {
+      const newArticle = articleHandler.update({
+        id: article.id,
+        title: title.value.trim(),
+        content: contentEditor!.value,
+      });
+      if (newArticle) {
         showViewer(section, newArticle);
       }
     },
@@ -58,7 +52,7 @@ export async function showEditor(section: HTMLElement, article: Article) {
     </div>
   );
 
-  editor.addEventListener('keydown', (e: KeyboardEvent) => {
+  editor.addEventListener('keydown', (e) => {
     if (isCtrlKeyHeldDown(e) && e.key === 'Enter') {
       fn.save();
     }

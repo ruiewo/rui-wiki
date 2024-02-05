@@ -1,4 +1,4 @@
-import { flashMessage } from '../components/flashMessage';
+import { message } from '../components/message';
 import { createMain } from '../components/main';
 import { createSideMenu } from '../components/sideMenu';
 import { RawArticle, articleHandler } from '../lib/articleHandler';
@@ -25,7 +25,7 @@ export const MainPage = {
     app.appendChild(layout);
 
     if (await updateAvailable()) {
-      flashMessage('info', 'A new version of RuiWiki is available.', 10000);
+      message('info', 'A new version of RuiWiki is available.', 10000);
     }
   },
 };

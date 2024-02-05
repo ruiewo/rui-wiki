@@ -92,9 +92,9 @@ const Tabs = () => {
       <ul>
         <Item label="import" onClick={appService.importData} />
         <Item label="export" onClick={appService.exportData} />
-        <Item label="update password" onClick={appService.updatePassword} />
+        <Item label="set password" onClick={appService.updatePassword} />
         <Item label="clear password" onClick={appService.clearPassword} />
-        <Item label="toggle color theme" onClick={appService.toggleTheme} />
+        <Item label="toggle color" onClick={appService.toggleTheme} />
         <Item label="version up" onClick={appService.versionUp} />
       </ul>
     </details>
@@ -103,17 +103,15 @@ const Tabs = () => {
 
 const SearchBox = ({ onChange }: { onChange: (x: string) => void }) => {
   return (
-    <div class="wrapper">
-      <div class="searchBox">
-        <input
-          class="input"
-          type="text"
-          placeholder="Search"
-          oninput={(e) => {
-            onChange((e.target as HTMLInputElement).value);
-          }}
-        />
-      </div>
+    <div class="searchBox">
+      <input
+        class="input"
+        type="text"
+        placeholder="Search"
+        oninput={(e) => {
+          onChange((e.target as HTMLInputElement).value);
+        }}
+      />
     </div>
   );
 };

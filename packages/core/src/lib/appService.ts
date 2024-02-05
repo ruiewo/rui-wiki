@@ -1,4 +1,4 @@
-import { flashMessage } from '../components/flashMessage';
+import { message } from '../components/message';
 import { appUrl } from '../const';
 import { AppData } from '../pages/main';
 import { RawArticle, articleHandler } from './articleHandler';
@@ -126,7 +126,7 @@ async function checkPassword(password: string) {
 async function updatePassword() {
   const password = prompt('Enter password');
   if (!password) {
-    flashMessage('error', 'Password is required');
+    message('error', 'Password is required');
     return;
   }
 
@@ -136,7 +136,7 @@ async function updatePassword() {
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
 
-  flashMessage('success', 'Password updated');
+  message('success', 'Password updated');
 }
 
 function clearPassword() {
@@ -146,7 +146,7 @@ function clearPassword() {
   dataHandler.data.iv = iv;
   dataHandler.data.fragment = fragment;
 
-  flashMessage('success', 'Password cleared');
+  message('success', 'Password cleared');
 }
 
 function toggleTheme() {
@@ -190,9 +190,9 @@ export const appService = {
 
     if (succeed) {
       eventHandler.emit(appEvent.save, undefined);
-      flashMessage('info', 'file saved');
+      message('info', 'file saved');
     } else {
-      flashMessage('error', 'Failed to save file');
+      message('error', 'Failed to save file');
     }
   },
 };

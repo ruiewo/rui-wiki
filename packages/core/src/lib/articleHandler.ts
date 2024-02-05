@@ -1,4 +1,4 @@
-import { flashMessage } from '../components/flashMessage';
+import { message } from '../components/message';
 import { isSystemTag } from './tag';
 import { EventHandler, getTimestamp } from './util';
 
@@ -83,24 +83,27 @@ function remove(article: Article) {
   eventHandler.emit(articleEvent.delete, article);
 }
 
-function update(article: Article) {
+function update(
+  article: Pick<Article, 'id'> & Partial<Omit<Article, 'id' | 'modified'>>
+) {
   const target = articleMap.get(article.id);
   if (!target) {
     throw new Error(`article not found: ${article.id}`);
   }
 
+  const newArticle = { ...target, ...article, modified: getTimestamp() };
+
   if (
-    article.title !== target.title &&
-    articleHandler.articles.some((x) => x.title === article.title)
+    newArticle.title !== target.title &&
+    articleHandler.articles.some((x) => x.title === newArticle.title)
   ) {
-    flashMessage('error', 'Title already exists.');
-    return false;
+    message('error', 'Title already exists.');
+    return null;
   }
 
-  const newArticle = { ...target, ...article };
   articleMap.set(article.id, newArticle);
   eventHandler.emit(articleEvent.update, { old: target, new: newArticle });
-  return true;
+  return newArticle;
 }
 
 function search(text: string) {
