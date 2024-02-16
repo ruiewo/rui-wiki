@@ -8,11 +8,6 @@ export default defineConfig({
       plugins: [visualizer()],
     },
   },
-  esbuild: {
-    jsxFactory: 'h',
-    jsxFragment: 'Fragment',
-    jsxInject: `import { h, Fragment } from "@rui-wiki/shared/src/jsxFactory"`,
-  },
   plugins: [htmlPlugin(), viteSingleFile()],
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
