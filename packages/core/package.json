@@ -1,6 +1,6 @@
 {
   "name": "@rui-wiki/core",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "@rui-wiki/shared": "^0.1.5",
+    "@rui-wiki/shared": "^0.1.6",
     "marked": "^12.0.0"
   }
 }
