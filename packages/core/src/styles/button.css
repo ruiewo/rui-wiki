@@ -16,8 +16,8 @@ button {
 
 .shrinkButton {
   --foreground: var(--gray-100);
-  --background: var(--secondary-500);
-  --baseBorder: var(--secondary-800);
+  --background: var(--red-400);
+  --baseBorder: var(--red-600);
   --hoverBorder: var(--gray-300);
 
   color: var(--foreground);
