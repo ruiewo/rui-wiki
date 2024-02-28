@@ -1,3 +1,6 @@
+// todo serialize file handle
+// https://developer.chrome.com/docs/capabilities/web-apis/file-system-access?hl=ja#ask-the-user-to-pick-a-file-to-read
+
 export const createNewFile = async (dirHandle: FileSystemDirectoryHandle) => {
   const fileName = 'RuiWiki';
   let index = 0;
@@ -27,3 +30,20 @@ export const createNewFile = async (dirHandle: FileSystemDirectoryHandle) => {
 
   return fileHandle;
 };
+
+export async function verifyPermission(
+  dirHandle: FileSystemDirectoryHandle,
+  readWrite: FileSystemPermissionMode = 'readwrite'
+) {
+  const options = { mode: readWrite };
+
+  if ((await dirHandle.queryPermission(options)) === 'granted') {
+    return true;
+  }
+
+  if ((await dirHandle.requestPermission(options)) === 'granted') {
+    return true;
+  }
+
+  return false;
+}
