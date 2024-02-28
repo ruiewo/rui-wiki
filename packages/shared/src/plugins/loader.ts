@@ -1,4 +1,9 @@
 const loadJs = (url: string): Promise<HTMLScriptElement> => {
+  const element = document.querySelector(`script[src="${url}"]`);
+  if (element) {
+    return Promise.resolve(element as HTMLScriptElement);
+  }
+
   const script = document.createElement('script');
   script.src = url;
   document.querySelector('head')!.appendChild(script);
@@ -14,6 +19,11 @@ const loadJs = (url: string): Promise<HTMLScriptElement> => {
 };
 
 const loadCss = (url: string): Promise<HTMLLinkElement> => {
+  const element = document.querySelector(`link[href="${url}"]`);
+  if (element) {
+    return Promise.resolve(element as HTMLLinkElement);
+  }
+
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = url;
@@ -39,7 +49,6 @@ function createDynamicLoader<T extends HTMLElement>(
   return (url) => {
     const cachedElement = cacheMap.get(url);
     if (cachedElement) {
-      //   return Promise.resolve('cachedElement');
       return Promise.resolve(cachedElement);
     }
 
