@@ -27,16 +27,6 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
       modified: '2023-12-18T03:00:00.000Z',
     },
     {
-      title: 'Release Note',
-      content: `# alpha version
-## 0.1.0 2023-12-21
-alpha 0.1.0 released
-`,
-      tags: '',
-      created: '2023-12-21T03:00:00.000Z',
-      modified: '2023-12-21T03:00:00.000Z',
-    },
-    {
       title: 'Markdown',
       content: `
 # header1
