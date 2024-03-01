@@ -6,20 +6,20 @@
   padding-top: 3rem;
   padding-left: 1rem;
   scrollbar-gutter: stable;
-}
 
-.controls {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 1rem;
-
-  button {
+  .controls {
     display: flex;
-    height: 2rem;
-    width: 2rem;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 1rem;
+
+    button {
+      display: flex;
+      height: 2rem;
+      width: 2rem;
+    }
   }
 }
 
