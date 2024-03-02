@@ -14,6 +14,8 @@ export const jsx = (
 
   const element = document.createElement(tag);
   Object.entries(props ?? {}).forEach(([key, value]) => {
+    if (key === 'children') return;
+
     if (typeof value === 'boolean') {
       if (value) {
         element.setAttribute(key, '');
