@@ -1260,6 +1260,7 @@
     &:hover {
       background-color: var(--color-accent-fg);
       color: var(--color-canvas-default);
+      cursor: pointer;
     }
   }
 }

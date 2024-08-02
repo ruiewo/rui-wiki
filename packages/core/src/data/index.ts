@@ -36,7 +36,11 @@ With these features, RuiWiki can handle a variety of uses, from personal note-ta
 ##### header5
 
 ## link
+external link
 [RuiWiki GitHub repository](https://github.com/ruiewo/rui-wiki)
+
+internal link
+[[RuiWiki]]
 
 ## text style
 **strong**

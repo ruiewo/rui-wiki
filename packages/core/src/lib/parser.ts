@@ -1,9 +1,9 @@
-import { TokenizerAndRendererExtension, marked } from 'marked';
+import { TokenizerAndRendererExtension, Tokens, marked } from 'marked';
 
 const renderer = new marked.Renderer();
 const linkRenderer = renderer.link;
-renderer.link = (href, title, text) => {
-  const html = linkRenderer.call(renderer, href, title, text);
+renderer.link = (token: Tokens.Link) => {
+  const html = linkRenderer.call(renderer, token);
   return html.replace(
     /^<a /,
     '<a target="_blank" rel="noreferrer noopener nofollow" '
@@ -11,9 +11,9 @@ renderer.link = (href, title, text) => {
 };
 
 const codeRenderer = renderer.code;
-renderer.code = (code, language, isEscaped) => {
-  if (language === 'kv') {
-    const lines = code.split('\n');
+renderer.code = (token: Tokens.Code) => {
+  if (token.lang === 'kv') {
+    const lines = token.text.split('\n');
 
     // 奇数行目をキー、偶数行目を値として解釈
     let result = '';
@@ -26,9 +26,9 @@ renderer.code = (code, language, isEscaped) => {
     return `<div class="keyValue">${result}</div>`;
   }
 
-  const fileInfo = `<div class="fileInfo">lang: ${language}</div>`;
+  const fileInfo = `<div class="fileInfo">lang: ${token.lang}</div>`;
   const copyButton = `<button class="copyButton">Copy</button>`;
-  const originalCode = codeRenderer.call(renderer, code, language, isEscaped);
+  const originalCode = codeRenderer.call(renderer, token);
   const newCode = `<div class="codeBlock">${fileInfo}${originalCode}${copyButton}</div>`;
 
   return newCode;
@@ -47,10 +47,10 @@ const ruiwikiLink: TokenizerAndRendererExtension = {
   name: 'ruiwikiLink',
   level: 'inline',
   start(src: string) {
-    return src.match(/\[\[.*\]\]/)?.index;
+    return src.match(/\[\[/)?.index;
   },
   tokenizer(src) {
-    const rule = /\[\[(.*)\]\]/;
+    const rule = /^\[\[(.*?)\]\]/;
     const match = rule.exec(src);
     if (match) {
       return {

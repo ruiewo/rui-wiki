@@ -43,7 +43,7 @@ async function showList(dirHandle: FileSystemDirectoryHandle) {
   const ul = navigation.querySelector('ul')!;
   ul.innerHTML = '';
 
-  for await (let [name, handle] of dirHandle) {
+  for await (const [name, handle] of dirHandle) {
     if (handle.kind !== 'file') {
       continue;
     }

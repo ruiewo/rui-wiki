@@ -12,7 +12,7 @@ export const createNewFile = async (dirHandle: FileSystemDirectoryHandle) => {
         create: false,
       });
       newFileName = `${fileName}_${++index}`;
-    } catch (e) {
+    } catch {
       break;
     }
   }
