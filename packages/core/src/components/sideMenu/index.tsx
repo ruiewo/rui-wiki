@@ -8,7 +8,7 @@ import './sideMenu.css';
 
 customElements.define('article-list', ArticleList);
 
-export function createSideMenu() {
+export function SideMenu() {
   const setting = settingHandler.setting;
   const articles = articleHandler.articles.filter((x) => !isSystemTag(x.tags));
 

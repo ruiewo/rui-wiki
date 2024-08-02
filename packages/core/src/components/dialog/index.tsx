@@ -1,9 +1,10 @@
-import { appService } from '../../lib/appService';
 import { getSvg } from '../../lib/svg';
 import { message } from '../message';
 import './index.css';
 
-export const showLoginDialog = () => {
+export const showLoginDialog = (
+  checkPassword: (password: string) => Promise<boolean>
+) => {
   return new Promise((resolve) => {
     const passwordInput = (
       <input
@@ -20,7 +21,7 @@ export const showLoginDialog = () => {
     ) as HTMLInputElement;
 
     const onSubmit = async () => {
-      if (await appService.checkPassword(passwordInput.value)) {
+      if (await checkPassword(passwordInput.value)) {
         dialog.close();
         dialog.remove();
         resolve('success');
@@ -33,7 +34,9 @@ export const showLoginDialog = () => {
       <dialog class="dialog">
         <div class="appIcon">{getSvg('app')}</div>
         <div>{passwordInput}</div>
-        <Button label="Log in" onClick={onSubmit} />
+        <button class="shrinkButton" onclick={onSubmit}>
+          Log in
+        </button>
       </dialog>
     ) as HTMLDialogElement;
 
@@ -42,16 +45,4 @@ export const showLoginDialog = () => {
     document.body.appendChild(dialog);
     dialog.showModal();
   });
-};
-
-type ButtonProps = {
-  label: string;
-  onClick: () => void | Promise<void>;
-};
-const Button = ({ label, onClick }: ButtonProps) => {
-  return (
-    <button class="shrinkButton" onclick={onClick}>
-      {label}
-    </button>
-  );
 };
