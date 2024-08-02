@@ -5,7 +5,7 @@ import {
 } from '../../lib/articleHandler';
 import { createArticle } from '../article';
 
-export function createMain() {
+export function Main() {
   const main = <main class="main" />;
 
   articleHandler.on(articleEvent.add, async (article) => {

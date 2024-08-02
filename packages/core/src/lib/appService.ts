@@ -1,11 +1,10 @@
+import { showLoginDialog } from '../components/dialog';
 import { message } from '../components/message';
 import { appUrl } from '../const';
-import { AppData } from '../pages/main';
 import { RawArticle, articleHandler } from './articleHandler';
-import { CryptoService } from './crypto';
 import { settingHandler } from './setting';
 import { dataHandler } from './store';
-import { EventHandler, assertExist, clearChildren, download } from './util';
+import { EventHandler, clearChildren, download } from './util';
 import { RuiWikiWindow } from '@rui-wiki/shared/src/window';
 
 declare let window: RuiWikiWindow;
@@ -19,6 +18,18 @@ export const appEvent: { [K in keyof EventMap]: K } = {
 } as const;
 
 const eventHandler = new EventHandler<EventMap>();
+
+async function initialize() {
+  const encryptParams = dataHandler.encryptParams;
+  if (encryptParams) {
+    await showLoginDialog(
+      async (password) =>
+        await dataHandler.password.check(password, encryptParams)
+    );
+  }
+
+  return dataHandler.loadAppData();
+}
 
 async function getHtml(doc = document) {
   const html = doc.querySelector<HTMLElement>('html')!;
@@ -37,7 +48,10 @@ async function getHtml(doc = document) {
     }
 
     if (node.id === 'data') {
-      node.textContent = await getUserData();
+      node.textContent = await dataHandler.serializeAppData({
+        setting: settingHandler.setting,
+        articles: articleHandler.rawData,
+      });
       continue;
     }
 
@@ -106,23 +120,6 @@ async function importData() {
 //   file.click();
 // }
 
-async function getUserData() {
-  const data = dataHandler.data;
-  data.appData = await CryptoService.encrypt(
-    JSON.stringify({
-      setting: settingHandler.setting,
-      articles: articleHandler.rawData,
-    } satisfies AppData)
-  );
-
-  return JSON.stringify(data);
-}
-
-async function checkPassword(password: string) {
-  assertExist(dataHandler.data.fragment);
-  return await CryptoService.checkPassword(password, dataHandler.data.fragment);
-}
-
 async function updatePassword() {
   const password = prompt('Enter password');
   if (!password) {
@@ -130,21 +127,13 @@ async function updatePassword() {
     return;
   }
 
-  const { salt, iv, fragment } = await CryptoService.updatePassword(password);
-
-  dataHandler.data.salt = salt;
-  dataHandler.data.iv = iv;
-  dataHandler.data.fragment = fragment;
+  await dataHandler.password.update(password);
 
   message('success', 'Password updated');
 }
 
 function clearPassword() {
-  const { salt, iv, fragment } = CryptoService.clearPassword();
-
-  dataHandler.data.salt = salt;
-  dataHandler.data.iv = iv;
-  dataHandler.data.fragment = fragment;
+  dataHandler.password.clear();
 
   message('success', 'Password cleared');
 }
@@ -172,10 +161,10 @@ function getFileName() {
 }
 
 export const appService = {
+  initialize,
   downloadHtml,
   exportData,
   importData,
-  checkPassword,
   updatePassword,
   clearPassword,
   toggleTheme,

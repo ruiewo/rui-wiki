@@ -1,87 +1,54 @@
-import { assertExist } from './util';
+import { EncryptParams } from './store';
 
 type Crypto = {
   encrypt: (text: string) => Promise<string>;
   decrypt: (text: string) => Promise<string>;
 };
 
-let crypto: Crypto = {
+export const crypto: Crypto = {
   encrypt: async (text: string) => text,
   decrypt: async (text: string) => text,
 };
 
-export class CryptoService {
-  static salt?: string;
-  static iv?: string;
+export async function checkPassword(
+  password: string,
+  params: EncryptParams
+): Promise<Crypto | null> {
+  const salt = fromBase64(params.salt);
+  const iv = fromBase64(params.iv);
 
-  static async initialize(salt?: string, iv?: string) {
-    CryptoService.salt = salt;
-    CryptoService.iv = iv;
-  }
+  const { key } = await generateKey(password, salt);
+  const decrypted = await decrypt(params.fragment, key, iv);
 
-  static async checkPassword(password: string, encrypted: string) {
-    assertExist(CryptoService.salt);
-    assertExist(CryptoService.iv);
-
-    const salt = fromBase64(CryptoService.salt);
-    const iv = fromBase64(CryptoService.iv);
-
-    const { key } = await generateKey(password, salt);
-    const decrypted = await decrypt(encrypted, key, iv);
-
-    const succeed = decrypted === CryptoService.salt + CryptoService.iv;
-    if (succeed) {
-      crypto = {
-        encrypt: (text: string) => encrypt(text, key, iv),
-        decrypt: (text: string) => decrypt(text, key, iv),
-      };
-    }
-
-    return succeed;
-  }
-
-  static async updatePassword(password: string) {
-    const { key, salt } = await generateKey(password);
-    const iv = window.crypto.getRandomValues(new Uint8Array(12));
-    crypto = {
+  const succeed = decrypted === params.salt + params.iv;
+  if (succeed) {
+    return {
       encrypt: (text: string) => encrypt(text, key, iv),
       decrypt: (text: string) => decrypt(text, key, iv),
     };
-
-    CryptoService.salt = toBase64(salt);
-    CryptoService.iv = toBase64(iv);
-
-    return {
-      salt: CryptoService.salt,
-      iv: CryptoService.iv,
-      fragment: await CryptoService.encrypt(
-        CryptoService.salt + CryptoService.iv
-      ),
-    };
   }
 
-  static clearPassword() {
-    crypto = {
-      encrypt: async (text: string) => text,
-      decrypt: async (text: string) => text,
-    };
+  return null;
+}
 
-    CryptoService.salt = undefined;
-    CryptoService.iv = undefined;
+export async function updatePassword(password: string) {
+  const { key, salt } = await generateKey(password);
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+  const crypto = {
+    encrypt: (text: string) => encrypt(text, key, iv),
+    decrypt: (text: string) => decrypt(text, key, iv),
+  };
 
-    return {
-      salt: CryptoService.salt,
-      iv: CryptoService.iv,
-      fragment: undefined,
-    };
-  }
+  const saltStr = toBase64(salt);
+  const ivStr = toBase64(iv);
 
-  static encrypt(text: string) {
-    return crypto.encrypt(text);
-  }
-  static decrypt(text: string) {
-    return crypto.decrypt(text);
-  }
+  const encryptParams = {
+    salt: saltStr,
+    iv: ivStr,
+    fragment: await crypto.encrypt(saltStr + ivStr),
+  };
+
+  return { crypto, encryptParams };
 }
 
 async function encrypt(text: string, key: CryptoKey, iv: Uint8Array) {

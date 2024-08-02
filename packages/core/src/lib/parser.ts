@@ -39,10 +39,6 @@ marked.use({
   gfm: true,
 });
 
-export async function parse(text: string) {
-  return await marked(text, { renderer });
-}
-
 const ruiwikiLink: TokenizerAndRendererExtension = {
   name: 'ruiwikiLink',
   level: 'inline',
@@ -66,3 +62,7 @@ const ruiwikiLink: TokenizerAndRendererExtension = {
   childTokens: [],
 };
 marked.use({ extensions: [ruiwikiLink] });
+
+export async function parse(text: string) {
+  return await marked(text, { renderer });
+}
